@@ -1,0 +1,24 @@
+[project]
+name = "magic-collections"
+description = "Magic Collections is a set of the built-in collections equipped with more methods."
+version = "0.1.0-dev1"
+keywords = ["collections", "list", "dict", "set", "built-in"]
+
+authors = [{ name = "Qexat", email = "contact@qexat.com" }]
+
+requires-python = ">=3.11"
+
+readme = "README.md"
+license = { file = "LICENSE" }
+
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+repository = "https://github.com/qexat/magic-collections"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "coverage>=7.3", "pyright>=1.1"]
+option = ["option>=2.1"]
