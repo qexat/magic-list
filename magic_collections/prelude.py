@@ -1,3 +1,12 @@
+"""
+This module contains all the classes, functions and identifiers available in
+the package base. They can be imported by doing the following:
+
+```py
+from magic_collections import *
+```
+"""
+
 from __future__ import annotations
 
 # We are making imports private in order to avoid collisions with the user
@@ -40,6 +49,11 @@ class list(_collections.UserList[_T]):
         First item of the list.
 
         Raises an exception if the list is empty.
+
+        >>> list([3, 5, 2]).head
+        3
+        >>> list().head
+        # ValueError: empty list has no head
         """
 
         if not self:
@@ -53,6 +67,11 @@ class list(_collections.UserList[_T]):
         List without its head element (first item).
 
         Raises an exception if the list is empty.
+
+        >>> list([3, 5, 2]).tail
+        [5, 2]
+        >>> list().tail
+        # ValueError: empty list has no tail
         """
 
         if not self:
@@ -66,6 +85,11 @@ class list(_collections.UserList[_T]):
         List without its last item.
 
         Raises an exception if the list is empty.
+
+        >>> list([3, 5, 2]).init
+        [3, 5]
+        >>> list().init
+        # ValueError: empty list has no init
         """
 
         if not self:
@@ -79,6 +103,11 @@ class list(_collections.UserList[_T]):
         Last item of the list.
 
         Raises an exception if the list is empty.
+
+        >>> list([3, 5, 2]).last
+        2
+        >>> list().last
+        # ValueError: empty list has no last
         """
 
         if not self:
@@ -90,6 +119,11 @@ class list(_collections.UserList[_T]):
     def head_safe(self) -> _T | None:
         """
         First item of the list, or `None` if the list is empty.
+
+        >>> list([3, 5, 2]).head_safe
+        3
+        >>> list().head_safe
+        None
         """
 
         return self[0] if self else None
@@ -99,6 +133,11 @@ class list(_collections.UserList[_T]):
         """
         List without its head element (first item), or `None` if the list is
         empty.
+
+        >>> list([3, 5, 2]).tail_safe
+        [5, 2]
+        >>> list().tail_safe
+        None
         """
 
         return self[1:] if self else None
@@ -107,6 +146,11 @@ class list(_collections.UserList[_T]):
     def init_safe(self) -> _typing.Self | None:
         """
         List without its last element, or `None` if the list is empty.
+
+        >>> list([3, 5, 2]).init_safe
+        [3, 5]
+        >>> list().init_safe
+        None
         """
 
         return self[:-1] if self else None
@@ -115,6 +159,11 @@ class list(_collections.UserList[_T]):
     def last_safe(self) -> _T | None:
         """
         Last item of the list, or `None` if the list is empty.
+
+        >>> list([3, 5, 2]).last_safe
+        2
+        >>> list().last_safe
+        None
         """
 
         return self[-1] if self else None
@@ -194,7 +243,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).reduce(operator.add)  # (3 + 5) + 2
         10
         >>> list().reduce(operator.mul)
-        # TypeError exception: the list to reduce cannot be empty
+        # TypeError: the list to reduce cannot be empty
         """
 
         return _functools.reduce(function, self)
@@ -215,7 +264,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).reduce_right(operator.sub)  # 3 - (5 - 2)
         0
         >>> list().reduce_right(operator.add)
-        # TypeError exception: the list to reduce cannot be empty
+        # TypeError: the list to reduce cannot be empty
         """
 
         return _functools.reduce(lambda a, b: function(b, a), self.reversed())
@@ -318,6 +367,19 @@ class list(_collections.UserList[_T]):
         return self.reversed().scan(lambda a, b: function(b, a), initial_value)
 
     def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
+        """
+        Keep every element at index `i` of the list if the corresponding
+        element at index `i` of the mask sequence is `True` ; else, discard
+        it. Return the filtered list.
+
+        >>> list([3, 5, 2]).mask([True, False, True])
+        [3, 2]
+        >>> list().mask([])
+        []
+        >>> list([3, 5, 2]).mask([True, False])
+        # TypeError: mask length must be the same as the list
+        """
+
         if len(self) != len(mask_seq):
             raise ValueError("mask length must be the same as the list")
 
@@ -338,6 +400,21 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
+    # *- Additional features -* #
+
+    """
+    These features allow to integrate well with some PyPI packages ; they are
+    available if `magic_collections` was installed with the respective flag.
+
+    For example, methods that return `Result` and `Option` values which are
+    types from the `option` package can be used if `magic_collections` was
+    installed with the `option` flag:
+
+    ```sh
+    pip install magic_collections[option]
+    ```
+    """
+
     if _features.OPTION:
 
         @property
@@ -345,6 +422,11 @@ class list(_collections.UserList[_T]):
             """
             First item of the list.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
+
+            >>> list([3, 5, 2]).head_maybe
+            Some(3)
+            >>> list().head_maybe
+            NONE
             """
 
             return _maybe(self.head_safe)
@@ -355,6 +437,11 @@ class list(_collections.UserList[_T]):
             List without its head element (first item), or `None` if the list
             is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
+
+            >>> list([3, 5, 2]).tail_maybe
+            Some([5, 2])
+            >>> list().tail_maybe
+            NONE
             """
 
             return _maybe(self.tail_safe)
@@ -364,6 +451,11 @@ class list(_collections.UserList[_T]):
             """
             List without its last element, or `None` if the list is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
+
+            >>> list([3, 5, 2]).init_maybe
+            Some([3, 5])
+            >>> list().init_maybe
+            NONE
             """
 
             return _maybe(self.init_safe)
@@ -373,6 +465,11 @@ class list(_collections.UserList[_T]):
             """
             Last item of the list, or `None` if the list is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
+
+            >>> list([3, 5, 2]).last_maybe
+            Some(2)
+            >>> list().last_maybe
+            NONE
             """
 
             return _maybe(self.last_safe)
@@ -381,6 +478,19 @@ class list(_collections.UserList[_T]):
             self,
             mask_seq: _collections_abc.Sequence[bool],
         ) -> _Result[_typing.Self, _builtins.str]:
+            """
+            Keep every element at index `i` of the list if the corresponding
+            element at index `i` of the mask sequence is `True` ; else, discard
+            it. Returns a `Result` from the [`option`](https://pypi.org/project/option/) package.
+
+            >>> list([3, 5, 2]).mask([True, False, True])
+            Ok([3, 2])
+            >>> list().mask([])
+            Ok([])
+            >>> list([3, 5, 2]).mask([True, False])
+            Err("mask length must be the same as the list")
+            """
+
             if len(self) != len(mask_seq):
                 return _Err("mask length must be the same as the list")
 

@@ -1,3 +1,7 @@
+"""
+Stub file for the `prelude` module.
+"""
+
 # We are making imports private in order to avoid collisions with the user namespace
 # as this library is intended to be star-imported -- this style is often considered
 # bad practice, but here the user desires to override the built-ins, so it's fine.
