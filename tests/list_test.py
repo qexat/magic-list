@@ -453,6 +453,32 @@ def test_list_scan_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
+        ["list_int_filled", [operator.add, 0], list([0, -1, 19, 24, 27])],
+        [
+            "list_str_filled",
+            [operator.add, ""],
+            list(
+                [
+                    "",
+                    "ciao",
+                    "holáciao",
+                    "bonjourholáciao",
+                    "hellobonjourholáciao",
+                ]
+            ),
+        ],
+        ["list_empty", [operator.add, 0], list([0])],
+        ["list_empty", [operator.add, "hello"], list(["hello"])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_scan_right_ok(prebuild_list, args, result):
+    assert prebuild_list.scan_right(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
         ["list_int_filled", [[0, 1, 0, 1]], list([5, -1])],
         ["list_str_filled", [[1, 0, 0, 0]], list(["hello"])],
         ["list_empty", [[]], list()],

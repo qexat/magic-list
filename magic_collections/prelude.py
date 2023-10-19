@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-# We are making imports private in order to avoid collisions with the user namespace
-# as this library is intended to be star-imported -- this style is often considered
-# bad practice, but here the user desires to override the built-ins, so it's fine.
+# We are making imports private in order to avoid collisions with the user
+# namespace as this library is intended to be star-imported -- this style is
+# often considered bad practice, but here the user desires to override the
+# built-ins, so it's fine.
 import builtins as _builtins
 import collections as _collections
 import collections.abc as _collections_abc
@@ -96,7 +97,8 @@ class list(_collections.UserList[_T]):
     @property
     def tail_safe(self) -> _typing.Self | None:
         """
-        List without its head element (first item), or `None` if the list is empty.
+        List without its head element (first item), or `None` if the list is
+        empty.
         """
 
         return self[1:] if self else None
@@ -158,9 +160,9 @@ class list(_collections.UserList[_T]):
         []
         """
 
-        # subclasses' `map` return type is also marked as `list` because we cannot make
-        # the container generic -- this requires Higher-Kinded Types, which Python does
-        # not support (yet? hopefully!)
+        # subclasses' `map` return type is also marked as `list` because we
+        # cannot make the container generic -- this requires Higher-Kinded
+        # Types, which Python does not support (yet? hopefully!)
 
         return _typing.cast(list[_U], self.__class__(map(function, self)))
 
@@ -183,11 +185,11 @@ class list(_collections.UserList[_T]):
 
     def reduce(self, function: _collections_abc.Callable[[_T, _T], _T]) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element from
-        left to right and return the result.
+        "Insert" an operator (called a reducing function) between each element
+        from left to right and return the result.
 
-        The first element of the list is used as the leftmost value ; therefore, if
-        the list is empty, it will raise an exception.
+        The first element of the list is used as the leftmost value ;
+        therefore, if the list is empty, it will raise an exception.
 
         >>> list([3, 5, 2]).reduce(operator.add)  # (3 + 5) + 2
         10
@@ -197,19 +199,22 @@ class list(_collections.UserList[_T]):
 
         return _functools.reduce(function, self)
 
-    def reduce_right(self, function: _collections_abc.Callable[[_T, _T], _T]) -> _T:
+    def reduce_right(
+        self,
+        function: _collections_abc.Callable[[_T, _T], _T],
+    ) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element from
-        right to left and return the result.
+        "Insert" an operator (called a reducing function) between each element
+        from right to left and return the result.
 
-        The last element of the list is used as the rightmost value ; therefore, if
-        the list is empty, it will raise an exception.
+        The last element of the list is used as the rightmost value ;
+        therefore, if the list is empty, it will raise an exception.
 
-        >>> list([3, 5, 2]).reduce(operator.add)  # 3 + (5 + 2)
+        >>> list([3, 5, 2]).reduce_right(operator.add)  # 3 + (5 + 2)
         10
-        >>> list([3, 5, 2]).reduce(operator.sub)  # 3 - (5 - 2)
+        >>> list([3, 5, 2]).reduce_right(operator.sub)  # 3 - (5 - 2)
         0
-        >>> list().reduce(operator.add)
+        >>> list().reduce_right(operator.add)
         # TypeError exception: the list to reduce cannot be empty
         """
 
@@ -247,9 +252,9 @@ class list(_collections.UserList[_T]):
         The `initial_value` is used as the rightmost value, and is the
         returned value if the list is empty.
 
-        >>> list([3, 5, 2]).fold(operator.sub, -3)  # -3 - (3 - (5 - 2))
+        >>> list([3, 5, 2]).fold_right(operator.sub, -3)  # -3 - (3 - (5 - 2))
         0
-        >>> list().fold(operator.mul, 0)
+        >>> list().fold_right(operator.mul, 0)
         0
         """
 
@@ -265,13 +270,14 @@ class list(_collections.UserList[_T]):
         initial_value: _T,
     ) -> _typing.Self:
         """
-        "Insert" an operator (called a reducing function) between each element and
-        return the intermediate values followed by the result.
+        "Insert" an operator (called a reducing function) between each element
+        from left to right and return the intermediate values followed by the
+        result.
 
-        The `initial_value` is used as the mostleft value, and is the only value of the
-        returned list if the original list is empty.
+        The `initial_value` is used as the leftmost value, and is the only
+        value of the returned list if the original list is empty.
 
-        >>> list([3, 5, 2]).scan(operator.add, 0)  # [[0], [0 + 3], [0 + 3 + 5], [0 + 3 + 5 + 2]]
+        >>> list([3, 5, 2]).scan(operator.add, 0)  # [0, (0 + 3), (0 + 3 + 5), (0 + 3 + 5 + 2)]
         [0, 3, 8, 10]
         >>> list().scan(operator.add, 0)
         [0]
@@ -289,6 +295,27 @@ class list(_collections.UserList[_T]):
             )
 
         return self.__class__([initial_value]) + result_tail
+
+    def scan_right(
+        self,
+        function: _collections_abc.Callable[[_T, _T], _T],
+        initial_value: _T,
+    ) -> _typing.Self:
+        """
+        "Insert" an operator (called a reducing function) between each element
+        from right to left and return the intermediate values followed by the
+        result.
+
+        The `initial_value` is used as the rightmost value, and is the only
+        value of the returned list if the original list is empty.
+
+        >>> list([3, 5, 2]).scan_right(operator.add, 0)  # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
+        [0, 2, 7, 10]
+        >>> list().scan_right(operator.add, 0)
+        [0]
+        """
+
+        return self.reversed().scan(lambda a, b: function(b, a), initial_value)
 
     def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
         if len(self) != len(mask_seq):
@@ -325,7 +352,8 @@ class list(_collections.UserList[_T]):
         @property
         def tail_maybe(self) -> _Option[_typing.Self]:
             """
-            List without its head element (first item), or `None` if the list is empty.
+            List without its head element (first item), or `None` if the list
+            is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
             """
 
