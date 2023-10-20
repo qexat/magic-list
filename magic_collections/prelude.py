@@ -22,11 +22,7 @@ import typing as _typing
 import magic_collections.features as _features
 
 if _features.OPTION:
-    from option import Err as _Err
-    from option import maybe as _maybe
-    from option import Ok as _Ok
-    from option import Option as _Option
-    from option import Result as _Result
+    import option as _option
 
 if _typing.TYPE_CHECKING:  # pragma: no cover
     import _typeshed
@@ -40,6 +36,7 @@ __all__ = [
 _K = _typing.TypeVar("_K")
 _T = _typing.TypeVar("_T")
 _U = _typing.TypeVar("_U")
+_V = _typing.TypeVar("_V")
 
 
 class list(_collections.UserList[_T]):
@@ -53,11 +50,11 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).head
         3
         >>> list().head
-        # ValueError: empty list has no head
+        # TypeError: empty list has no head
         """
 
         if not self:
-            raise ValueError("empty list has no head")
+            raise TypeError("empty list has no head")
 
         return self[0]
 
@@ -71,11 +68,11 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).tail
         [5, 2]
         >>> list().tail
-        # ValueError: empty list has no tail
+        # TypeError: empty list has no tail
         """
 
         if not self:
-            raise ValueError("empty list has no tail")
+            raise TypeError("empty list has no tail")
 
         return self[1:]
 
@@ -89,11 +86,11 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).init
         [3, 5]
         >>> list().init
-        # ValueError: empty list has no init
+        # TypeError: empty list has no init
         """
 
         if not self:
-            raise ValueError("empty list has no init")
+            raise TypeError("empty list has no init")
 
         return self[:-1]
 
@@ -107,66 +104,13 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).last
         2
         >>> list().last
-        # ValueError: empty list has no last
+        # TypeError: empty list has no last
         """
 
         if not self:
-            raise ValueError("empty list has no last")
+            raise TypeError("empty list has no last")
 
         return self[-1]
-
-    @property
-    def head_safe(self) -> _T | None:
-        """
-        First item of the list, or `None` if the list is empty.
-
-        >>> list([3, 5, 2]).head_safe
-        3
-        >>> list().head_safe
-        None
-        """
-
-        return self[0] if self else None
-
-    @property
-    def tail_safe(self) -> _typing.Self | None:
-        """
-        List without its head element (first item), or `None` if the list is
-        empty.
-
-        >>> list([3, 5, 2]).tail_safe
-        [5, 2]
-        >>> list().tail_safe
-        None
-        """
-
-        return self[1:] if self else None
-
-    @property
-    def init_safe(self) -> _typing.Self | None:
-        """
-        List without its last element, or `None` if the list is empty.
-
-        >>> list([3, 5, 2]).init_safe
-        [3, 5]
-        >>> list().init_safe
-        None
-        """
-
-        return self[:-1] if self else None
-
-    @property
-    def last_safe(self) -> _T | None:
-        """
-        Last item of the list, or `None` if the list is empty.
-
-        >>> list([3, 5, 2]).last_safe
-        2
-        >>> list().last_safe
-        None
-        """
-
-        return self[-1] if self else None
 
     def reversed(self) -> _typing.Self:
         """
@@ -231,6 +175,25 @@ class list(_collections.UserList[_T]):
         """
 
         return self.__class__(filter(function, self))
+
+    def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
+        """
+        Keep every element at index `i` of the list if the corresponding
+        element at index `i` of the mask sequence is `True` ; else, discard
+        it. Return the filtered list.
+
+        >>> list([3, 5, 2]).mask([True, False, True])
+        [3, 2]
+        >>> list().mask([])
+        []
+        >>> list([3, 5, 2]).mask([True, False])
+        # TypeError: mask length must be the same as the list
+        """
+
+        if len(self) != len(mask_seq):
+            raise TypeError("mask length must be the same as the list")
+
+        return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
 
     def reduce(self, function: _collections_abc.Callable[[_T, _T], _T]) -> _T:
         """
@@ -366,24 +329,31 @@ class list(_collections.UserList[_T]):
 
         return self.reversed().scan(lambda a, b: function(b, a), initial_value)
 
-    def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
+    def merge(
+        self,
+        function: _collections_abc.Callable[[_T, _U], _V],
+        other: _collections_abc.Sequence[_U],
+    ) -> list[_V]:
         """
-        Keep every element at index `i` of the list if the corresponding
-        element at index `i` of the mask sequence is `True` ; else, discard
-        it. Return the filtered list.
+        Build a new list from the result of each `function(s_i, o_i)` where
+        `s_i` and `o_i` are the items at index `i` of `self` and `other`
+        respectively.
 
-        >>> list([3, 5, 2]).mask([True, False, True])
-        [3, 2]
-        >>> list().mask([])
+        >>> list([3, 5, 2]).merge(operator.add, [-1, 4, -9])
+        [2, 9, -7]
+        >>> list().merge(operator.sub, [])
         []
-        >>> list([3, 5, 2]).mask([True, False])
-        # TypeError: mask length must be the same as the list
+        >>> list([3, 5, 2]).merge(operator.add, [6])
+        # TypeError: the length of the two sequences must be equal
         """
 
-        if len(self) != len(mask_seq):
-            raise ValueError("mask length must be the same as the list")
+        if len(self) != len(other):
+            raise TypeError("the length of the two sequences must be equal")
 
-        return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
+        return _typing.cast(
+            list[_V],
+            self.__class__(function(a, b) for a, b in zip(self, other)),
+        )
 
     def gap_fill(
         self,
@@ -418,7 +388,7 @@ class list(_collections.UserList[_T]):
     if _features.OPTION:
 
         @property
-        def head_maybe(self) -> _Option[_T]:
+        def head_maybe(self) -> _option.Option[_T]:
             """
             First item of the list.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
@@ -429,10 +399,10 @@ class list(_collections.UserList[_T]):
             NONE
             """
 
-            return _maybe(self.head_safe)
+            return _option.maybe(self[0] if self else None)
 
         @property
-        def tail_maybe(self) -> _Option[_typing.Self]:
+        def tail_maybe(self) -> _option.Option[_typing.Self]:
             """
             List without its head element (first item), or `None` if the list
             is empty.
@@ -444,10 +414,10 @@ class list(_collections.UserList[_T]):
             NONE
             """
 
-            return _maybe(self.tail_safe)
+            return _option.maybe(self[1:] if self else None)
 
         @property
-        def init_maybe(self) -> _Option[_typing.Self]:
+        def init_maybe(self) -> _option.Option[_typing.Self]:
             """
             List without its last element, or `None` if the list is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
@@ -458,10 +428,10 @@ class list(_collections.UserList[_T]):
             NONE
             """
 
-            return _maybe(self.init_safe)
+            return _option.maybe(self[:-1] if self else None)
 
         @property
-        def last_maybe(self) -> _Option[_T]:
+        def last_maybe(self) -> _option.Option[_T]:
             """
             Last item of the list, or `None` if the list is empty.
             Returns an `Option` from the [`option`](https://pypi.org/project/option/) package.
@@ -472,12 +442,12 @@ class list(_collections.UserList[_T]):
             NONE
             """
 
-            return _maybe(self.last_safe)
+            return _option.maybe(self[-1] if self else None)
 
         def mask_pure(
             self,
             mask_seq: _collections_abc.Sequence[bool],
-        ) -> _Result[_typing.Self, _builtins.str]:
+        ) -> _option.Result[_typing.Self, _builtins.str]:
             """
             Keep every element at index `i` of the list if the corresponding
             element at index `i` of the mask sequence is `True` ; else, discard
@@ -492,9 +462,11 @@ class list(_collections.UserList[_T]):
             """
 
             if len(self) != len(mask_seq):
-                return _Err("mask length must be the same as the list")
+                return _option.Err("mask length must be the same as the list")
 
-            return _Ok(self.__class__(item for item, bit in zip(self, mask_seq) if bit))
+            return _option.Ok(
+                self.__class__(item for item, bit in zip(self, mask_seq) if bit)
+            )
 
 
 class dict:

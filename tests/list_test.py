@@ -67,7 +67,7 @@ def test_list_head_ok(prebuild_list, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "exception"],
     [
-        ["list_empty", ValueError],
+        ["list_empty", TypeError],
     ],
     indirect=["prebuild_list"],
 )
@@ -94,7 +94,7 @@ def test_list_tail_ok(prebuild_list, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "exception"],
     [
-        ["list_empty", ValueError],
+        ["list_empty", TypeError],
     ],
     indirect=["prebuild_list"],
 )
@@ -121,7 +121,7 @@ def test_list_init_ok(prebuild_list, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "exception"],
     [
-        ["list_empty", ValueError],
+        ["list_empty", TypeError],
     ],
     indirect=["prebuild_list"],
 )
@@ -145,71 +145,13 @@ def test_list_last_ok(prebuild_list, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "exception"],
     [
-        ["list_empty", ValueError],
+        ["list_empty", TypeError],
     ],
     indirect=["prebuild_list"],
 )
 def test_list_last_err(prebuild_list, exception):
     with pytest.raises(exception):
         prebuild_list.last
-
-
-@pytest.mark.parametrize(
-    ["prebuild_list", "result"],
-    [
-        ["list_int_filled", 3],
-        ["list_str_filled", "hello"],
-        ["list_empty", None],
-    ],
-    indirect=["prebuild_list"],
-)
-def test_list_head_safe_ok(prebuild_list, result):
-    assert prebuild_list.head_safe == result
-
-
-@pytest.mark.parametrize(
-    ["prebuild_list", "result"],
-    [
-        ["list_int_filled", list([5, 20, -1])],
-        [
-            "list_str_filled",
-            list(["bonjour", "holá", "ciao"]),
-        ],
-        ["list_empty", None],
-    ],
-    indirect=["prebuild_list"],
-)
-def test_list_tail_safe_ok(prebuild_list, result):
-    assert prebuild_list.tail_safe == result
-
-
-@pytest.mark.parametrize(
-    ["prebuild_list", "result"],
-    [
-        ["list_int_filled", list([3, 5, 20])],
-        [
-            "list_str_filled",
-            list(["hello", "bonjour", "holá"]),
-        ],
-        ["list_empty", None],
-    ],
-    indirect=["prebuild_list"],
-)
-def test_list_init_safe_ok(prebuild_list, result):
-    assert prebuild_list.init_safe == result
-
-
-@pytest.mark.parametrize(
-    ["prebuild_list", "result"],
-    [
-        ["list_int_filled", -1],
-        ["list_str_filled", "ciao"],
-        ["list_empty", None],
-    ],
-    indirect=["prebuild_list"],
-)
-def test_list_last_safe_ok(prebuild_list, result):
-    assert prebuild_list.last_safe == result
 
 
 if _features.OPTION:
@@ -332,6 +274,32 @@ def test_list_map_ok(prebuild_list, args, result):
 )
 def test_list_filter_ok(prebuild_list, args, result):
     assert prebuild_list.filter(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [[0, 1, 0, 1]], list([5, -1])],
+        ["list_str_filled", [[1, 0, 0, 0]], list(["hello"])],
+        ["list_empty", [[]], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_mask_ok(prebuild_list, args, result):
+    assert prebuild_list.mask(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception"],
+    [
+        # list and mask of different length
+        ["list_int_filled", [[0, 1]], TypeError],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_mask_err(prebuild_list, args, exception):
+    with pytest.raises(exception):
+        prebuild_list.mask(*args)
 
 
 @pytest.mark.parametrize(
@@ -479,27 +447,37 @@ def test_list_scan_right_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
-        ["list_int_filled", [[0, 1, 0, 1]], list([5, -1])],
-        ["list_str_filled", [[1, 0, 0, 0]], list(["hello"])],
-        ["list_empty", [[]], list()],
+        ["list_int_filled", [operator.add, [-1, 4, -9, 16]], list([2, 9, 11, 15])],
+        [
+            "list_str_filled",
+            [operator.add, [".", " !", "...", "?"]],
+            list(
+                [
+                    "hello.",
+                    "bonjour !",
+                    "holá...",
+                    "ciao?",
+                ]
+            ),
+        ],
+        ["list_empty", [operator.add, []], list()],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_mask_ok(prebuild_list, args, result):
-    assert prebuild_list.mask(*args) == result
+def test_list_merge_ok(prebuild_list, args, result):
+    assert prebuild_list.merge(*args) == result
 
 
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception"],
     [
-        # list and mask of different length
-        ["list_int_filled", [[0, 1]], ValueError],
+        ["list_int_filled", [operator.add, []], TypeError],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_mask_err(prebuild_list, args, exception):
+def test_list_merge_err(prebuild_list, args, exception):
     with pytest.raises(exception):
-        prebuild_list.mask(*args)
+        prebuild_list.merge(*args)
 
 
 @pytest.mark.parametrize(
