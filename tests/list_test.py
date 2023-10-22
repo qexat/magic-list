@@ -60,7 +60,7 @@ def contains_letter_l(x):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_head_ok(prebuild_list, result):
+def test_head_ok(prebuild_list, result):
     assert prebuild_list.head == result
 
 
@@ -71,7 +71,7 @@ def test_list_head_ok(prebuild_list, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_head_err(prebuild_list, exception, message):
+def test_head_err(prebuild_list, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.head
 
@@ -87,7 +87,7 @@ def test_list_head_err(prebuild_list, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_tail_ok(prebuild_list, result):
+def test_tail_ok(prebuild_list, result):
     assert prebuild_list.tail == result
 
 
@@ -98,7 +98,7 @@ def test_list_tail_ok(prebuild_list, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_tail_err(prebuild_list, exception, message):
+def test_tail_err(prebuild_list, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.tail
 
@@ -114,7 +114,7 @@ def test_list_tail_err(prebuild_list, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_init_ok(prebuild_list, result):
+def test_init_ok(prebuild_list, result):
     assert prebuild_list.init == result
 
 
@@ -125,7 +125,7 @@ def test_list_init_ok(prebuild_list, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_init_err(prebuild_list, exception, message):
+def test_init_err(prebuild_list, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.init
 
@@ -138,7 +138,7 @@ def test_list_init_err(prebuild_list, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_last_ok(prebuild_list, result):
+def test_last_ok(prebuild_list, result):
     assert prebuild_list.last == result
 
 
@@ -149,7 +149,7 @@ def test_list_last_ok(prebuild_list, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_last_err(prebuild_list, exception, message):
+def test_last_err(prebuild_list, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.last
 
@@ -165,7 +165,7 @@ if _features.OPTION:
         ],
         indirect=["prebuild_list"],
     )
-    def test_list_head_maybe_ok(prebuild_list, result):
+    def test_head_maybe_ok(prebuild_list, result):
         assert prebuild_list.head_maybe == result
 
     @pytest.mark.parametrize(
@@ -180,7 +180,7 @@ if _features.OPTION:
         ],
         indirect=["prebuild_list"],
     )
-    def test_list_tail_maybe_ok(prebuild_list, result):
+    def test_tail_maybe_ok(prebuild_list, result):
         assert prebuild_list.tail_maybe == result
 
     @pytest.mark.parametrize(
@@ -195,7 +195,7 @@ if _features.OPTION:
         ],
         indirect=["prebuild_list"],
     )
-    def test_list_init_maybe_ok(prebuild_list, result):
+    def test_init_maybe_ok(prebuild_list, result):
         assert prebuild_list.init_maybe == result
 
     @pytest.mark.parametrize(
@@ -207,7 +207,7 @@ if _features.OPTION:
         ],
         indirect=["prebuild_list"],
     )
-    def test_list_last_maybe_ok(prebuild_list, result):
+    def test_last_maybe_ok(prebuild_list, result):
         assert prebuild_list.last_maybe == result
 
 
@@ -223,7 +223,7 @@ if _features.OPTION:
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reversed_ok(prebuild_list, result):
+def test_reversed_ok(prebuild_list, result):
     assert prebuild_list.reversed() == result
 
 
@@ -242,7 +242,7 @@ def test_list_reversed_ok(prebuild_list, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_sorted_ok(prebuild_list, kwargs, result):
+def test_sorted_ok(prebuild_list, kwargs, result):
     assert prebuild_list.sorted(**kwargs) == result
 
 
@@ -259,7 +259,7 @@ def test_list_sorted_ok(prebuild_list, kwargs, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_map_ok(prebuild_list, args, result):
+def test_map_ok(prebuild_list, args, result):
     assert prebuild_list.map(*args) == result
 
 
@@ -277,7 +277,7 @@ def test_list_map_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_rotate_ok(prebuild_list, args, result):
+def test_rotate_ok(prebuild_list, args, result):
     assert prebuild_list.rotate(*args) == result
 
 
@@ -289,7 +289,7 @@ def test_list_rotate_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_rotate_err(prebuild_list, args, exception, message):
+def test_rotate_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.rotate(*args)
 
@@ -303,7 +303,7 @@ def test_list_rotate_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_filter_ok(prebuild_list, args, result):
+def test_filter_ok(prebuild_list, args, result):
     assert prebuild_list.filter(*args) == result
 
 
@@ -316,7 +316,7 @@ def test_list_filter_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_mask_ok(prebuild_list, args, result):
+def test_mask_ok(prebuild_list, args, result):
     assert prebuild_list.mask(*args) == result
 
 
@@ -332,7 +332,7 @@ def test_list_mask_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_mask_err(prebuild_list, args, exception, message):
+def test_mask_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.mask(*args)
 
@@ -346,7 +346,7 @@ def test_list_mask_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reduce_ok(prebuild_list, args, result):
+def test_reduce_ok(prebuild_list, args, result):
     assert prebuild_list.reduce(*args) == result
 
 
@@ -358,7 +358,7 @@ def test_list_reduce_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reduce_err(prebuild_list, args, exception, message):
+def test_reduce_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.reduce(*args)
 
@@ -371,7 +371,7 @@ def test_list_reduce_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reduce_right_ok(prebuild_list, args, result):
+def test_reduce_right_ok(prebuild_list, args, result):
     assert prebuild_list.reduce_right(*args) == result
 
 
@@ -383,7 +383,7 @@ def test_list_reduce_right_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reduce_right_err(prebuild_list, args, exception, message):
+def test_reduce_right_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.reduce_right(*args)
 
@@ -398,7 +398,7 @@ def test_list_reduce_right_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_ok(prebuild_list, args, result):
+def test_fold_ok(prebuild_list, args, result):
     assert prebuild_list.fold(*args) == result
 
 
@@ -414,7 +414,7 @@ def test_list_fold_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_err(prebuild_list, args, exception, message):
+def test_fold_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.fold(*args)
 
@@ -429,7 +429,7 @@ def test_list_fold_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_right_ok(prebuild_list, args, result):
+def test_fold_right_ok(prebuild_list, args, result):
     assert prebuild_list.fold_right(*args) == result
 
 
@@ -445,7 +445,7 @@ def test_list_fold_right_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_right_err(prebuild_list, args, exception, message):
+def test_fold_right_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.fold_right(*args)
 
@@ -472,7 +472,7 @@ def test_list_fold_right_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_scan_ok(prebuild_list, args, result):
+def test_scan_ok(prebuild_list, args, result):
     assert prebuild_list.scan(*args) == result
 
 
@@ -498,7 +498,7 @@ def test_list_scan_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_scan_right_ok(prebuild_list, args, result):
+def test_scan_right_ok(prebuild_list, args, result):
     assert prebuild_list.scan_right(*args) == result
 
 
@@ -522,7 +522,7 @@ def test_list_scan_right_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_merge_ok(prebuild_list, args, result):
+def test_merge_ok(prebuild_list, args, result):
     assert prebuild_list.merge(*args) == result
 
 
@@ -538,7 +538,7 @@ def test_list_merge_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_merge_err(prebuild_list, args, exception, message):
+def test_merge_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.merge(*args)
 
@@ -586,7 +586,7 @@ def test_list_merge_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fill_ok(prebuild_list, args, result):
+def test_fill_ok(prebuild_list, args, result):
     assert prebuild_list.fill(*args) == result
 
 
@@ -602,7 +602,7 @@ def test_list_fill_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fill_err(prebuild_list, args, exception, message):
+def test_fill_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.fill(*args)
 
@@ -625,7 +625,7 @@ def test_list_fill_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_gap_fill_ok(prebuild_list, args, result):
+def test_gap_fill_ok(prebuild_list, args, result):
     assert prebuild_list.gap_fill(*args) == result
 
 
@@ -636,7 +636,7 @@ def test_list_gap_fill_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_list_gap_fill_err(prebuild_list, args, exception, message):
+def test_gap_fill_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.gap_fill(*args)
 
@@ -657,7 +657,7 @@ if _features.OPTION:
         ],
         indirect=["prebuild_list"],
     )
-    def test_list_mask_pure_ok(prebuild_list, args, result):
+    def test_mask_pure_ok(prebuild_list, args, result):
         assert prebuild_list.mask_pure(*args) == result
 
 
@@ -665,7 +665,7 @@ if _features.OPTION:
 
 
 @pytest.mark.xfail(reason="take is not implemented yet")
-def test_list_fib():
+def test_fib():
     base = list([0, 1])
     result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
