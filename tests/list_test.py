@@ -263,6 +263,37 @@ def test_list_map_ok(prebuild_list, args, result):
     assert prebuild_list.map(*args) == result
 
 
+@pytest.mark.xfail(reason="rotate is not implemented")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [], list([-1, 3, 5, 20])],
+        ["list_int_filled", [2], list([20, -1, 3, 5])],
+        [
+            "list_int_filled",
+            [-2],
+            list([20, -1, 3, 5]),
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_rotate_ok(prebuild_list, args, result):
+    assert prebuild_list.rotate(*args) == result
+
+
+@pytest.mark.xfail(reason="rotate is not implemented")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_empty", [], TypeError, "empty list cannot be rotated"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_rotate_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.rotate(*args)
+
+
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -633,7 +664,7 @@ if _features.OPTION:
 # *- "combined" tests -* #
 
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="take is not implemented yet")
 def test_list_fib():
     base = list([0, 1])
     result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
