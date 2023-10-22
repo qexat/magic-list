@@ -90,9 +90,14 @@ class list(_collections.UserList[_T]):
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
     # *- expansion-based HOFs -* #
+    def fill(
+        self,
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> _typing.Self: ...
     def gap_fill(
         self,
-        fill: _T | _collections_abc.Callable[[_T, _T], _T],
+        filler: _T | _collections_abc.Callable[[_T, _T], _T],
     ) -> _typing.Self: ...
     # *- selectors -* #
     def select(self, indexes: _collections_abc.Sequence[int]) -> _typing.Self: ...

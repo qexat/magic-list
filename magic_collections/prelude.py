@@ -50,7 +50,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).head
         3
         >>> list().head
-        # TypeError: empty list has no head
+        *- TypeError: empty list has no head -*
         """
 
         if not self:
@@ -68,7 +68,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).tail
         [5, 2]
         >>> list().tail
-        # TypeError: empty list has no tail
+        *- TypeError: empty list has no tail -*
         """
 
         if not self:
@@ -86,7 +86,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).init
         [3, 5]
         >>> list().init
-        # TypeError: empty list has no init
+        *- TypeError: empty list has no init -*
         """
 
         if not self:
@@ -104,7 +104,7 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).last
         2
         >>> list().last
-        # TypeError: empty list has no last
+        *- TypeError: empty list has no last -*
         """
 
         if not self:
@@ -187,7 +187,7 @@ class list(_collections.UserList[_T]):
         >>> list().mask([])
         []
         >>> list([3, 5, 2]).mask([True, False])
-        # TypeError: mask length must be the same as the list
+        *- TypeError: mask length must be the same as the list -*
         """
 
         if len(self) != len(mask_seq):
@@ -206,8 +206,11 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).reduce(operator.add)  # (3 + 5) + 2
         10
         >>> list().reduce(operator.mul)
-        # TypeError: the list to reduce cannot be empty
+        *- TypeError: the list to reduce cannot be empty -*
         """
+
+        if not self:
+            raise TypeError("the list to reduce cannot be empty")
 
         return _functools.reduce(function, self)
 
@@ -227,8 +230,11 @@ class list(_collections.UserList[_T]):
         >>> list([3, 5, 2]).reduce_right(operator.sub)  # 3 - (5 - 2)
         0
         >>> list().reduce_right(operator.add)
-        # TypeError: the list to reduce cannot be empty
+        *- TypeError: the list to reduce cannot be empty -*
         """
+
+        if not self:
+            raise TypeError("the list to reduce cannot be empty")
 
         return _functools.reduce(lambda a, b: function(b, a), self.reversed())
 
@@ -344,7 +350,7 @@ class list(_collections.UserList[_T]):
         >>> list().merge(operator.sub, [])
         []
         >>> list([3, 5, 2]).merge(operator.add, [6])
-        # TypeError: the length of the two sequences must be equal
+        *- TypeError: the length of the two sequences must be equal -*
         """
 
         if len(self) != len(other):
@@ -355,17 +361,64 @@ class list(_collections.UserList[_T]):
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
 
+    def fill(
+        self,
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> _typing.Self:
+        """
+        Fill on the right the list with `filler` and return the result.
+
+        If `filler` is a function, it takes the current list (at the current
+        filling iteration) and produces a new value to be appended.
+
+        >>> list([3, 5, 2]).fill(0, 5)
+        [3, 5, 2, 0, 0, 0, 0, 0]
+        >>> list([3, 5, 2]).fill(sum, 3)
+        [3, 5, 2, 10, 20, 40]
+        >>> list().fill(1, 10)
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        >>> list([3, 5, 2]).fill(0, -1)
+        *- ValueError: the number of times to fill cannot be negative -*
+        """
+
+        if n < 0:
+            raise ValueError("the number of times to fill cannot be negative")
+
+        returned_list = self.copy()
+
+        for _ in range(n):
+            returned_list.append(filler(returned_list) if callable(filler) else filler)
+
+        return returned_list
+
     def gap_fill(
         self,
-        fill: _T | _collections_abc.Callable[[_T, _T], _T],
+        filler: _T | _collections_abc.Callable[[_T, _T], _T],
     ) -> _typing.Self:
+        """
+        Fill in-between the items with `filler` and return the result.
+
+        If `filler` is a function, it takes the two items surrounding the gap
+        that is about to be filled and produces a new value to be inserted.
+
+        >>> list([3, 5, 2]).gap_fill(0)
+        [3, 0, 5, 0, 2]
+        >>> list([3, 5, 2]).gap_fill(operator.add)
+        [3, 8, 5, 7, 2]
+        >>> list().gap_fill(0)
+        *- ValueError: empty list has no gap to be filled -*
+        """
+
         if not self:
-            raise ValueError("empty list has no gaps to be filled")
+            raise ValueError("empty list has no gap to be filled")
 
         returned_list = self.__class__([self.head])
 
         for i in range(1, len(self)):
-            returned_list.append(fill(self[i - 1], self[i]) if callable(fill) else fill)
+            returned_list.append(
+                filler(self[i - 1], self[i]) if callable(filler) else filler
+            )
             returned_list.append(self[i])
 
         return returned_list

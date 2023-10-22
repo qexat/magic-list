@@ -65,14 +65,14 @@ def test_list_head_ok(prebuild_list, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "exception"],
+    ["prebuild_list", "exception", "message"],
     [
-        ["list_empty", TypeError],
+        ["list_empty", TypeError, "empty list has no head"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_head_err(prebuild_list, exception):
-    with pytest.raises(exception):
+def test_list_head_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.head
 
 
@@ -92,14 +92,14 @@ def test_list_tail_ok(prebuild_list, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "exception"],
+    ["prebuild_list", "exception", "message"],
     [
-        ["list_empty", TypeError],
+        ["list_empty", TypeError, "empty list has no tail"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_tail_err(prebuild_list, exception):
-    with pytest.raises(exception):
+def test_list_tail_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.tail
 
 
@@ -119,14 +119,14 @@ def test_list_init_ok(prebuild_list, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "exception"],
+    ["prebuild_list", "exception", "message"],
     [
-        ["list_empty", TypeError],
+        ["list_empty", TypeError, "empty list has no init"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_init_err(prebuild_list, exception):
-    with pytest.raises(exception):
+def test_list_init_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.init
 
 
@@ -143,14 +143,14 @@ def test_list_last_ok(prebuild_list, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "exception"],
+    ["prebuild_list", "exception", "message"],
     [
-        ["list_empty", TypeError],
+        ["list_empty", TypeError, "empty list has no last"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_last_err(prebuild_list, exception):
-    with pytest.raises(exception):
+def test_list_last_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.last
 
 
@@ -290,15 +290,19 @@ def test_list_mask_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        # list and mask of different length
-        ["list_int_filled", [[0, 1]], TypeError],
+        [
+            "list_int_filled",
+            [[0, 1]],
+            TypeError,
+            "mask length must be the same as the list",
+        ],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_mask_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_mask_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.mask(*args)
 
 
@@ -316,15 +320,15 @@ def test_list_reduce_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_str_filled", [operator.mul], TypeError],
-        ["list_empty", [operator.add], TypeError],
+        ["list_str_filled", [operator.mul], TypeError, "can't multiply sequence"],
+        ["list_empty", [operator.add], TypeError, "the list to reduce cannot be empty"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_reduce_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_reduce_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.reduce(*args)
 
 
@@ -338,6 +342,19 @@ def test_list_reduce_err(prebuild_list, args, exception):
 )
 def test_list_reduce_right_ok(prebuild_list, args, result):
     assert prebuild_list.reduce_right(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_str_filled", [operator.mul], TypeError, "can't multiply sequence"],
+        ["list_empty", [operator.add], TypeError, "the list to reduce cannot be empty"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_reduce_right_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.reduce_right(*args)
 
 
 @pytest.mark.parametrize(
@@ -355,14 +372,19 @@ def test_list_fold_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_str_filled", [operator.mul, "annyeong"], TypeError],
+        [
+            "list_str_filled",
+            [operator.mul, "annyeong"],
+            TypeError,
+            "can't multiply sequence",
+        ],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_fold_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.fold(*args)
 
 
@@ -381,14 +403,19 @@ def test_list_fold_right_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_str_filled", [operator.mul, "annyeong"], TypeError],
+        [
+            "list_str_filled",
+            [operator.mul, "annyeong"],
+            TypeError,
+            "can't multiply sequence",
+        ],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_fold_right_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_fold_right_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.fold_right(*args)
 
 
@@ -469,15 +496,84 @@ def test_list_merge_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_int_filled", [operator.add, []], TypeError],
+        [
+            "list_int_filled",
+            [operator.add, []],
+            TypeError,
+            "the length of the two sequences must be equal",
+        ],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_merge_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_merge_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.merge(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [0, 3], list([3, 5, 20, -1, 0, 0, 0])],
+        [
+            "list_str_filled",
+            ["annyeong", 2],
+            list(
+                [
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                    "annyeong",
+                    "annyeong",
+                ]
+            ),
+        ],
+        ["list_empty", [10, 5], list([10, 10, 10, 10, 10])],
+        ["list_empty", ["hi", 4], list(["hi", "hi", "hi", "hi"])],
+        [
+            "list_int_filled",
+            [sum, 3],
+            list([3, 5, 20, -1, 27, 54, 108]),
+        ],
+        [
+            "list_str_filled",
+            [lambda lst: lst[-1][::-1], 2],
+            list(
+                [
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                    "oaic",
+                    "ciao",
+                ]
+            ),
+        ],
+        ["list_empty", [lambda lst: len(lst), 4], list([0, 1, 2, 3])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_fill_ok(prebuild_list, args, result):
+    assert prebuild_list.fill(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [0, -2],
+            ValueError,
+            "the number of times to fill cannot be negative",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_list_fill_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.fill(*args)
 
 
 @pytest.mark.parametrize(
@@ -503,14 +599,14 @@ def test_list_gap_fill_ok(prebuild_list, args, result):
 
 
 @pytest.mark.parametrize(
-    ["prebuild_list", "args", "exception"],
+    ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_empty", [None], ValueError],
+        ["list_empty", [None], ValueError, "empty list has no gap to be filled"],
     ],
     indirect=["prebuild_list"],
 )
-def test_list_gap_fill_err(prebuild_list, args, exception):
-    with pytest.raises(exception):
+def test_list_gap_fill_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
         prebuild_list.gap_fill(*args)
 
 
@@ -532,3 +628,16 @@ if _features.OPTION:
     )
     def test_list_mask_pure_ok(prebuild_list, args, result):
         assert prebuild_list.mask_pure(*args) == result
+
+
+# *- "combined" tests -* #
+
+
+@pytest.mark.xfail
+def test_list_fib():
+    base = list([0, 1])
+    result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+
+    assert (
+        base.fill(lambda lst: lst.reversed().take(2).reduce(operator.add), 9) == result
+    )
