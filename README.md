@@ -33,7 +33,7 @@ def fibonacci_sequence(n: int) -> list[int]:
     # we define a function that we will use to generate the next members of
     # the sequence
     def next_member(current: list[int]) -> int:
-        return current.reversed().take(2).reduce(operator.add)
+        return current.take_right(2).reduce(operator.add)
 
     return base.fill(next_member, n - 1)
 ```

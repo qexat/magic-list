@@ -673,6 +673,7 @@ def test_gap_fill_err(prebuild_list, args, exception, message):
         ["list_int_filled", [[]], list()],
         ["list_int_filled", [[2, 0, 0]], list([20, 3, 3])],
         ["list_str_filled", [[1, 2]], list(["bonjour", "holá"])],
+        ["list_str_filled", [[-2]], list(["holá"])],
         ["list_empty", [[]], list()],
     ],
     indirect=["prebuild_list"],
@@ -740,6 +741,49 @@ def test_take_err(prebuild_list, args, exception, message):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
+        ["list_int_filled", [2], [20, -1]],
+        ["list_str_filled", [3], list(["bonjour", "holá", "ciao"])],
+        ["list_int_filled", [0], list()],
+        ["list_empty", [0], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_take_right_ok(prebuild_list, args, result):
+    assert prebuild_list.take_right(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [10],
+            ValueError,
+            "cannot take more items than the list contains",
+        ],
+        [
+            "list_int_filled",
+            [-1],
+            ValueError,
+            "cannot take a negative amount of items",
+        ],
+        [
+            "list_empty",
+            [1],
+            ValueError,
+            "cannot take more items than the list contains",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_take_right_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.take_right(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
         ["list_int_filled", [2], list([20, -1])],
         ["list_str_filled", [3], list(["ciao"])],
         ["list_int_filled", [0], list([3, 5, 20, -1])],
@@ -778,6 +822,49 @@ def test_drop_ok(prebuild_list, args, result):
 def test_drop_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.drop(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [2], list([3, 5])],
+        ["list_str_filled", [3], list(["hello"])],
+        ["list_int_filled", [0], list([3, 5, 20, -1])],
+        ["list_empty", [0], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_drop_right_ok(prebuild_list, args, result):
+    assert prebuild_list.drop_right(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [10],
+            ValueError,
+            "cannot drop more items than the list contains",
+        ],
+        [
+            "list_int_filled",
+            [-1],
+            ValueError,
+            "cannot drop a negative amount of items",
+        ],
+        [
+            "list_empty",
+            [1],
+            ValueError,
+            "cannot drop more items than the list contains",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_drop_right_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.drop_right(*args)
 
 
 @pytest.mark.parametrize(
@@ -835,6 +922,4 @@ def test_fib():
     base = list([0, 1])
     result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
-    assert (
-        base.fill(lambda lst: lst.reversed().take(2).reduce(operator.add), 9) == result
-    )
+    assert base.fill(lambda lst: lst.take_right(2).reduce(operator.add), 9) == result

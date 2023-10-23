@@ -518,6 +518,30 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[i] for i in range(n))
 
+    def take_right(self, n: int) -> _typing.Self:
+        """
+        Take `n` items from the right of the list and return them.
+
+        List original order is preserved.
+
+        >>> list([3, 5, 2]).take_right(2)
+        [5, 2]
+        >>> list([3, 5, 2]).take_right(0)
+        []
+        >>> list([3, 5, 2]).take(-1)
+        *- ValueError: cannot take a negative amount of items -*
+        >>> list([3, 5, 2]).take(5)
+        *- ValueError: cannot take more items than the list contains -*
+        """
+
+        if n < 0:
+            raise ValueError("cannot take a negative amount of items")
+
+        if n > len(self):
+            raise ValueError("cannot take more items than the list contains")
+
+        return self.__class__(item for item in self[len(self) - n :])
+
     def drop(self, n: int) -> _typing.Self:
         """
         Drop `n` items from the list and return the rest.
@@ -539,6 +563,28 @@ class list(_collections.UserList[_T]):
             raise ValueError("cannot drop more items than the list contains")
 
         return self[n:]
+
+    def drop_right(self, n: int) -> _typing.Self:
+        """
+        Drop `n` items from the right of the list and return the rest.
+
+        >>> list([3, 5, 2]).drop_right(2)
+        [3]
+        >>> list([3, 5, 2]).drop_right(0)
+        [3, 5, 2]
+        >>> list([3, 5, 2]).drop_right(-1)
+        *- ValueError: cannot drop a negative amount of items -*
+        >>> list([3, 5, 2]).drop_right(5)
+        *- ValueError: cannot drop more items than the list contains -*
+        """
+
+        if n < 0:
+            raise ValueError("cannot drop a negative amount of items")
+
+        if n > len(self):
+            raise ValueError("cannot drop more items than the list contains")
+
+        return self[: len(self) - n]
 
     def slice(self, start: int, stop: int) -> _typing.Self:
         """
