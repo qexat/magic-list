@@ -666,7 +666,6 @@ def test_gap_fill_err(prebuild_list, args, exception, message):
         prebuild_list.gap_fill(*args)
 
 
-@pytest.mark.xfail(reason="select is not implemented")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -682,12 +681,11 @@ def test_select_ok(prebuild_list, args, result):
     assert prebuild_list.select(*args) == result
 
 
-@pytest.mark.xfail(reason="select is not implemented")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
         ["list_int_filled", [[4, 1]], IndexError, "index 4 is out of bounds"],
-        ["list_empty", [0], IndexError, "index 0 is out of bounds"],
+        ["list_empty", [[0]], IndexError, "index 0 is out of bounds"],
     ],
     indirect=["prebuild_list"],
 )

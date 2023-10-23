@@ -471,6 +471,29 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
+    def select(self, indexes: _collections_abc.Sequence[int]) -> _typing.Self:
+        """
+        Select items at provided indexes. If an index is present several
+        times, this will be reflected in the resulting list.
+
+        >>> list([3, 5, 2]).select([1, 2, 0, 0])
+        [5, 2, 3, 3]
+        >>> list().select([])
+        []
+        >>> list([3, 5, 2]).select([4, 1])
+        *- IndexError: index 4 is out of bounds -*
+        """
+
+        returned_list = self.__class__()
+
+        for index in indexes:
+            if index >= len(self) or index < -len(self):
+                raise IndexError(f"index {index} is out of bounds")
+
+            returned_list.append(self[index])
+
+        return returned_list
+
     # *- Additional features -* #
 
     """
