@@ -516,6 +516,28 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[i] for i in range(n))
 
+    def drop(self, n: int) -> _typing.Self:
+        """
+        Drop `n` items from the list and return the rest.
+
+        >>> list([3, 5, 2]).drop(2)
+        [2]
+        >>> list([3, 5, 2]).drop(0)
+        [3, 5, 2]
+        >>> list([3, 5, 2]).drop(-1)
+        *- ValueError: cannot drop a negative amount of items -*
+        >>> list([3, 5, 2]).drop(5)
+        *- ValueError: cannot drop more items than the list contains -*
+        """
+
+        if n < 0:
+            raise ValueError("cannot drop a negative amount of items")
+
+        if n > len(self):
+            raise ValueError("cannot drop more items than the list contains")
+
+        return self[n:]
+
     # *- Additional features -* #
 
     """

@@ -737,7 +737,6 @@ def test_take_err(prebuild_list, args, exception, message):
         prebuild_list.take(*args)
 
 
-@pytest.mark.xfail(reason="drop is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -752,7 +751,6 @@ def test_drop_ok(prebuild_list, args, result):
     assert prebuild_list.drop(*args) == result
 
 
-@pytest.mark.xfail(reason="drop is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
@@ -761,6 +759,12 @@ def test_drop_ok(prebuild_list, args, result):
             [10],
             ValueError,
             "cannot drop more items than the list contains",
+        ],
+        [
+            "list_int_filled",
+            [-1],
+            ValueError,
+            "cannot drop a negative amount of items",
         ],
         [
             "list_empty",
