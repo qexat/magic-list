@@ -17,10 +17,6 @@ User-friendly documentation is hopefully coming soon.
 
 ### Fibonacci sequence
 
-> [!WARNING]
-> The `take` method is not implemented yet. The following example is not
-> working for now, but will in a near future!
-
 In the functional programming spirit, let's write a function that given an integer `n`, returns the fibonacci sequence up to the `n`-th member.
 
 For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]`.
