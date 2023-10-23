@@ -494,6 +494,28 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
+    def take(self, n: int) -> _typing.Self:
+        """
+        Take `n` items from the list and return them.
+
+        >>> list([3, 5, 2]).take(2)
+        [3, 5]
+        >>> list([3, 5, 2]).take(0)
+        []
+        >>> list([3, 5, 2]).take(-1)
+        *- ValueError: cannot take a negative amount of items -*
+        >>> list([3, 5, 2]).take(5)
+        *- ValueError: cannot take more items than the list contains -*
+        """
+
+        if n < 0:
+            raise ValueError("cannot take a negative amount of items")
+
+        if n > len(self):
+            raise ValueError("cannot take more items than the list contains")
+
+        return self.__class__(self[i] for i in range(n))
+
     # *- Additional features -* #
 
     """

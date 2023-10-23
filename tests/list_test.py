@@ -694,7 +694,6 @@ def test_select_err(prebuild_list, args, exception, message):
         prebuild_list.select(*args)
 
 
-@pytest.mark.xfail(reason="take is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -709,7 +708,6 @@ def test_take_ok(prebuild_list, args, result):
     assert prebuild_list.take(*args) == result
 
 
-@pytest.mark.xfail(reason="take is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
@@ -718,6 +716,12 @@ def test_take_ok(prebuild_list, args, result):
             [10],
             ValueError,
             "cannot take more items than the list contains",
+        ],
+        [
+            "list_int_filled",
+            [-1],
+            ValueError,
+            "cannot take a negative amount of items",
         ],
         [
             "list_empty",
@@ -824,7 +828,6 @@ if _features.OPTION:
 # *- "combined" tests -* #
 
 
-@pytest.mark.xfail(reason="take is not implemented yet")
 def test_fib():
     base = list([0, 1])
     result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
