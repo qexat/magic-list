@@ -780,7 +780,6 @@ def test_drop_err(prebuild_list, args, exception, message):
         prebuild_list.drop(*args)
 
 
-@pytest.mark.xfail(reason="slice is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -795,12 +794,12 @@ def test_slice_ok(prebuild_list, args, result):
     assert prebuild_list.slice(*args) == result
 
 
-@pytest.mark.xfail(reason="slice is not implemented yet")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
         ["list_int_filled", [2, 10], ValueError, "slice out of bounds"],
         ["list_empty", [0, 2], ValueError, "slice out of bounds"],
+        ["list_int_filled", [2, 1], ValueError, "start cannot be greater than stop"],
     ],
     indirect=["prebuild_list"],
 )

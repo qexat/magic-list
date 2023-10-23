@@ -538,6 +538,40 @@ class list(_collections.UserList[_T]):
 
         return self[n:]
 
+    def slice(self, start: int, stop: int) -> _typing.Self:
+        """
+        Slice the list from `start` to `stop` and return the result.
+
+        This method is NOT equivalent to the `self[start:stop]` notation.
+        If `start` or `stop` are out of bounds of the list or `start` is
+        greater than `stop`, it will raise an exception.
+
+        >>> list([2, 4, 8, 16, 32]).slice(1, 3)
+        [4, 8, 16]
+        >>> list([2, 4, 8, 16, 32]).slice(0, 2)
+        [2, 4, 8]
+        >>> list([2, 4, 8, 16, 32]).slice(3, 5)
+        [8, 16, 32]
+        >>> list([2, 4, 8, 16, 32]).slice(2, 2)
+        [8]
+        >>> list([2, 4, 8, 16, 32]).slice(1, 10)
+        *- ValueError: slice out of bounds -*
+        >>> list([2, 4, 8, 16, 32]).slice(4, 2)
+        *- ValueError: start cannot be greater than stop -*
+
+        Tip: if `start` is 0, you can do `.take(stop - 1)` instead.
+        Symmetrically, if `stop` is the index of the last item, go for a
+        `.drop(start)`!
+        """
+
+        if start > stop:
+            raise ValueError("start cannot be greater than stop")
+
+        if start < 0 or stop >= len(self):
+            raise ValueError("slice out of bounds")
+
+        return self[start : stop + 1]
+
     # *- Additional features -* #
 
     """
