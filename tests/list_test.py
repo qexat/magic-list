@@ -671,6 +671,113 @@ def test_select_err(prebuild_list, args, exception, message):
         prebuild_list.select(*args)
 
 
+@pytest.mark.xfail(reason="take is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [2], list([3, 5])],
+        ["list_str_filled", [3], list(["hello", "bonjour", "holá"])],
+        ["list_int_filled", [0], list()],
+        ["list_empty", [0], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_take_ok(prebuild_list, args, result):
+    assert prebuild_list.take(*args) == result
+
+
+@pytest.mark.xfail(reason="take is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [10],
+            ValueError,
+            "cannot take more items than the list contains",
+        ],
+        [
+            "list_empty",
+            [1],
+            ValueError,
+            "cannot take more items than the list contains",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_take_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.take(*args)
+
+
+@pytest.mark.xfail(reason="drop is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [2], list([20, -1])],
+        ["list_str_filled", [3], list(["ciao"])],
+        ["list_int_filled", [0], list([3, 5, 20, -1])],
+        ["list_empty", [0], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_drop_ok(prebuild_list, args, result):
+    assert prebuild_list.drop(*args) == result
+
+
+@pytest.mark.xfail(reason="drop is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [10],
+            ValueError,
+            "cannot drop more items than the list contains",
+        ],
+        [
+            "list_empty",
+            [1],
+            ValueError,
+            "cannot drop more items than the list contains",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_drop_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.drop(*args)
+
+
+@pytest.mark.xfail(reason="slice is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [1, 2], list([5, 20])],
+        ["list_str_filled", [2, 3], list(["holá", "ciao"])],
+        ["list_int_filled", [0, 0], list([3])],
+        ["list_str_filled", [3, 3], list(["ciao"])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_slice_ok(prebuild_list, args, result):
+    assert prebuild_list.slice(*args) == result
+
+
+@pytest.mark.xfail(reason="slice is not implemented yet")
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_int_filled", [2, 10], ValueError, "slice out of bounds"],
+        ["list_empty", [0, 2], ValueError, "slice out of bounds"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_slice_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.slice(*args)
+
+
 if _features.OPTION:
 
     @pytest.mark.parametrize(
