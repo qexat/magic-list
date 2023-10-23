@@ -215,6 +215,32 @@ if _features.OPTION:
 
 
 @pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [14], list([14, 3, 5, 20, -1])],
+        [
+            "list_str_filled",
+            ["annyeong"],
+            list(
+                [
+                    "annyeong",
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                ]
+            ),
+        ],
+        ["list_empty", [-5], list([-5])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_prepend_ok(prebuild_list, args, result):
+    prebuild_list.prepend(*args)
+    assert prebuild_list == result
+
+
+@pytest.mark.parametrize(
     ["prebuild_list", "result"],
     [
         ["list_int_filled", list([-1, 20, 5, 3])],
@@ -263,7 +289,6 @@ def test_map_ok(prebuild_list, args, result):
     assert prebuild_list.map(*args) == result
 
 
-@pytest.mark.xfail(reason="rotate is not implemented")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
@@ -274,6 +299,7 @@ def test_map_ok(prebuild_list, args, result):
             [-2],
             list([20, -1, 3, 5]),
         ],
+        ["list_str_filled", [0], list(["hello", "bonjour", "holá", "ciao"])],
     ],
     indirect=["prebuild_list"],
 )
@@ -281,7 +307,6 @@ def test_rotate_ok(prebuild_list, args, result):
     assert prebuild_list.rotate(*args) == result
 
 
-@pytest.mark.xfail(reason="rotate is not implemented")
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [

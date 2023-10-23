@@ -112,6 +112,18 @@ class list(_collections.UserList[_T]):
 
         return self[-1]
 
+    def prepend(self, item: _T) -> None:
+        """
+        Add an item at the beginning of the list.
+
+        >>> l = list([3, 5, 2])
+        >>> l.prepend(-2)
+        >>> print(l)
+        [-2, 3, 5, 2]
+        """
+
+        self.insert(0, item)
+
     def reversed(self) -> _typing.Self:
         """
         Returns a reversed version of the list.
@@ -158,6 +170,42 @@ class list(_collections.UserList[_T]):
         # Types, which Python does not support (yet? hopefully!)
 
         return _typing.cast(list[_U], self.__class__(map(function, self)))
+
+    def rotate(self, n: int = 1) -> _typing.Self:
+        """
+        Shift the list `n` times to the right. The items that overflow get prepended.
+
+        If `n` is negative, the shift goes to the left.
+
+        >>> list([3, 5, 2]).rotate()
+        [2, 3, 5]
+        >>> list([3, 5, 2]).rotate(2)
+        [5, 2, 3]
+        >>> list([3, 5, 2]).rotate(-1)
+        [5, 2, 3]
+        >>> list().rotate()
+        *- TypeError: empty list cannot be rotated -*
+        """
+
+        if not self:
+            raise TypeError("empty list cannot be rotated")
+
+        if n == 0:
+            return self
+
+        returned_list = self.copy()
+
+        if n > 0:
+            xpend_method = returned_list.prepend
+            popped_index = -1
+        else:
+            xpend_method = returned_list.append
+            popped_index = 0
+
+        for _ in range(abs(n)):
+            xpend_method(returned_list.pop(popped_index))
+
+        return returned_list
 
     def filter(
         self,
