@@ -1,9 +1,8 @@
 """
 This module contains all the feature flags of the current `magic_collections`
 installation. It allows to perform some checks to avoid making features
-available when they shouldn't, and vice-versa. 
+available when they shouldn't, and vice-versa.
 """
-
 # pyright: reportUnusedCallResult = false
 import importlib as _importlib
 

@@ -5,14 +5,15 @@ the package base. They can be imported by doing the following:
 ```py
 from magic_collections import *
 ```
-"""
 
+Note on imports:
+    We are making imports private in order to avoid collisions with the user
+    namespace as this library is intended to be star-imported -- this style is
+    often considered bad practice, but here the user desires to override the
+    built-ins, so it's fine.
+"""
 from __future__ import annotations
 
-# We are making imports private in order to avoid collisions with the user
-# namespace as this library is intended to be star-imported -- this style is
-# often considered bad practice, but here the user desires to override the
-# built-ins, so it's fine.
 import builtins as _builtins
 import collections as _collections
 import collections.abc as _collections_abc
@@ -20,6 +21,7 @@ import functools as _functools
 import typing as _typing
 
 import magic_collections.features as _features
+
 
 if _features.OPTION:
     import option as _option
@@ -357,7 +359,7 @@ class list(_collections.UserList[_T]):
                 self.__class__(tail).scan(
                     function,
                     function(initial_value, head),
-                )
+                ),
             )
 
         return self.__class__([initial_value]) + result_tail
@@ -465,7 +467,7 @@ class list(_collections.UserList[_T]):
 
         for i in range(1, len(self)):
             returned_list.append(
-                filler(self[i - 1], self[i]) if callable(filler) else filler
+                filler(self[i - 1], self[i]) if callable(filler) else filler,
             )
             returned_list.append(self[i])
 
@@ -667,7 +669,7 @@ class list(_collections.UserList[_T]):
                 return _option.Err("mask length must be the same as the list")
 
             return _option.Ok(
-                self.__class__(item for item, bit in zip(self, mask_seq) if bit)
+                self.__class__(item for item, bit in zip(self, mask_seq) if bit),
             )
 
 

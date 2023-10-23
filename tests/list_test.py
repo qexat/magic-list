@@ -3,8 +3,8 @@ import operator
 
 import pytest
 
-from magic_collections import list
 import magic_collections.features as _features
+from magic_collections import list
 
 if _features.OPTION:
     import option
@@ -31,7 +31,7 @@ def prebuild_list(request):
                     "bonjour",
                     "holá",
                     "ciao",
-                ]
+                ],
             )
         case "list_empty":
             return list()
@@ -228,7 +228,7 @@ if _features.OPTION:
                     "bonjour",
                     "holá",
                     "ciao",
-                ]
+                ],
             ),
         ],
         ["list_empty", [-5], list([-5])],
@@ -515,7 +515,7 @@ def test_scan_ok(prebuild_list, args, result):
                     "holáciao",
                     "bonjourholáciao",
                     "hellobonjourholáciao",
-                ]
+                ],
             ),
         ],
         ["list_empty", [operator.add, 0], list([0])],
@@ -540,7 +540,7 @@ def test_scan_right_ok(prebuild_list, args, result):
                     "bonjour !",
                     "holá...",
                     "ciao?",
-                ]
+                ],
             ),
         ],
         ["list_empty", [operator.add, []], list()],
@@ -583,7 +583,7 @@ def test_merge_err(prebuild_list, args, exception, message):
                     "ciao",
                     "annyeong",
                     "annyeong",
-                ]
+                ],
             ),
         ],
         ["list_empty", [10, 5], list([10, 10, 10, 10, 10])],
@@ -604,7 +604,7 @@ def test_merge_err(prebuild_list, args, exception, message):
                     "ciao",
                     "oaic",
                     "ciao",
-                ]
+                ],
             ),
         ],
         ["list_empty", [lambda lst: len(lst), 4], list([0, 1, 2, 3])],
