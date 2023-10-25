@@ -611,8 +611,8 @@ def test_merge_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_fill_ok(prebuild_list, args, result):
-    assert prebuild_list.fill(*args) == result
+def test_filled_ok(prebuild_list, args, result):
+    assert prebuild_list.filled(*args) == result
 
 
 @pytest.mark.parametrize(
@@ -627,9 +627,9 @@ def test_fill_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_fill_err(prebuild_list, args, exception, message):
+def test_filled_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.fill(*args)
+        prebuild_list.filled(*args)
 
 
 @pytest.mark.parametrize(
@@ -922,4 +922,4 @@ def test_fib():
     base = list([0, 1])
     result = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
-    assert base.fill(lambda lst: lst.take_right(2).reduce(operator.add), 9) == result
+    assert base.filled(lambda lst: lst.take_right(2).reduce(operator.add), 9) == result

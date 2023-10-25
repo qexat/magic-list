@@ -411,7 +411,7 @@ class list(_collections.UserList[_T]):
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
 
-    def fill(
+    def filled(
         self,
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,

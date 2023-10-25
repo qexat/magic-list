@@ -35,7 +35,7 @@ def fibonacci_sequence(n: int) -> list[int]:
     def next_member(current: list[int]) -> int:
         return current.take_right(2).reduce(operator.add)
 
-    return base.fill(next_member, n - 1)
+    return base.filled(next_member, n - 1)
 ```
 
 > [!IMPORTANT]\
