@@ -442,6 +442,28 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
+    def fill(
+        self,
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> None:
+        """
+        In-place equivalent of `filled`.
+
+        >>> lst = list([3, 5, 2])
+        >>> lst.fill(0, 5)
+        >>> print(lst)
+        [3, 5, 2, 0, 0, 0, 0, 0]
+        >>> lst.fill(0, -1)
+        *- ValueError: the number of times to fill cannot be negative -*
+        """
+
+        if n < 0:
+            raise ValueError("the number of times to fill cannot be negative")
+
+        for _ in range(n):
+            self.append(filler(self) if callable(filler) else filler)
+
     def gap_fill(
         self,
         filler: _T | _collections_abc.Callable[[_T, _T], _T],

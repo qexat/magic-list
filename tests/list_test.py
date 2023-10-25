@@ -635,6 +635,71 @@ def test_filled_err(prebuild_list, args, exception, message):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
+        ["list_int_filled", [0, 3], list([3, 5, 20, -1, 0, 0, 0])],
+        [
+            "list_str_filled",
+            ["annyeong", 2],
+            list(
+                [
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                    "annyeong",
+                    "annyeong",
+                ],
+            ),
+        ],
+        ["list_empty", [10, 5], list([10, 10, 10, 10, 10])],
+        ["list_empty", ["hi", 4], list(["hi", "hi", "hi", "hi"])],
+        [
+            "list_int_filled",
+            [sum, 3],
+            list([3, 5, 20, -1, 27, 54, 108]),
+        ],
+        [
+            "list_str_filled",
+            [lambda lst: lst[-1][::-1], 2],
+            list(
+                [
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                    "oaic",
+                    "ciao",
+                ],
+            ),
+        ],
+        ["list_empty", [lambda lst: len(lst), 4], list([0, 1, 2, 3])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_fill_ok(prebuild_list, args, result):
+    prebuild_list.fill(*args)
+    assert prebuild_list == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            [0, -2],
+            ValueError,
+            "the number of times to fill cannot be negative",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_fill_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.fill(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
         ["list_int_filled", [0], list([3, 0, 5, 0, 20, 0, -1])],
         [
             "list_str_filled",

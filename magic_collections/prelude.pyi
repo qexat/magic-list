@@ -91,6 +91,11 @@ class list(_collections.UserList[_T]):
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
     # *- expansion-based HOFs -* #
+    def fill(
+        self,
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> None: ...
     def filled(
         self,
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
