@@ -422,13 +422,13 @@ class list(_collections.UserList[_T]):
         If `filler` is a function, it takes the current list (at the current
         filling iteration) and produces a new value to be appended.
 
-        >>> list([3, 5, 2]).fill(0, 5)
+        >>> list([3, 5, 2]).filled(0, 5)
         [3, 5, 2, 0, 0, 0, 0, 0]
-        >>> list([3, 5, 2]).fill(sum, 3)
+        >>> list([3, 5, 2]).filled(sum, 3)
         [3, 5, 2, 10, 20, 40]
-        >>> list().fill(1, 10)
+        >>> list().filled(1, 10)
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        >>> list([3, 5, 2]).fill(0, -1)
+        >>> list([3, 5, 2]).filled(0, -1)
         *- ValueError: the number of times to fill cannot be negative -*
         """
 
