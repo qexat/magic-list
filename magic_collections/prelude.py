@@ -63,7 +63,7 @@ class list(_collections.UserList[_T]):
     @property
     def tail(self) -> _typing.Self:
         """
-        List without its head element (first item).
+        List without its first item.
 
         Raises an exception if the list is empty.
 
@@ -128,7 +128,7 @@ class list(_collections.UserList[_T]):
 
     def reversed(self) -> _typing.Self:
         """
-        Returns a reversed version of the list.
+        Return a reversed version of the list.
 
         >>> list([1, 2, 3]).reversed()
         [3, 2, 1]
@@ -145,7 +145,7 @@ class list(_collections.UserList[_T]):
         reverse: bool = False,
     ) -> _typing.Self:
         """
-        Returns a sorted version of the list.
+        Return a sorted version of the list.
 
         >>> list([3, 5, 2]).sorted()
         [2, 3, 5]
@@ -272,7 +272,7 @@ class list(_collections.UserList[_T]):
         "Insert" an operator (called a reducing function) between each element
         from right to left and return the result.
 
-        The last element of the list is used as the rightmost value ;
+        The last element of the list is used as the leftmost value ;
         therefore, if the list is empty, it will raise an exception.
 
         >>> list([3, 5, 2]).reduce_right(operator.add)  # 3 + (5 + 2)
@@ -317,7 +317,7 @@ class list(_collections.UserList[_T]):
         "Insert" an operator (called a reducing function) between each element
         from right to left and return the result.
 
-        The `initial_value` is used as the rightmost value, and is the
+        The `initial_value` is used as the leftmost value, and is the
         returned value if the list is empty.
 
         >>> list([3, 5, 2]).fold_right(operator.sub, -3)  # -3 - (3 - (5 - 2))
@@ -374,7 +374,7 @@ class list(_collections.UserList[_T]):
         from right to left and return the intermediate values followed by the
         result.
 
-        The `initial_value` is used as the rightmost value, and is the only
+        The `initial_value` is used as the leftmost value, and is the only
         value of the returned list if the original list is empty.
 
         >>> list([3, 5, 2]).scan_right(operator.add, 0)  # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
