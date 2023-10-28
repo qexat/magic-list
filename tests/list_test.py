@@ -965,19 +965,36 @@ if _features.OPTION:
     @pytest.mark.parametrize(
         ["prebuild_list", "args", "result"],
         [
-            ["list_int_filled", [[0, 1, 0, 1]], option.Ok(list([5, -1]))],
-            ["list_str_filled", [[1, 0, 0, 0]], option.Ok(list(["hello"]))],
-            ["list_empty", [[]], option.Ok(list())],
+            ["list_int_filled", [[0, 1, 0, 1]], option.Some(list([5, -1]))],
+            ["list_str_filled", [[1, 0, 0, 0]], option.Some(list(["hello"]))],
+            ["list_empty", [[]], option.Some(list())],
             [
                 "list_empty",
                 [[0, 1]],
-                option.Err("mask length must be the same as the list"),
+                option.NONE,
             ],
         ],
         indirect=["prebuild_list"],
     )
     def test_mask_pure_ok(prebuild_list, args, result):
         assert prebuild_list.mask_pure(*args) == result
+
+    @pytest.mark.parametrize(
+        ["prebuild_list", "args", "result"],
+        [
+            ["list_int_filled", [[1, 3]], option.Some(list([5, -1]))],
+            ["list_int_filled", [[]], option.Some(list())],
+            ["list_int_filled", [[2, 0, 0]], option.Some(list([20, 3, 3]))],
+            ["list_str_filled", [[1, 2]], option.Some(list(["bonjour", "holá"]))],
+            ["list_str_filled", [[-2]], option.Some(list(["holá"]))],
+            ["list_empty", [[]], option.Some(list())],
+            ["list_int_filled", [[4, 1]], option.NONE],
+            ["list_empty", [[0]], option.NONE],
+        ],
+        indirect=["prebuild_list"],
+    )
+    def test_select_pure_ok(prebuild_list, args, result):
+        assert prebuild_list.select_pure(*args) == result
 
 
 # *- "combined" tests -* #

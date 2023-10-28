@@ -14,7 +14,6 @@ Note on imports:
 """
 from __future__ import annotations
 
-import builtins as _builtins
 import collections as _collections
 import collections.abc as _collections_abc
 import functools as _functools
@@ -719,26 +718,53 @@ class list(_collections.UserList[_T]):
         def mask_pure(
             self,
             mask_seq: _collections_abc.Sequence[bool],
-        ) -> _option.Result[_typing.Self, _builtins.str]:
+        ) -> _option.Option[_typing.Self]:
             """
             Keep every element at index `i` of the list if the corresponding
             element at index `i` of the mask sequence is `True` ; else, discard
-            it. Returns a `Result` from the [`option`](https://pypi.org/project/option/) package.
+            it. Returns an `Option` from the `option` package.
 
             >>> list([3, 5, 2]).mask([True, False, True])
-            Ok([3, 2])
+            Some([3, 2])
             >>> list().mask([])
-            Ok([])
+            Some([])
             >>> list([3, 5, 2]).mask([True, False])
-            Err("mask length must be the same as the list")
+            NONE
             """
 
-            if len(self) != len(mask_seq):
-                return _option.Err("mask length must be the same as the list")
-
-            return _option.Ok(
-                self.__class__(item for item, bit in zip(self, mask_seq) if bit),
+            return _option.maybe(
+                self.__class__(item for item, bit in zip(self, mask_seq) if bit)
+                if len(self) == len(mask_seq)
+                else None,
             )
+
+        def select_pure(
+            self,
+            indexes: _collections_abc.Sequence[int],
+        ) -> _option.Option[_typing.Self]:
+            """
+            Select items at provided indexes. If an index is present several
+            times, this will be reflected in the resulting list. Returns an
+            `Option` from the `option` package.
+
+            >>> list([3, 5, 2]).select([1, 2, 0, 0])
+            Some([5, 2, 3, 3])
+            >>> list().select([])
+            Some([])
+            >>> list([3, 5, 2]).select([4, 1])
+            NONE
+            """
+
+            failed: bool = False
+            returned_list = self.__class__()
+
+            for index in indexes:
+                if index >= len(self) or index < -len(self):
+                    failed = True
+                else:
+                    returned_list.append(self[index])
+
+            return _option.maybe(None if failed else returned_list)
 
 
 class dict:
