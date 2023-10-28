@@ -550,9 +550,9 @@ class list(_collections.UserList[_T]):
         [5, 2]
         >>> list([3, 5, 2]).take_right(0)
         []
-        >>> list([3, 5, 2]).take(-1)
+        >>> list([3, 5, 2]).take_right(-1)
         *- ValueError: cannot take a negative amount of items -*
-        >>> list([3, 5, 2]).take(5)
+        >>> list([3, 5, 2]).take_right(5)
         *- ValueError: cannot take more items than the list contains -*
         """
 
