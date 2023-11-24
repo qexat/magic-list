@@ -50,6 +50,11 @@ class list(_collections.UserList[_T]):
     # the container generic -- this requires Higher-Kinded Types, which Python does
     # not support (yet? hopefully!)
     def map(self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]: ...
+    def map_two(
+        self,
+        function1: _collections_abc.Callable[[_T], _U],
+        function2: _collections_abc.Callable[[_U], _V],
+    ) -> list[_V]: ...
     def rotate(self, n: int = 1) -> _typing.Self: ...
     # *- filter-like HOFs -* #
     def filter(

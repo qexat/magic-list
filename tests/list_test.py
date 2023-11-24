@@ -231,6 +231,30 @@ def test_map_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
+        ["list_int_filled", [double, double], list([12, 20, 80, -4])],
+        [
+            "list_str_filled",
+            [double, double],
+            list(
+                [
+                    "hellohellohellohello",
+                    "bonjourbonjourbonjourbonjour",
+                    "holáholáholáholá",
+                    "ciaociaociaociao",
+                ],
+            ),
+        ],
+        ["list_empty", [double, double], list()],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_map_two_ok(prebuild_list, args, result):
+    assert prebuild_list.map_two(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
         ["list_int_filled", [], list([-1, 3, 5, 20])],
         ["list_int_filled", [2], list([20, -1, 3, 5])],
         [
