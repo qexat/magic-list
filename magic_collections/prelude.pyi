@@ -10,11 +10,6 @@ import _collections_abc
 import _typeshed
 import typing as _typing
 
-import magic_collections.features as _features
-
-if _features.OPTION:
-    import option as _option
-
 __all__ = [
     "list",
     "dict",
@@ -112,26 +107,6 @@ class list(_collections.UserList[_T]):
     def drop(self, n: int) -> _typing.Self: ...
     def drop_right(self, n: int) -> _typing.Self: ...
     def slice(self, start: int, stop: int, /) -> _typing.Self: ...
-
-    # *- additional features -* #
-
-    if _features.OPTION:
-        @property
-        def head_maybe(self) -> _option.Option[_T]: ...
-        @property
-        def tail_maybe(self) -> _option.Option[_typing.Self]: ...
-        @property
-        def init_maybe(self) -> _option.Option[_typing.Self]: ...
-        @property
-        def last_maybe(self) -> _option.Option[_T]: ...
-        def mask_pure(
-            self,
-            mask_seq: _collections_abc.Sequence[bool],
-        ) -> _option.Option[_typing.Self]: ...
-        def select_pure(
-            self,
-            indexes: _collections_abc.Sequence[int],
-        ) -> _option.Option[_typing.Self]: ...
 
 class dict(_collections.UserDict[_K, _T]):
     def __neg__(self) -> dict[_T, _K]: ...

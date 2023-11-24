@@ -3,11 +3,7 @@ import operator
 
 import pytest
 
-import magic_collections.features as _features
 from magic_collections import list
-
-if _features.OPTION:
-    import option
 
 
 """
@@ -152,63 +148,6 @@ def test_last_ok(prebuild_list, result):
 def test_last_err(prebuild_list, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.last
-
-
-if _features.OPTION:
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "result"],
-        [
-            ["list_int_filled", option.Some(3)],
-            ["list_str_filled", option.Some("hello")],
-            ["list_empty", option.NONE],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_head_maybe_ok(prebuild_list, result):
-        assert prebuild_list.head_maybe == result
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "result"],
-        [
-            ["list_int_filled", option.Some(list([5, 20, -1]))],
-            [
-                "list_str_filled",
-                option.Some(list(["bonjour", "holá", "ciao"])),
-            ],
-            ["list_empty", option.NONE],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_tail_maybe_ok(prebuild_list, result):
-        assert prebuild_list.tail_maybe == result
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "result"],
-        [
-            ["list_int_filled", option.Some(list([3, 5, 20]))],
-            [
-                "list_str_filled",
-                option.Some(list(["hello", "bonjour", "holá"])),
-            ],
-            ["list_empty", option.NONE],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_init_maybe_ok(prebuild_list, result):
-        assert prebuild_list.init_maybe == result
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "result"],
-        [
-            ["list_int_filled", option.Some(-1)],
-            ["list_str_filled", option.Some("ciao")],
-            ["list_empty", option.NONE],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_last_maybe_ok(prebuild_list, result):
-        assert prebuild_list.last_maybe == result
 
 
 # *- METHODS -* #
@@ -958,43 +897,6 @@ def test_slice_ok(prebuild_list, args, result):
 def test_slice_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.slice(*args)
-
-
-if _features.OPTION:
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "args", "result"],
-        [
-            ["list_int_filled", [[0, 1, 0, 1]], option.Some(list([5, -1]))],
-            ["list_str_filled", [[1, 0, 0, 0]], option.Some(list(["hello"]))],
-            ["list_empty", [[]], option.Some(list())],
-            [
-                "list_empty",
-                [[0, 1]],
-                option.NONE,
-            ],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_mask_pure_ok(prebuild_list, args, result):
-        assert prebuild_list.mask_pure(*args) == result
-
-    @pytest.mark.parametrize(
-        ["prebuild_list", "args", "result"],
-        [
-            ["list_int_filled", [[1, 3]], option.Some(list([5, -1]))],
-            ["list_int_filled", [[]], option.Some(list())],
-            ["list_int_filled", [[2, 0, 0]], option.Some(list([20, 3, 3]))],
-            ["list_str_filled", [[1, 2]], option.Some(list(["bonjour", "holá"]))],
-            ["list_str_filled", [[-2]], option.Some(list(["holá"]))],
-            ["list_empty", [[]], option.Some(list())],
-            ["list_int_filled", [[4, 1]], option.NONE],
-            ["list_empty", [[0]], option.NONE],
-        ],
-        indirect=["prebuild_list"],
-    )
-    def test_select_pure_ok(prebuild_list, args, result):
-        assert prebuild_list.select_pure(*args) == result
 
 
 # *- "combined" tests -* #
