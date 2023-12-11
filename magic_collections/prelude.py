@@ -17,6 +17,8 @@ from __future__ import annotations
 import collections as _collections
 import collections.abc as _collections_abc
 import functools as _functools
+import operator as _operator
+import random as _random
 import typing as _typing
 
 
@@ -33,6 +35,7 @@ _K = _typing.TypeVar("_K")
 _T = _typing.TypeVar("_T")
 _U = _typing.TypeVar("_U")
 _V = _typing.TypeVar("_V")
+_NumberT = _typing.TypeVar("_NumberT", int, float, complex)
 
 
 class list(_collections.UserList[_T]):
@@ -148,6 +151,28 @@ class list(_collections.UserList[_T]):
         """
 
         return self.__class__(sorted(self, key=key, reverse=reverse))  # type: ignore
+
+    def shuffled(self) -> _typing.Self:
+        """
+        Return a shuffled version of the list.
+
+        >>> list([3, 5, 2]).shuffled()
+        [5, 2, 3]
+        >>> list([3, 5, 2]).shuffled()
+        [2, 5, 3]
+        >>> list().shuffled()
+        []
+        """
+
+        result = self.__class__()
+
+        while len(result) != len(self):
+            item = _random.choice(self)
+
+            if item not in result:
+                result.append(item)
+
+        return result
 
     def map(self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]:
         """
@@ -420,6 +445,46 @@ class list(_collections.UserList[_T]):
             list[_V],
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
+
+    def sum(self) -> _T:
+        """
+        Return the sum of the list. The elements must support addition,
+        otherwise an exception is raised.
+
+        >>> list([3, 5, 2]).sum()
+        10
+        >>> list(["hello", "world"]).sum()
+        "helloworld"
+        >>> list().sum()
+        *- TypeError: cannot perform summation on an empty list -*
+        """
+
+        if not self:
+            raise TypeError("cannot perform summation on an empty list")
+
+        return self.reduce(_operator.add)
+
+    def mean(self: list[_NumberT]) -> _NumberT | float:
+        """
+        Return the mean of the list. The elements must be numbers.
+
+        >>> list([3, 5, 2]).mean()
+        3.3333333333333335
+        >>> list(["hello", "world"]).mean()
+        *- TypeError: cannot calculate mean of list of str -*
+        >>> list().mean()
+        *- TypeError: cannot calculate mean of empty list -*
+        """
+
+        if not self:
+            raise TypeError("cannot calculate mean of empty list")
+
+        if not hasattr(self[0], "__truediv__"):
+            raise TypeError(
+                f"cannot calculate mean of list of {self[0].__class__.__name__}",
+            )
+
+        return sum(self) / len(self)
 
     def filled(
         self,

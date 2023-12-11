@@ -20,6 +20,12 @@ _K = _typing.TypeVar("_K")
 _T = _typing.TypeVar("_T")
 _U = _typing.TypeVar("_U")
 _V = _typing.TypeVar("_V")
+_T_co = _typing.TypeVar("_T_co", covariant=True)
+_T_contra = _typing.TypeVar("_T_contra", contravariant=True)
+_NumberT = _typing.TypeVar("_NumberT", int, float, complex)
+
+class _SupportsAdd(_typing.Protocol[_T]):
+    def __add__(self: _T, other: _T, /) -> _T: ...
 
 class list(_collections.UserList[_T]):
     @property
@@ -46,6 +52,7 @@ class list(_collections.UserList[_T]):
         key: _collections_abc.Callable[[_T], _typeshed.SupportsRichComparison],
         reverse: bool = False,
     ) -> _typing.Self: ...
+    def shuffled(self) -> _typing.Self: ...
     # subclasses' `map` return type is also marked as `list` because we cannot make
     # the container generic -- this requires Higher-Kinded Types, which Python does
     # not support (yet? hopefully!)
@@ -90,6 +97,13 @@ class list(_collections.UserList[_T]):
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
+    def sum(self) -> _T: ...
+    @_typing.overload
+    def mean(self: list[int]) -> float: ...
+    @_typing.overload
+    def mean(self: list[float]) -> float: ...
+    @_typing.overload
+    def mean(self: list[complex]) -> complex: ...
     # *- expansion-based HOFs -* #
     def fill(
         self,
@@ -117,7 +131,7 @@ class dict(_collections.UserDict[_K, _T]):
     def __neg__(self) -> dict[_T, _K]: ...
     @_typing.overload
     def sorted(
-        self: list[_typeshed.SupportsRichComparisonT],
+        self: dict[_K, _typeshed.SupportsRichComparisonT],
         *,
         key: None = None,
         reverse: bool = False,
@@ -150,10 +164,6 @@ class str(_collections.UserString):
         function: _collections_abc.Callable[[_typing.Self], _typing.Self],
     ) -> _typing.Self: ...
     @_typing.overload
-    def map(
-        self,
-        function: _collections_abc.Callable[[_typing.Self], _T],
-    ) -> _collections_abc.Sequence[_T]: ...
     def map(
         self,
         function: _collections_abc.Callable[[_typing.Self], _T],

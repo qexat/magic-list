@@ -1,5 +1,6 @@
 # type: ignore
 import operator
+import random
 
 import pytest
 
@@ -13,6 +14,9 @@ from magic_collections import list
 Note that some functions never throw an exception, which means that they don't have a
 `test_*_err` variant.
 """
+
+
+_RANDOM_SEED = 0
 
 
 @pytest.fixture
@@ -209,6 +213,20 @@ def test_reversed_ok(prebuild_list, result):
 )
 def test_sorted_ok(prebuild_list, kwargs, result):
     assert prebuild_list.sorted(**kwargs) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [], list([-1, 3, 20, 5])],
+        ["list_str_filled", [], list(["ciao", "hello", "holá", "bonjour"])],
+        ["list_empty", [], list([])],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_shuffled_ok(prebuild_list, args, result):
+    random.seed(_RANDOM_SEED)
+    assert prebuild_list.shuffled(*args) == result
 
 
 @pytest.mark.parametrize(
@@ -529,6 +547,54 @@ def test_merge_ok(prebuild_list, args, result):
 def test_merge_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.merge(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [], 27],
+        ["list_str_filled", [], "hellobonjourholáciao"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_sum_ok(prebuild_list, args, result):
+    assert prebuild_list.sum(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_empty", [], TypeError, "cannot perform summation on an empty list"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_sum_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.sum(*args)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [], 6.75],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_mean_ok(prebuild_list, args, result):
+    assert prebuild_list.mean(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_str_filled", [], TypeError, "cannot calculate mean of list of str"],
+        ["list_empty", [], TypeError, "cannot calculate mean of empty list"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_mean_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.mean(*args)
 
 
 @pytest.mark.parametrize(
