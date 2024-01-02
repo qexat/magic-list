@@ -40,6 +40,11 @@ _NumberT = _typing.TypeVar("_NumberT", int, float, complex)
 
 
 class list(_collections.UserList[_T]):
+    """
+    Mutable heterogeneous sequence.
+    Drop-in replacement for the built-in `list` type.
+    """
+
     @property
     def head(self) -> _T:
         """
