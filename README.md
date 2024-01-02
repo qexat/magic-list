@@ -28,7 +28,7 @@ from magic_collections import *
 
 def fibonacci_sequence(n: int) -> list[int]:
     # let's start by creating a list with the first two members, 0 and 1.
-    base = list([0, 1])
+    base = L[0, 1]
 
     # we define a function that we will use to generate the next members of
     # the sequence
@@ -37,6 +37,9 @@ def fibonacci_sequence(n: int) -> list[int]:
 
     return base.filled(next_member, n - 1)
 ```
+
+> [!NOTE]\
+> The `L[0, 1]` notation is a way to construct magic lists nicely.
 
 > [!IMPORTANT]\
 > `list` is from `magic_collections` as a drop-in replacement of the built-in!
