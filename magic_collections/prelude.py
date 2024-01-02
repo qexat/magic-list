@@ -719,11 +719,11 @@ class list(_collections.UserList[_T]):
         return self.__class__(self[start : stop + 1])
 
 
-class dict:
+class dict(_collections.UserDict[_K, _V]):
     ...
 
 
-class str:
+class str(_collections.UserString):
     ...
 
 
