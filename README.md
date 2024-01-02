@@ -24,7 +24,7 @@ For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21
 ```py
 import operator
 
-from magic_collections import *
+from magic_collections import L, list
 
 def fibonacci_sequence(n: int) -> list[int]:
     # let's start by creating a list with the first two members, 0 and 1.
