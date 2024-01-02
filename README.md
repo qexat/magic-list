@@ -24,25 +24,25 @@ For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21
 ```py
 import operator
 
-from magic_collections import L, list
+from magic_collections import Vec, vec
 
-def fibonacci_sequence(n: int) -> list[int]:
+def fibonacci_sequence(n: int) -> Vec[int]:
     # let's start by creating a list with the first two members, 0 and 1.
-    base = L[0, 1]
+    base = vec[0, 1]
 
     # we define a function that we will use to generate the next members of
     # the sequence
-    def next_member(current: list[int]) -> int:
-        return current.take_right(2).reduce(operator.add)
+    def next_member(current: Vec[int]) -> int:
+        return current.take_right(2).sum()
 
     return base.filled(next_member, n - 1)
 ```
 
 > [!NOTE]\
-> The `L[0, 1]` notation is a way to construct magic lists nicely.
+> The `vec[0, 1]` notation is a way to construct magic lists nicely.
 
 > [!IMPORTANT]\
-> `list` is from `magic_collections` as a drop-in replacement of the built-in!
+> `Vec` is from `magic_collections` as a drop-in replacement of the built-in `list`!
 
 ### Fibonacci n-th member
 
