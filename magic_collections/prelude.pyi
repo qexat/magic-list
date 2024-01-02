@@ -14,6 +14,7 @@ __all__ = [
     "list",
     "dict",
     "str",
+    "L",
 ]
 
 _K = _typing.TypeVar("_K")
@@ -206,3 +207,13 @@ class str(_collections.UserString):
         fill: _typing.Self
         | _collections_abc.Callable[[_typing.Self, _typing.Self], _typing.Self],
     ) -> _typing.Self: ...
+
+@_typing.final
+class _ListBuilder:
+    @_typing.overload
+    def __getitem__(self, key: slice, /) -> list[int]: ...
+    @_typing.overload
+    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T]: ...
+
+_ListLiteral = _typing.NewType("L", _ListBuilder)
+L = _ListLiteral(_ListBuilder())

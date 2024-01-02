@@ -29,6 +29,7 @@ __all__ = [
     "list",
     "dict",
     "str",
+    "L",
 ]
 
 _K = _typing.TypeVar("_K")
@@ -724,3 +725,27 @@ class dict:
 
 class str:
     ...
+
+
+class _ListBuilder:
+    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T] | list[int]:
+        if isinstance(key, slice):
+            if _is_range_slice(key):
+                return list(range(key.start or 0, key.stop, key.step or 1))
+
+        return list(_typing.cast(tuple[_T], key if isinstance(key, tuple) else (key,)))
+
+
+def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
+    return (
+        isinstance(value, slice)
+        and isinstance(value.stop, int)
+        and all(isinstance(v, int | None) for v in (value.start, value.step))
+    )
+
+
+_ListLiteral = _typing.NewType("L", _ListBuilder)
+L = _ListLiteral(_ListBuilder())
+"""
+Literal-like for magic lists.
+"""
