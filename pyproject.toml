@@ -6,7 +6,7 @@ keywords = ["collections", "list", "dict", "set", "built-in"]
 
 authors = [{ name = "Qexat", email = "contact@qexat.com" }]
 
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 
 readme = "README.md"
 license = { file = "LICENSE" }
