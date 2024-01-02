@@ -73,7 +73,7 @@ class list(_collections.UserList[_T]):
         if not self:
             raise TypeError("empty list has no tail")
 
-        return self[1:]
+        return self.__class__(self[1:])
 
     @property
     def init(self) -> _typing.Self:
@@ -91,7 +91,7 @@ class list(_collections.UserList[_T]):
         if not self:
             raise TypeError("empty list has no init")
 
-        return self[:-1]
+        return self.__class__(self[:-1])
 
     @property
     def last(self) -> _T:
@@ -659,7 +659,7 @@ class list(_collections.UserList[_T]):
         if n > len(self):
             raise ValueError("cannot drop more items than the list contains")
 
-        return self[n:]
+        return self.__class__(self[n:])
 
     def drop_right(self, n: int) -> _typing.Self:
         """
@@ -681,7 +681,7 @@ class list(_collections.UserList[_T]):
         if n > len(self):
             raise ValueError("cannot drop more items than the list contains")
 
-        return self[: len(self) - n]
+        return self.__class__(self[: len(self) - n])
 
     def slice(self, start: int, stop: int) -> _typing.Self:
         """
@@ -715,7 +715,7 @@ class list(_collections.UserList[_T]):
         if start < 0 or stop >= len(self):
             raise ValueError("slice out of bounds")
 
-        return self[start : stop + 1]
+        return self.__class__(self[start : stop + 1])
 
 
 class dict:
