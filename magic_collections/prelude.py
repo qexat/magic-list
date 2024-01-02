@@ -202,7 +202,7 @@ class list(_collections.UserList[_T]):
 
         >>> list([3, 5, 2]).map_two(str, ord)
         [51, 53, 50]
-        >>> list().map(str)
+        >>> list().map_two(str, ord)
         []
         """
 
