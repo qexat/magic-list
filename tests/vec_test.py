@@ -976,6 +976,39 @@ def test_slice_err(prebuild_vec, args, exception, message):
         prebuild_vec.slice(*args)
 
 
+@pytest.mark.parametrize(
+    ["prebuild_vec", "args", "result"],
+    [
+        ["vec_int_filled", [2], (Vec([3, 5]), Vec([20, -1]))],
+        ["vec_int_filled", [0], (Vec(), Vec([3, 5, 20, -1]))],
+        ["vec_int_filled", [4], (Vec([3, 5, 20, -1]), Vec())],
+        ["vec_str_filled", [2], (Vec(["hello", "bonjour"]), Vec(["holá", "ciao"]))],
+        ["vec_str_filled", [6], (Vec(["hello", "bonjour", "holá", "ciao"]), Vec())],
+    ],
+    indirect=["prebuild_vec"],
+)
+def test_cut_ok(prebuild_vec, args, result):
+    assert prebuild_vec.cut(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_vec", "args", "exception", "message"],
+    [
+        [
+            "vec_str_filled",
+            [-2],
+            ValueError,
+            "cannot cut after a negative amount of elements",
+        ],
+        ["vec_empty", [2], TypeError, "cannot cut an empty vector"],
+    ],
+    indirect=["prebuild_vec"],
+)
+def test_cut_err(prebuild_vec, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_vec.cut(*args)
+
+
 # *- "combined" tests -* #
 
 

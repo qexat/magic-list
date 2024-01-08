@@ -707,6 +707,33 @@ class Vec(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
+    def cut(self, n: int) -> tuple[_typing.Self, _typing.Self]:
+        """
+        Cut the vector after `n` elements and return a pair of the produced
+        vectors.
+
+        >>> vec[2, 4, 8, 16, 32].cut(2)
+        ([2, 4], [8, 16, 32])
+        >>> vec[2, 4, 8, 16, 32].cut(0)
+        ([], [2, 4, 8, 16, 32])
+        >>> vec[2, 4, 8, 16, 32].cut(8)
+        ([2, 4, 8, 16, 32], [])
+        >>> vec[2, 4, 8, 16, 32].cut(-3)
+        *- ValueError: cannot cut after a negative amount of elements -*
+        >>> Vec().cut(2)
+        *- TypeError: cannot cut an empty vector -*
+        """
+
+        if not self:
+            raise TypeError("cannot cut an empty vector")
+
+        if n < 0:
+            raise ValueError("cannot cut after a negative amount of elements")
+
+        _n = min(n, len(self))
+
+        return self.take(_n), self.drop(_n)
+
 
 class dict(_collections.UserDict[_K, _V]):
     ...
