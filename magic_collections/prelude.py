@@ -26,10 +26,10 @@ if _typing.TYPE_CHECKING:  # pragma: no cover
     import _typeshed
 
 __all__ = [
-    "Vec",
+    "list",
     "dict",
     "str",
-    "vec",
+    "L",
 ]
 
 _K = _typing.TypeVar("_K")
@@ -39,7 +39,7 @@ _V = _typing.TypeVar("_V")
 _NumberT = _typing.TypeVar("_NumberT", int, float, complex)
 
 
-class Vec(_collections.UserList[_T]):
+class list(_collections.UserList[_T]):
     """
     Mutable heterogeneous sequence.
     Drop-in replacement for the built-in `list` type.
@@ -48,80 +48,80 @@ class Vec(_collections.UserList[_T]):
     @property
     def head(self) -> _T:
         """
-        First item of the vector.
+        First item of the list.
 
-        Raises an exception if the vector is empty.
+        Raises an exception if the list is empty.
 
-        >>> vec[3, 5, 2].head
+        >>> L[3, 5, 2].head
         3
-        >>> Vec().head
-        *- TypeError: empty vector has no head -*
+        >>> list().head
+        *- TypeError: empty list has no head -*
         """
 
         if not self:
-            raise TypeError("empty vector has no head")
+            raise TypeError("empty list has no head")
 
         return self[0]
 
     @property
     def tail(self) -> _typing.Self:
         """
-        Vector without its first item.
+        List without its first item.
 
-        Raises an exception if the vector is empty.
+        Raises an exception if the list is empty.
 
-        >>> vec[3, 5, 2].tail
+        >>> L[3, 5, 2].tail
         [5, 2]
-        >>> Vec().tail
-        *- TypeError: empty vector has no tail -*
+        >>> list().tail
+        *- TypeError: empty list has no tail -*
         """
 
         if not self:
-            raise TypeError("empty vector has no tail")
+            raise TypeError("empty list has no tail")
 
         return self.__class__(self[1:])
 
     @property
     def init(self) -> _typing.Self:
         """
-        Vector without its last item.
+        List without its last item.
 
-        Raises an exception if the vector is empty.
+        Raises an exception if the list is empty.
 
-        >>> vec[3, 5, 2].init
+        >>> L[3, 5, 2].init
         [3, 5]
-        >>> Vec().init
-        *- TypeError: empty vector has no init -*
+        >>> list().init
+        *- TypeError: empty list has no init -*
         """
 
         if not self:
-            raise TypeError("empty vector has no init")
+            raise TypeError("empty list has no init")
 
         return self.__class__(self[:-1])
 
     @property
     def last(self) -> _T:
         """
-        Last item of the vector.
+        Last item of the list.
 
-        Raises an exception if the vector is empty.
+        Raises an exception if the list is empty.
 
-        >>> vec[3, 5, 2].last
+        >>> L[3, 5, 2].last
         2
-        >>> Vec().last
-        *- TypeError: empty vector has no last -*
+        >>> list().last
+        *- TypeError: empty list has no last -*
         """
 
         if not self:
-            raise TypeError("empty vector has no last")
+            raise TypeError("empty list has no last")
 
         return self[-1]
 
     def prepend(self, item: _T) -> None:
         """
-        Add an item at the beginning of the vector.
+        Add an item at the beginning of the list.
 
-        >>> l = vec[3, 5, 2]
+        >>> l = L[3, 5, 2]
         >>> l.prepend(-2)
         >>> print(l)
         [-2, 3, 5, 2]
@@ -131,9 +131,9 @@ class Vec(_collections.UserList[_T]):
 
     def reversed(self) -> _typing.Self:
         """
-        Return a reversed version of the vector.
+        Return a reversed version of the list.
 
-        >>> vec[1, 2, 3].reversed()
+        >>> L[1, 2, 3].reversed()
         [3, 2, 1]
         """
 
@@ -148,11 +148,11 @@ class Vec(_collections.UserList[_T]):
         reverse: bool = False,
     ) -> _typing.Self:
         """
-        Return a sorted version of the vector.
+        Return a sorted version of the list.
 
-        >>> vec[3, 5, 2].sorted()
+        >>> L[3, 5, 2].sorted()
         [2, 3, 5]
-        >>> Vec("gala").sorted(key=ord)
+        >>> list("gala").sorted(key=ord)
         ["a", "a", "g", "l"]
         """
 
@@ -160,13 +160,13 @@ class Vec(_collections.UserList[_T]):
 
     def shuffled(self) -> _typing.Self:
         """
-        Return a shuffled version of the vector.
+        Return a shuffled version of the list.
 
-        >>> vec[3, 5, 2].shuffled()
+        >>> L[3, 5, 2].shuffled()
         [5, 2, 3]
-        >>> vec[3, 5, 2].shuffled()
+        >>> L[3, 5, 2].shuffled()
         [2, 5, 3]
-        >>> Vec().shuffled()
+        >>> list().shuffled()
         []
         """
 
@@ -180,72 +180,72 @@ class Vec(_collections.UserList[_T]):
 
         return result
 
-    def map(self, function: _collections_abc.Callable[[_T], _U]) -> Vec[_U]:
+    def map(self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]:
         """
-        Apply `function` on each item of the vector.
+        Apply `function` on each item of the list.
 
-        >>> vec[3, 5, 2].map(str)
+        >>> L[3, 5, 2].map(str)
         ["3", "5", "2"]
-        >>> vec[3, 5, 2].map(lambda n: n * 2)
+        >>> L[3, 5, 2].map(lambda n: n * 2)
         [6, 10, 4]
-        >>> Vec().map(lambda n: n * 20)
+        >>> list().map(lambda n: n * 20)
         []
         """
 
-        # subclasses' `map` return type is also marked as `vec` because we
+        # subclasses' `map` return type is also marked as `list` because we
         # cannot make the container generic -- this requires Higher-Kinded
         # Types, which Python does not support (yet? hopefully!)
 
-        return _typing.cast(Vec[_U], self.__class__(map(function, self)))
+        return _typing.cast(list[_U], self.__class__(map(function, self)))
 
     def rotate(self, n: int = 1) -> _typing.Self:
         """
-        Shift the vector `n` times to the right. The items that overflow get prepended.
+        Shift the list `n` times to the right. The items that overflow get prepended.
 
         If `n` is negative, the shift goes to the left.
 
-        >>> vec[3, 5, 2].rotate()
+        >>> L[3, 5, 2].rotate()
         [2, 3, 5]
-        >>> vec[3, 5, 2].rotate(2)
+        >>> L[3, 5, 2].rotate(2)
         [5, 2, 3]
-        >>> vec[3, 5, 2].rotate(-1)
+        >>> L[3, 5, 2].rotate(-1)
         [5, 2, 3]
-        >>> Vec().rotate()
-        *- TypeError: empty vector cannot be rotated -*
+        >>> list().rotate()
+        *- TypeError: empty list cannot be rotated -*
         """
 
         if not self:
-            raise TypeError("empty vector cannot be rotated")
+            raise TypeError("empty list cannot be rotated")
 
         if n == 0:
             return self
 
-        returned_vec = self.copy()
+        returned_list = self.copy()
 
         if n > 0:
-            xpend_method = returned_vec.prepend
+            xpend_method = returned_list.prepend
             popped_index = -1
         else:
-            xpend_method = returned_vec.append
+            xpend_method = returned_list.append
             popped_index = 0
 
         for _ in range(abs(n)):
-            xpend_method(returned_vec.pop(popped_index))
+            xpend_method(returned_list.pop(popped_index))
 
-        return returned_vec
+        return returned_list
 
     def filter(
         self,
         function: _collections_abc.Callable[[_T], bool],
     ) -> _typing.Self:
         """
-        Discard each item `i` of the vector if `function(i)` is `False`.
+        Discard each item `i` of the list if `function(i)` is `False`.
 
-        >>> vec[3, 5, 2].filter(lambda n: n % 2 == 1)
+        >>> L[3, 5, 2].filter(lambda n: n % 2 == 1)
         [3, 5]
-        >>> vec["hello", "hola", "bonjour"].filter(lambda s: "l" in s)
+        >>> L["hello", "hola", "bonjour"].filter(lambda s: "l" in s)
         ["hello", "hola"]
-        >>> Vec().filter(lambda n: n > 0)
+        >>> list().filter(lambda n: n > 0)
         []
         """
 
@@ -253,20 +253,20 @@ class Vec(_collections.UserList[_T]):
 
     def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
         """
-        Keep every element at index `i` of the vector if the corresponding
+        Keep every element at index `i` of the list if the corresponding
         element at index `i` of the mask sequence is `True` ; else, discard
-        it. Return the filtered vector.
+        it. Return the filtered list.
 
-        >>> vec[3, 5, 2].mask([True, False, True])
+        >>> L[3, 5, 2].mask([True, False, True])
         [3, 2]
-        >>> Vec().mask([])
+        >>> list().mask([])
         []
-        >>> vec[3, 5, 2].mask([True, False])
-        *- TypeError: mask length must be the same as the vector -*
+        >>> L[3, 5, 2].mask([True, False])
+        *- TypeError: mask length must be the same as the list -*
         """
 
         if len(self) != len(mask_seq):
-            raise TypeError("mask length must be the same as the vector")
+            raise TypeError("mask length must be the same as the list")
 
         return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
 
@@ -275,17 +275,17 @@ class Vec(_collections.UserList[_T]):
         "Insert" an operator (called a reducing function) between each element
         from left to right and return the result.
 
-        The first element of the vector is used as the leftmost value ;
-        therefore, if the vector is empty, it will raise an exception.
+        The first element of the list is used as the leftmost value ;
+        therefore, if the list is empty, it will raise an exception.
 
-        >>> vec[3, 5, 2].reduce(operator.add)  # (3 + 5) + 2
+        >>> L[3, 5, 2].reduce(operator.add)  # (3 + 5) + 2
         10
-        >>> Vec().reduce(operator.mul)
-        *- TypeError: the vector to reduce cannot be empty -*
+        >>> list().reduce(operator.mul)
+        *- TypeError: the list to reduce cannot be empty -*
         """
 
         if not self:
-            raise TypeError("the vector to reduce cannot be empty")
+            raise TypeError("the list to reduce cannot be empty")
 
         return _functools.reduce(function, self)
 
@@ -297,19 +297,19 @@ class Vec(_collections.UserList[_T]):
         "Insert" an operator (called a reducing function) between each element
         from right to left and return the result.
 
-        The last element of the vector is used as the leftmost value ;
-        therefore, if the vector is empty, it will raise an exception.
+        The last element of the list is used as the leftmost value ;
+        therefore, if the list is empty, it will raise an exception.
 
-        >>> vec[3, 5, 2].reduce_right(operator.add)  # 3 + (5 + 2)
+        >>> L[3, 5, 2].reduce_right(operator.add)  # 3 + (5 + 2)
         10
-        >>> vec[3, 5, 2].reduce_right(operator.sub)  # 3 - (5 - 2)
+        >>> L[3, 5, 2].reduce_right(operator.sub)  # 3 - (5 - 2)
         0
-        >>> Vec().reduce_right(operator.add)
-        *- TypeError: the vector to reduce cannot be empty -*
+        >>> list().reduce_right(operator.add)
+        *- TypeError: the list to reduce cannot be empty -*
         """
 
         if not self:
-            raise TypeError("the vector to reduce cannot be empty")
+            raise TypeError("the list to reduce cannot be empty")
 
         return _functools.reduce(lambda a, b: function(b, a), self.reversed())
 
@@ -323,11 +323,11 @@ class Vec(_collections.UserList[_T]):
         from left to right and return the result.
 
         The `initial_value` is used as the leftmost value, and is the returned
-        value if the vector is empty.
+        value if the list is empty.
 
-        >>> vec[3, 5, 2].fold(operator.add, -3)  # ((-3 + 3) + 5) + 2
+        >>> L[3, 5, 2].fold(operator.add, -3)  # ((-3 + 3) + 5) + 2
         7
-        >>> Vec().fold(operator.mul, 0)
+        >>> list().fold(operator.mul, 0)
         0
         """
 
@@ -343,11 +343,11 @@ class Vec(_collections.UserList[_T]):
         from right to left and return the result.
 
         The `initial_value` is used as the leftmost value, and is the
-        returned value if the vector is empty.
+        returned value if the list is empty.
 
-        >>> vec[3, 5, 2].fold_right(operator.sub, -3)  # -3 - (3 - (5 - 2))
+        >>> L[3, 5, 2].fold_right(operator.sub, -3)  # -3 - (3 - (5 - 2))
         0
-        >>> Vec().fold_right(operator.mul, 0)
+        >>> list().fold_right(operator.mul, 0)
         0
         """
 
@@ -368,11 +368,11 @@ class Vec(_collections.UserList[_T]):
         result.
 
         The `initial_value` is used as the leftmost value, and is the only
-        value of the returned vector if the original vector is empty.
+        value of the returned list if the original list is empty.
 
-        >>> vec[3, 5, 2].scan(operator.add, 0)  # [0, (0 + 3), (0 + 3 + 5), (0 + 3 + 5 + 2)]
+        >>> L[3, 5, 2].scan(operator.add, 0)  # [0, (0 + 3), (0 + 3 + 5), (0 + 3 + 5 + 2)]
         [0, 3, 8, 10]
-        >>> Vec().scan(operator.add, 0)
+        >>> list().scan(operator.add, 0)
         [0]
         """
 
@@ -400,11 +400,11 @@ class Vec(_collections.UserList[_T]):
         result.
 
         The `initial_value` is used as the leftmost value, and is the only
-        value of the returned vector if the original vector is empty.
+        value of the returned list if the original list is empty.
 
-        >>> vec[3, 5, 2].scan_right(operator.add, 0)  # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
+        >>> L[3, 5, 2].scan_right(operator.add, 0)  # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
         [0, 2, 7, 10]
-        >>> Vec().scan_right(operator.add, 0)
+        >>> list().scan_right(operator.add, 0)
         [0]
         """
 
@@ -414,17 +414,17 @@ class Vec(_collections.UserList[_T]):
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
-    ) -> Vec[_V]:
+    ) -> list[_V]:
         """
-        Build a new vector from the result of each `function(s_i, o_i)` where
+        Build a new list from the result of each `function(s_i, o_i)` where
         `s_i` and `o_i` are the items at index `i` of `self` and `other`
         respectively.
 
-        >>> vec[3, 5, 2].merge(operator.add, [-1, 4, -9])
+        >>> L[3, 5, 2].merge(operator.add, [-1, 4, -9])
         [2, 9, -7]
-        >>> Vec().merge(operator.sub, [])
+        >>> list().merge(operator.sub, [])
         []
-        >>> vec[3, 5, 2].merge(operator.add, [6])
+        >>> L[3, 5, 2].merge(operator.add, [6])
         *- TypeError: the length of the two sequences must be equal -*
         """
 
@@ -432,90 +432,90 @@ class Vec(_collections.UserList[_T]):
             raise TypeError("the length of the two sequences must be equal")
 
         return _typing.cast(
-            Vec[_V],
+            list[_V],
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
 
     def sum(self) -> _T:
         """
-        Return the sum of the vector. The elements must support addition,
+        Return the sum of the list. The elements must support addition,
         otherwise an exception is raised.
 
-        >>> vec[3, 5, 2].sum()
+        >>> L[3, 5, 2].sum()
         10
-        >>> vec["hello", "world"].sum()
+        >>> L["hello", "world"].sum()
         "helloworld"
-        >>> Vec().sum()
-        *- TypeError: cannot perform summation on an empty vector -*
+        >>> list().sum()
+        *- TypeError: cannot perform summation on an empty list -*
         """
 
         if not self:
-            raise TypeError("cannot perform summation on an empty vector")
+            raise TypeError("cannot perform summation on an empty list")
 
         return self.reduce(_operator.add)
 
-    def mean(self: Vec[_NumberT]) -> _NumberT | float:
+    def mean(self: list[_NumberT]) -> _NumberT | float:
         """
-        Return the mean of the vector. The elements must be numbers.
+        Return the mean of the list. The elements must be numbers.
 
-        >>> vec[3, 5, 2].mean()
+        >>> L[3, 5, 2].mean()
         3.3333333333333335
-        >>> vec["hello", "world"].mean()
-        *- TypeError: cannot calculate mean of vector of str -*
-        >>> Vec().mean()
-        *- TypeError: cannot calculate mean of empty vector -*
+        >>> L["hello", "world"].mean()
+        *- TypeError: cannot calculate mean of list of str -*
+        >>> list().mean()
+        *- TypeError: cannot calculate mean of empty list -*
         """
 
         if not self:
-            raise TypeError("cannot calculate mean of empty vector")
+            raise TypeError("cannot calculate mean of empty list")
 
         if not hasattr(self[0], "__truediv__"):
             raise TypeError(
-                f"cannot calculate mean of vector of {self[0].__class__.__name__}",
+                f"cannot calculate mean of list of {self[0].__class__.__name__}",
             )
 
         return sum(self) / len(self)
 
     def filled(
         self,
-        filler: _T | _collections_abc.Callable[[Vec[_T]], _T],
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> _typing.Self:
         """
-        Fill on the right the vector with `filler` and return the result.
+        Fill on the right the list with `filler` and return the result.
 
-        If `filler` is a function, it takes the current vector (at the current
+        If `filler` is a function, it takes the current list (at the current
         filling iteration) and produces a new value to be appended.
 
-        >>> vec[3, 5, 2].filled(0, 5)
+        >>> L[3, 5, 2].filled(0, 5)
         [3, 5, 2, 0, 0, 0, 0, 0]
-        >>> vec[3, 5, 2].filled(sum, 3)
+        >>> L[3, 5, 2].filled(sum, 3)
         [3, 5, 2, 10, 20, 40]
-        >>> Vec().filled(1, 10)
+        >>> list().filled(1, 10)
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        >>> Vec([3, 5, 2]).filled(0, -1)
+        >>> L[3, 5, 2].filled(0, -1)
         *- ValueError: the number of times to fill cannot be negative -*
         """
 
         if n < 0:
             raise ValueError("the number of times to fill cannot be negative")
 
-        returned_vec = self.copy()
+        returned_list = self.copy()
 
         for _ in range(n):
-            returned_vec.append(filler(returned_vec) if callable(filler) else filler)
+            returned_list.append(filler(returned_list) if callable(filler) else filler)
 
-        return returned_vec
+        return returned_list
 
     def fill(
         self,
-        filler: _T | _collections_abc.Callable[[Vec[_T]], _T],
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> None:
         """
         In-place equivalent of `filled`.
 
-        >>> lst = vec[3, 5, 2]
+        >>> lst = L[3, 5, 2]
         >>> lst.fill(0, 5)
         >>> print(lst)
         [3, 5, 2, 0, 0, 0, 0, 0]
@@ -539,159 +539,159 @@ class Vec(_collections.UserList[_T]):
         If `filler` is a function, it takes the two items surrounding the gap
         that is about to be filled and produces a new value to be inserted.
 
-        >>> vec[3, 5, 2].gap_fill(0)
+        >>> L[3, 5, 2].gap_fill(0)
         [3, 0, 5, 0, 2]
-        >>> vec[3, 5, 2].gap_fill(operator.add)
+        >>> L[3, 5, 2].gap_fill(operator.add)
         [3, 8, 5, 7, 2]
-        >>> Vec().gap_fill(0)
-        *- ValueError: empty vector has no gap to be filled -*
+        >>> list().gap_fill(0)
+        *- ValueError: empty list has no gap to be filled -*
         """
 
         if not self:
-            raise ValueError("empty vector has no gap to be filled")
+            raise ValueError("empty list has no gap to be filled")
 
-        returned_vec = self.__class__([self.head])
+        returned_list = self.__class__([self.head])
 
         for i in range(1, len(self)):
-            returned_vec.append(
+            returned_list.append(
                 filler(self[i - 1], self[i]) if callable(filler) else filler,
             )
-            returned_vec.append(self[i])
+            returned_list.append(self[i])
 
-        return returned_vec
+        return returned_list
 
     def select(self, indexes: _collections_abc.Sequence[int]) -> _typing.Self:
         """
         Select items at provided indexes. If an index is present several
-        times, this will be reflected in the resulting vector.
+        times, this will be reflected in the resulting list.
 
-        >>> vec[3, 5, 2].select([1, 2, 0, 0])
+        >>> L[3, 5, 2].select([1, 2, 0, 0])
         [5, 2, 3, 3]
-        >>> Vec().select([])
+        >>> list().select([])
         []
-        >>> vec[3, 5, 2].select([4, 1])
+        >>> L[3, 5, 2].select([4, 1])
         *- IndexError: index 4 is out of bounds -*
         """
 
-        returned_vec = self.__class__()
+        returned_list = self.__class__()
 
         for index in indexes:
             if index >= len(self) or index < -len(self):
                 raise IndexError(f"index {index} is out of bounds")
 
-            returned_vec.append(self[index])
+            returned_list.append(self[index])
 
-        return returned_vec
+        return returned_list
 
     def take(self, n: int) -> _typing.Self:
         """
-        Take `n` items from the vector and return them.
+        Take `n` items from the list and return them.
 
-        >>> vec[3, 5, 2].take(2)
+        >>> L[3, 5, 2].take(2)
         [3, 5]
-        >>> vec[3, 5, 2].take(0)
+        >>> L[3, 5, 2].take(0)
         []
-        >>> vec[3, 5, 2].take(-1)
+        >>> L[3, 5, 2].take(-1)
         *- ValueError: cannot take a negative amount of items -*
-        >>> vec[3, 5, 2].take(5)
-        *- ValueError: cannot take more items than the vector contains -*
+        >>> L[3, 5, 2].take(5)
+        *- ValueError: cannot take more items than the list contains -*
         """
 
         if n < 0:
             raise ValueError("cannot take a negative amount of items")
 
         if n > len(self):
-            raise ValueError("cannot take more items than the vector contains")
+            raise ValueError("cannot take more items than the list contains")
 
         return self.__class__(self[i] for i in range(n))
 
     def take_right(self, n: int) -> _typing.Self:
         """
-        Take `n` items from the right of the vector and return them.
+        Take `n` items from the right of the list and return them.
 
-        Vector original order is preserved.
+        List original order is preserved.
 
-        >>> vec[3, 5, 2].take_right(2)
+        >>> L[3, 5, 2].take_right(2)
         [5, 2]
-        >>> vec[3, 5, 2].take_right(0)
+        >>> L[3, 5, 2].take_right(0)
         []
-        >>> vec[3, 5, 2].take_right(-1)
+        >>> L[3, 5, 2].take_right(-1)
         *- ValueError: cannot take a negative amount of items -*
-        >>> vec[3, 5, 2].take_right(5)
-        *- ValueError: cannot take more items than the vector contains -*
+        >>> L[3, 5, 2].take_right(5)
+        *- ValueError: cannot take more items than the list contains -*
         """
 
         if n < 0:
             raise ValueError("cannot take a negative amount of items")
 
         if n > len(self):
-            raise ValueError("cannot take more items than the vector contains")
+            raise ValueError("cannot take more items than the list contains")
 
         return self.__class__(item for item in self[len(self) - n :])
 
     def drop(self, n: int) -> _typing.Self:
         """
-        Drop `n` items from the vector and return the rest.
+        Drop `n` items from the list and return the rest.
 
-        >>> vec[3, 5, 2].drop(2)
+        >>> L[3, 5, 2].drop(2)
         [2]
-        >>> vec[3, 5, 2].drop(0)
+        >>> L[3, 5, 2].drop(0)
         [3, 5, 2]
-        >>> vec[3, 5, 2].drop(-1)
+        >>> L[3, 5, 2].drop(-1)
         *- ValueError: cannot drop a negative amount of items -*
-        >>> vec[3, 5, 2].drop(5)
-        *- ValueError: cannot drop more items than the vector contains -*
+        >>> L[3, 5, 2].drop(5)
+        *- ValueError: cannot drop more items than the list contains -*
         """
 
         if n < 0:
             raise ValueError("cannot drop a negative amount of items")
 
         if n > len(self):
-            raise ValueError("cannot drop more items than the vector contains")
+            raise ValueError("cannot drop more items than the list contains")
 
         return self.__class__(self[n:])
 
     def drop_right(self, n: int) -> _typing.Self:
         """
-        Drop `n` items from the right of the vector and return the rest.
+        Drop `n` items from the right of the list and return the rest.
 
-        >>> vec[3, 5, 2].drop_right(2)
+        >>> L[3, 5, 2].drop_right(2)
         [3]
-        >>> vec[3, 5, 2].drop_right(0)
+        >>> L[3, 5, 2].drop_right(0)
         [3, 5, 2]
-        >>> vec[3, 5, 2].drop_right(-1)
+        >>> L[3, 5, 2].drop_right(-1)
         *- ValueError: cannot drop a negative amount of items -*
-        >>> vec[3, 5, 2].drop_right(5)
-        *- ValueError: cannot drop more items than the vector contains -*
+        >>> L[3, 5, 2].drop_right(5)
+        *- ValueError: cannot drop more items than the list contains -*
         """
 
         if n < 0:
             raise ValueError("cannot drop a negative amount of items")
 
         if n > len(self):
-            raise ValueError("cannot drop more items than the vector contains")
+            raise ValueError("cannot drop more items than the list contains")
 
         return self.__class__(self[: len(self) - n])
 
     def slice(self, start: int, stop: int) -> _typing.Self:
         """
-        Slice the vector from `start` to `stop` and return the result.
+        Slice the list from `start` to `stop` and return the result.
 
         This method is NOT equivalent to the `self[start:stop]` notation.
-        If `start` or `stop` are out of bounds of the vector or `start` is
+        If `start` or `stop` are out of bounds of the list or `start` is
         greater than `stop`, it will raise an exception.
 
-        >>> vec[2, 4, 8, 16, 32].slice(1, 3)
+        >>> L[2, 4, 8, 16, 32].slice(1, 3)
         [4, 8, 16]
-        >>> vec[2, 4, 8, 16, 32].slice(0, 2)
+        >>> L[2, 4, 8, 16, 32].slice(0, 2)
         [2, 4, 8]
-        >>> vec[2, 4, 8, 16, 32].slice(3, 5)
+        >>> L[2, 4, 8, 16, 32].slice(3, 5)
         [8, 16, 32]
-        >>> vec[2, 4, 8, 16, 32].slice(2, 2)
+        >>> L[2, 4, 8, 16, 32].slice(2, 2)
         [8]
-        >>> vec[2, 4, 8, 16, 32].slice(1, 10)
+        >>> L[2, 4, 8, 16, 32].slice(1, 10)
         *- ValueError: slice out of bounds -*
-        >>> vec[2, 4, 8, 16, 32].slice(4, 2)
+        >>> L[2, 4, 8, 16, 32].slice(4, 2)
         *- ValueError: start cannot be greater than stop -*
 
         Tip: if `start` is 0, you can do `.take(stop - 1)` instead.
@@ -709,23 +709,23 @@ class Vec(_collections.UserList[_T]):
 
     def cut(self, n: int) -> tuple[_typing.Self, _typing.Self]:
         """
-        Cut the vector after `n` elements and return a pair of the produced
-        vectors.
+        Cut the list after `n` elements and return a pair of the produced
+        lists.
 
-        >>> vec[2, 4, 8, 16, 32].cut(2)
+        >>> L[2, 4, 8, 16, 32].cut(2)
         ([2, 4], [8, 16, 32])
-        >>> vec[2, 4, 8, 16, 32].cut(0)
+        >>> L[2, 4, 8, 16, 32].cut(0)
         ([], [2, 4, 8, 16, 32])
-        >>> vec[2, 4, 8, 16, 32].cut(8)
+        >>> L[2, 4, 8, 16, 32].cut(8)
         ([2, 4, 8, 16, 32], [])
-        >>> vec[2, 4, 8, 16, 32].cut(-3)
+        >>> L[2, 4, 8, 16, 32].cut(-3)
         *- ValueError: cannot cut after a negative amount of elements -*
-        >>> Vec().cut(2)
-        *- TypeError: cannot cut an empty vector -*
+        >>> list().cut(2)
+        *- TypeError: cannot cut an empty list -*
         """
 
         if not self:
-            raise TypeError("cannot cut an empty vector")
+            raise TypeError("cannot cut an empty list")
 
         if n < 0:
             raise ValueError("cannot cut after a negative amount of elements")
@@ -743,13 +743,13 @@ class str(_collections.UserString):
     ...
 
 
-class _VecBuilder:
-    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> Vec[_T] | Vec[int]:
+class _ListBuilder:
+    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T] | list[int]:
         if isinstance(key, slice):
             if _is_range_slice(key):
-                return Vec(range(key.start or 0, key.stop, key.step or 1))
+                return list(range(key.start or 0, key.stop, key.step or 1))
 
-        return Vec(_typing.cast(tuple[_T], key if isinstance(key, tuple) else (key,)))
+        return list(_typing.cast(tuple[_T], key if isinstance(key, tuple) else (key,)))
 
 
 def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
@@ -760,8 +760,8 @@ def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
     )
 
 
-_VecLiteral = _typing.NewType("[Vector Literal]", _VecBuilder)
-vec = _VecLiteral(_VecBuilder())
+_MagicListLiteral = _typing.NewType("[Magic List Literal]", _ListBuilder)
+L = _MagicListLiteral(_ListBuilder())
 """
-Literal-like for magic vectors.
+Literal-like for magic lists.
 """

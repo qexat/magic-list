@@ -11,10 +11,10 @@ import _typeshed
 import typing as _typing
 
 __all__ = [
-    "Vec",
+    "list",
     "dict",
     "str",
-    "vec",
+    "L",
 ]
 
 _K = _typing.TypeVar("_K")
@@ -28,7 +28,7 @@ _NumberT = _typing.TypeVar("_NumberT", int, float, complex)
 class _SupportsAdd(_typing.Protocol[_T]):
     def __add__(self: _T, other: _T, /) -> _T: ...
 
-class Vec(_collections.UserList[_T]):
+class list(_collections.UserList[_T]):
     @property
     def head(self) -> _T: ...
     @property
@@ -41,11 +41,11 @@ class Vec(_collections.UserList[_T]):
     def reversed(self) -> _typing.Self: ...
     @_typing.overload
     def sorted(
-        self: Vec[_typeshed.SupportsRichComparisonT],
+        self: list[_typeshed.SupportsRichComparisonT],
         *,
         key: None = None,
         reverse: bool = False,
-    ) -> Vec[_typeshed.SupportsRichComparisonT]: ...
+    ) -> list[_typeshed.SupportsRichComparisonT]: ...
     @_typing.overload
     def sorted(
         self,
@@ -54,10 +54,10 @@ class Vec(_collections.UserList[_T]):
         reverse: bool = False,
     ) -> _typing.Self: ...
     def shuffled(self) -> _typing.Self: ...
-    # subclasses' `map` return type is also marked as `Vec` because we cannot make
+    # subclasses' `map` return type is also marked as `list` because we cannot make
     # the container generic -- this requires Higher-Kinded Types, which Python does
     # not support (yet? hopefully!)
-    def map(self, function: _collections_abc.Callable[[_T], _U]) -> Vec[_U]: ...
+    def map(self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]: ...
     def rotate(self, n: int = 1) -> _typing.Self: ...
     # *- filter-like HOFs -* #
     def filter(
@@ -92,23 +92,23 @@ class Vec(_collections.UserList[_T]):
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
-    ) -> Vec[_V]: ...
+    ) -> list[_V]: ...
     def sum(self) -> _T: ...
     @_typing.overload
-    def mean(self: Vec[int]) -> float: ...
+    def mean(self: list[int]) -> float: ...
     @_typing.overload
-    def mean(self: Vec[float]) -> float: ...
+    def mean(self: list[float]) -> float: ...
     @_typing.overload
-    def mean(self: Vec[complex]) -> complex: ...
+    def mean(self: list[complex]) -> complex: ...
     # *- expansion-based HOFs -* #
     def fill(
         self,
-        filler: _T | _collections_abc.Callable[[Vec[_T]], _T],
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> None: ...
     def filled(
         self,
-        filler: _T | _collections_abc.Callable[[Vec[_T]], _T],
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> _typing.Self: ...
     def gap_fill(
@@ -132,7 +132,7 @@ class dict(_collections.UserDict[_K, _T]):
         *,
         key: None = None,
         reverse: bool = False,
-    ) -> Vec[_typeshed.SupportsRichComparisonT]: ...
+    ) -> list[_typeshed.SupportsRichComparisonT]: ...
     @_typing.overload
     def sorted(
         self,
@@ -152,7 +152,7 @@ class dict(_collections.UserDict[_K, _T]):
         self,
         function: _collections_abc.Callable[[_K], bool],
     ) -> _typing.Self: ...
-    def as_list(self) -> Vec[tuple[_K, _T]]: ...
+    def as_list(self) -> list[tuple[_K, _T]]: ...
 
 class str(_collections.UserString):
     @_typing.overload
@@ -205,11 +205,11 @@ class str(_collections.UserString):
     ) -> _typing.Self: ...
 
 @_typing.final
-class _VecBuilder:
+class _ListBuilder:
     @_typing.overload
-    def __getitem__(self, key: slice, /) -> Vec[int]: ...
+    def __getitem__(self, key: slice, /) -> list[int]: ...
     @_typing.overload
-    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> Vec[_T]: ...
+    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T]: ...
 
-_VectorLiteral = _typing.NewType("[Vector Literal]", _VecBuilder)
-vec = _VectorLiteral(_VecBuilder())
+_MagicListLiteral = _typing.NewType("[Magic List Literal]", _ListBuilder)
+L = _MagicListLiteral(_ListBuilder())
