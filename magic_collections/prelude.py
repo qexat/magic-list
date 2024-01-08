@@ -198,22 +198,6 @@ class Vec(_collections.UserList[_T]):
 
         return _typing.cast(Vec[_U], self.__class__(map(function, self)))
 
-    def map_two(
-        self,
-        function1: _collections_abc.Callable[[_T], _U],
-        function2: _collections_abc.Callable[[_U], _V],
-    ) -> Vec[_V]:
-        """
-        Apply `function1` then `function2` on each item of the list.
-
-        >>> list([3, 5, 2]).map_two(str, ord)
-        [51, 53, 50]
-        >>> list().map_two(str, ord)
-        []
-        """
-
-        return self.map(function1).map(function2)
-
     def rotate(self, n: int = 1) -> _typing.Self:
         """
         Shift the vector `n` times to the right. The items that overflow get prepended.
