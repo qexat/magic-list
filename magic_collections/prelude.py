@@ -736,7 +736,16 @@ class list(_collections.UserList[_T]):
 
 
 class dict(_collections.UserDict[_K, _V]):
-    ...
+    def __invert__(self) -> dict[_V, _K]:
+        returned_dict: dict[_V, _K] = dict()
+
+        for key, value in self.items():
+            if not isinstance(value, _collections_abc.Hashable):
+                raise TypeError(f"value {value} cannot be hashed to a key")
+
+            returned_dict[value] = key
+
+        return returned_dict
 
 
 class str(_collections.UserString):
