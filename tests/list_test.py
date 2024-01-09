@@ -3,6 +3,9 @@ import operator
 import random
 
 import pytest
+from utils import contains_letter_l
+from utils import double
+from utils import greater_than_four
 
 from magic_collections import L
 from magic_collections import list
@@ -36,18 +39,6 @@ def prebuild_list(request):
             )
         case "list_empty":
             return list()
-
-
-def double(x):
-    return x * 2
-
-
-def greater_than_four(x):
-    return x > 4
-
-
-def contains_letter_l(x):
-    return "l" in x
 
 
 # *- PROPERTIES -* #
