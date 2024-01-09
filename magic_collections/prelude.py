@@ -754,6 +754,17 @@ class dict(_collections.UserDict[_K, _V]):
         | None = None,
         reverse: bool = False,
     ) -> _typing.Self:
+        """
+        Return a sorted version of the dict.
+
+        >>> dict({6: 3, 4: 5, 1: 2}.sorted()
+        {1: 2, 4: 5, 6: 3}
+        >>> dict({"oranges": 3, "apples": 5, "pears": 2}).sorted(key=len)
+        {"pears": 2, "apples": 5, "oranges": 3}
+        >>> dict().sorted()
+        {}
+        """
+
         if key is None:
             _key = None
         else:
@@ -772,6 +783,15 @@ class dict(_collections.UserDict[_K, _V]):
         )
 
     def as_list(self) -> list[tuple[_K, _V]]:
+        """
+        Return a list of the pairs (key, value) of the dict.
+
+        >>> dict({6: 3, 4: 5, 1: 2}.as_list()
+        [(6, 3), (4, 5), (1, 2)]
+        >>> dict({"oranges": 3, "apples": 5, "pears": 2}).as_list()
+        [("oranges", 3), ("apples", 5), ("pears": 2)]
+        """
+
         return list(self.items())
 
 
