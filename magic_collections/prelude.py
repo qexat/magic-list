@@ -707,7 +707,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
-    def cut(self, n: int) -> tuple[_typing.Self, _typing.Self]:
+    def bisect(self, n: int) -> tuple[_typing.Self, _typing.Self]:
         """
         Cut the list after `n` elements and return a pair of the produced
         lists.
