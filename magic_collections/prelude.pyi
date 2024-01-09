@@ -128,16 +128,15 @@ class dict(_collections.UserDict[_K, _T]):
     def __neg__(self) -> dict[_T, _K]: ...
     @_typing.overload
     def sorted(
-        self: dict[_K, _typeshed.SupportsRichComparisonT],
+        self: dict[_typeshed.SupportsRichComparisonT, _T],
         *,
-        key: None = None,
         reverse: bool = False,
-    ) -> list[_typeshed.SupportsRichComparisonT]: ...
+    ) -> dict[_typeshed.SupportsRichComparisonT, _T]: ...
     @_typing.overload
     def sorted(
         self,
         *,
-        key: _collections_abc.Callable[[_T], _typeshed.SupportsRichComparison],
+        key: _collections_abc.Callable[[_K], _typeshed.SupportsRichComparison],
         reverse: bool = False,
     ) -> _typing.Self: ...
     def map(
