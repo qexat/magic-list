@@ -709,26 +709,26 @@ class list(_collections.UserList[_T]):
 
     def bisect(self, n: int) -> tuple[_typing.Self, _typing.Self]:
         """
-        Cut the list after `n` elements and return a pair of the produced
+        Bisect the list after `n` elements and return a pair of the produced
         lists.
 
-        >>> L[2, 4, 8, 16, 32].cut(2)
+        >>> L[2, 4, 8, 16, 32].bisect(2)
         ([2, 4], [8, 16, 32])
-        >>> L[2, 4, 8, 16, 32].cut(0)
+        >>> L[2, 4, 8, 16, 32].bisect(0)
         ([], [2, 4, 8, 16, 32])
-        >>> L[2, 4, 8, 16, 32].cut(8)
+        >>> L[2, 4, 8, 16, 32].bisect(8)
         ([2, 4, 8, 16, 32], [])
-        >>> L[2, 4, 8, 16, 32].cut(-3)
-        *- ValueError: cannot cut after a negative amount of elements -*
-        >>> list().cut(2)
-        *- TypeError: cannot cut an empty list -*
+        >>> L[2, 4, 8, 16, 32].bisect(-3)
+        *- ValueError: cannot bisect after a negative amount of elements -*
+        >>> list().bisect(2)
+        *- TypeError: cannot bisect an empty list -*
         """
 
         if not self:
-            raise TypeError("cannot cut an empty list")
+            raise TypeError("cannot bisect an empty list")
 
         if n < 0:
-            raise ValueError("cannot cut after a negative amount of elements")
+            raise ValueError("cannot bisect after a negative amount of elements")
 
         _n = min(n, len(self))
 

@@ -3,10 +3,10 @@ import operator
 import random
 
 import pytest
-from utils import contains_letter_l
-from utils import double
-from utils import greater_than_four
 
+from .utils import contains_letter_l
+from .utils import double
+from .utils import greater_than_four
 from magic_collections import L
 from magic_collections import list
 
@@ -978,8 +978,8 @@ def test_slice_err(prebuild_list, args, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_cut_ok(prebuild_list, args, result):
-    assert prebuild_list.cut(*args) == result
+def test_bisect_ok(prebuild_list, args, result):
+    assert prebuild_list.bisect(*args) == result
 
 
 @pytest.mark.parametrize(
@@ -989,15 +989,15 @@ def test_cut_ok(prebuild_list, args, result):
             "list_str_filled",
             [-2],
             ValueError,
-            "cannot cut after a negative amount of elements",
+            "cannot bisect after a negative amount of elements",
         ],
-        ["list_empty", [2], TypeError, "cannot cut an empty list"],
+        ["list_empty", [2], TypeError, "cannot bisect an empty list"],
     ],
     indirect=["prebuild_list"],
 )
-def test_cut_err(prebuild_list, args, exception, message):
+def test_bisect_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.cut(*args)
+        prebuild_list.bisect(*args)
 
 
 # *- "combined" tests -* #
