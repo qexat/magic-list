@@ -747,6 +747,33 @@ class dict(_collections.UserDict[_K, _V]):
 
         return returned_dict
 
+    def sorted(
+        self,
+        *,
+        key: _collections_abc.Callable[[_K], _typeshed.SupportsRichComparison]
+        | None = None,
+        reverse: bool = False,
+    ) -> _typing.Self:
+        if key is None:
+            _key = None
+        else:
+
+            def _key_wrapper(value: tuple[_K, _V]) -> _typeshed.SupportsRichComparison:
+                return key(value[0])
+
+            _key = _key_wrapper
+
+        return self.__class__(
+            sorted(
+                self.as_list(),
+                key=_key,
+                reverse=reverse,
+            ),
+        )
+
+    def as_list(self) -> list[tuple[_K, _V]]:
+        return list(self.items())
+
 
 class str(_collections.UserString):
     ...

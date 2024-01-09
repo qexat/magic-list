@@ -4,6 +4,7 @@ import re
 import pytest
 
 from magic_collections import dict
+from magic_collections import list
 
 """
 • `test_*_ok` => for function calls that return a result
@@ -78,3 +79,95 @@ def test___invert___ok(prebuild_dict, result):
 def test___invert___err(prebuild_dict, exception, message):
     with pytest.raises(exception, match=re.escape(message)):
         ~prebuild_dict
+
+
+@pytest.mark.parametrize(
+    ["prebuild_dict", "kwargs", "result"],
+    [
+        [
+            "dict_int_int_filled",
+            {},
+            dict(
+                {
+                    -8: 0,
+                    0: 3,
+                    1: 5,
+                    2: 20,
+                    3: -1,
+                },
+            ),
+        ],
+        [
+            "dict_int_int_filled",
+            {"reverse": True},
+            dict(
+                {
+                    3: -1,
+                    2: 20,
+                    1: 5,
+                    0: 3,
+                    -8: 0,
+                },
+            ),
+        ],
+        [
+            "dict_str_int_filled",
+            {"key": len},
+            dict(
+                {
+                    "apples": 3,
+                    "bananas": 5,
+                    "oranges": 20,
+                    "tangerines": -1,
+                },
+            ),
+        ],
+        ["dict_empty", {}, dict()],
+    ],
+    indirect=["prebuild_dict"],
+)
+def test_sorted_ok(prebuild_dict, kwargs, result):
+    assert prebuild_dict.sorted(**kwargs) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_dict", "result"],
+    [
+        [
+            "dict_int_int_filled",
+            list(
+                [
+                    (0, 3),
+                    (1, 5),
+                    (2, 20),
+                    (3, -1),
+                    (-8, 0),
+                ],
+            ),
+        ],
+        [
+            "dict_str_int_filled",
+            list(
+                [
+                    ("apples", 3),
+                    ("bananas", 5),
+                    ("oranges", 20),
+                    ("tangerines", -1),
+                ],
+            ),
+        ],
+        [
+            "dict_str_list_filled",
+            list(
+                [
+                    ("hello", ["hi", "sup", "goodday"]),
+                    ("goodbye", ["bye", "ciao"]),
+                ],
+            ),
+        ],
+        ["dict_empty", list()],
+    ],
+    indirect=["prebuild_dict"],
+)
+def test_as_list_ok(prebuild_dict, result):
+    assert prebuild_dict.as_list() == result
