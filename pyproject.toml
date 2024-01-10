@@ -20,4 +20,4 @@ classifiers = [
 repository = "https://github.com/qexat/magic-collections"
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4", "coverage>=7.3", "pyright>=1.1"]
+dev = ["pytest>=7.4", "coverage>=7.4", "pyright>=1.1"]
