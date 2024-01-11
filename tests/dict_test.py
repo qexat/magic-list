@@ -1,4 +1,5 @@
 # type: ignore
+import random
 import re
 
 import pytest
@@ -128,6 +129,57 @@ def test___invert___err(prebuild_dict, exception, message):
 )
 def test_sorted_ok(prebuild_dict, kwargs, result):
     assert prebuild_dict.sorted(**kwargs) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_dict", "result"],
+    [
+        [
+            "dict_int_int_filled",
+            dict(
+                {
+                    3: -1,
+                    0: 3,
+                    2: 20,
+                    -8: 0,
+                    1: 5,
+                },
+            ),
+        ],
+        [
+            "dict_str_int_filled",
+            dict(
+                {
+                    "tangerines": -1,
+                    "apples": 3,
+                    "oranges": 20,
+                    "bananas": 5,
+                },
+            ),
+        ],
+        [
+            "dict_str_list_filled",
+            dict(
+                {
+                    "goodbye": ["bye", "ciao"],
+                    "hello": ["hi", "sup", "goodday"],
+                },
+            ),
+        ],
+        [
+            "dict_empty",
+            dict(),
+        ],
+    ],
+    indirect=["prebuild_dict"],
+)
+def test_shuffled_ok(prebuild_dict, result):
+    random.seed(_RANDOM_SEED)
+
+    # We must compare them as lists, because dicts are always
+    # equal as long as their pairs are the same, even if they're
+    # not in the same order.
+    assert list(prebuild_dict.shuffled()) == list(result)
 
 
 @pytest.mark.parametrize(

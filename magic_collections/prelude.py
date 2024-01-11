@@ -782,6 +782,28 @@ class dict(_collections.UserDict[_K, _V]):
             ),
         )
 
+    def shuffled(self) -> _typing.Self:
+        """
+        Returned a shuffled version of the dict.
+
+        >>> dict({6: 3, 4: 5, 1: 2}).shuffled()
+        {4: 5, 1: 2, 6: 3}
+        >>> dict({6: 3, 4: 5, 1: 2}).shuffled()
+        {1: 2, 6: 3, 4: 5}
+        >>> dict().shuffled()
+        {}
+        """
+
+        result = self.__class__()
+
+        while len(result) != len(self):
+            key, value = _random.choice(self.as_list())
+
+            if key not in result:
+                result[key] = value
+
+        return result
+
     def as_list(self) -> list[tuple[_K, _V]]:
         """
         Return a list of the pairs (key, value) of the dict.
