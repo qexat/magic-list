@@ -152,6 +152,10 @@ class dict(_collections.UserDict[_K, _V]):
         self,
         function: _collections_abc.Callable[[_K], bool],
     ) -> _typing.Self: ...
+    def filter_values(
+        self,
+        function: _collections_abc.Callable[[_V], bool],
+    ) -> _typing.Self: ...
     # *- reduction-based HOFs -* #
     @_typing.overload
     def zip_with(
