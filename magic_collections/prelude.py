@@ -41,7 +41,7 @@ _NumberT = _typing.TypeVar("_NumberT", int, float, complex)
 
 class list(_collections.UserList[_T]):
     """
-    Mutable heterogeneous sequence.
+    Mutable homogeneous sequence.
     Drop-in replacement for the built-in `list` type.
     """
 
