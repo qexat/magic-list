@@ -757,7 +757,7 @@ class dict(_collections.UserDict[_K, _V]):
         """
         Return a sorted version of the dict.
 
-        >>> dict({6: 3, 4: 5, 1: 2}.sorted()
+        >>> dict({6: 3, 4: 5, 1: 2}).sorted()
         {1: 2, 4: 5, 6: 3}
         >>> dict({"oranges": 3, "apples": 5, "pears": 2}).sorted(key=len)
         {"pears": 2, "apples": 5, "oranges": 3}
@@ -808,7 +808,7 @@ class dict(_collections.UserDict[_K, _V]):
         """
         Return a list of the pairs (key, value) of the dict.
 
-        >>> dict({6: 3, 4: 5, 1: 2}.as_list()
+        >>> dict({6: 3, 4: 5, 1: 2}).as_list()
         [(6, 3), (4, 5), (1, 2)]
         >>> dict({"oranges": 3, "apples": 5, "pears": 2}).as_list()
         [("oranges", 3), ("apples", 5), ("pears": 2)]
