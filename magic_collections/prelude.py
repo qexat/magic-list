@@ -410,7 +410,7 @@ class list(_collections.UserList[_T]):
 
         return self.reversed().scan(lambda a, b: function(b, a), initial_value)
 
-    def merge(
+    def zip_with(
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
@@ -420,11 +420,11 @@ class list(_collections.UserList[_T]):
         `s_i` and `o_i` are the items at index `i` of `self` and `other`
         respectively.
 
-        >>> L[3, 5, 2].merge(operator.add, [-1, 4, -9])
+        >>> L[3, 5, 2].zip_with(operator.add, [-1, 4, -9])
         [2, 9, -7]
-        >>> list().merge(operator.sub, [])
+        >>> list().zip_with(operator.sub, [])
         []
-        >>> L[3, 5, 2].merge(operator.add, [6])
+        >>> L[3, 5, 2].zip_with(operator.add, [6])
         *- TypeError: the length of the two sequences must be equal -*
         """
 

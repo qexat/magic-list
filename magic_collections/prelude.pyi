@@ -88,7 +88,7 @@ class list(_collections.UserList[_T]):
         function: _collections_abc.Callable[[_T, _T], _T],
         initial_value: _T,
     ) -> _typing.Self: ...
-    def merge(
+    def zip_with(
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
