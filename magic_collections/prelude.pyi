@@ -154,13 +154,13 @@ class dict(_collections.UserDict[_K, _V]):
     ) -> _typing.Self: ...
     # *- reduction-based HOFs -* #
     @_typing.overload
-    def merge(
+    def zip_with(
         self,
         function: _collections_abc.Callable[[_V, _U], _T],
         other: _collections_abc.Mapping[_K, _U],
     ) -> dict[_K, _T]: ...
     @_typing.overload
-    def merge(
+    def zip_with(
         self,
         function: _collections_abc.Callable[[_V, _V], _V],
         other: _collections_abc.Mapping[_K, _V],
