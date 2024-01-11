@@ -124,14 +124,14 @@ class list(_collections.UserList[_T]):
     def slice(self, start: int, stop: int, /) -> _typing.Self: ...
     def bisect(self, index: int) -> tuple[_typing.Self, _typing.Self]: ...
 
-class dict(_collections.UserDict[_K, _T]):
-    def __invert__(self) -> dict[_T, _K]: ...
+class dict(_collections.UserDict[_K, _V]):
+    def __invert__(self) -> dict[_V, _K]: ...
     @_typing.overload
     def sorted(
-        self: dict[_typeshed.SupportsRichComparisonT, _T],
+        self: dict[_typeshed.SupportsRichComparisonT, _V],
         *,
         reverse: bool = False,
-    ) -> dict[_typeshed.SupportsRichComparisonT, _T]: ...
+    ) -> dict[_typeshed.SupportsRichComparisonT, _V]: ...
     @_typing.overload
     def sorted(
         self,
@@ -146,7 +146,7 @@ class dict(_collections.UserDict[_K, _T]):
     ) -> dict[_K, _U]: ...
     def filter(
         self,
-        function: _collections_abc.Callable[[_T], bool],
+        function: _collections_abc.Callable[[_K, _V], bool],
     ) -> _typing.Self: ...
     def filter_keys(
         self,
@@ -156,17 +156,17 @@ class dict(_collections.UserDict[_K, _T]):
     @_typing.overload
     def merge(
         self,
-        function: _collections_abc.Callable[[_T, _U], _V],
+        function: _collections_abc.Callable[[_V, _U], _T],
         other: _collections_abc.Mapping[_K, _U],
-    ) -> dict[_K, _V]: ...
+    ) -> dict[_K, _T]: ...
     @_typing.overload
     def merge(
         self,
-        function: _collections_abc.Callable[[_T, _T], _T],
-        other: _collections_abc.Mapping[_K, _T],
+        function: _collections_abc.Callable[[_V, _V], _V],
+        other: _collections_abc.Mapping[_K, _V],
         *,
         keep_exclusives: bool = False,
-    ) -> dict[_K, _T]: ...
+    ) -> dict[_K, _V]: ...
     # *- selectors -* #
     def select(self, keys: _collections_abc.Sequence[_K]) -> _typing.Self: ...
     # The following methods can exist since Python `dict` insertion order is
@@ -178,7 +178,7 @@ class dict(_collections.UserDict[_K, _T]):
     def slice(self, start: int, stop: int) -> _typing.Self: ...
     def bisect(self, n: int) -> _typing.Self: ...
     # *- castors -* #
-    def as_list(self) -> list[tuple[_K, _T]]: ...
+    def as_list(self) -> list[tuple[_K, _V]]: ...
 
 class str(_collections.UserString):
     @_typing.overload
