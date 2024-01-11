@@ -6,6 +6,7 @@ import pytest
 
 from magic_collections import dict
 from magic_collections import list
+from tests.utils import len_mean
 
 """
 • `test_*_ok` => for function calls that return a result
@@ -180,6 +181,39 @@ def test_shuffled_ok(prebuild_dict, result):
     # equal as long as their pairs are the same, even if they're
     # not in the same order.
     assert list(prebuild_dict.shuffled()) == list(result)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_dict", "args", "result"],
+    [
+        ["dict_int_int_filled", [lambda k, v: (v - k) >= 5], dict({2: 20, -8: 0})],
+        [
+            "dict_str_int_filled",
+            [lambda k, v: len(k) >= v],
+            dict(
+                {
+                    "apples": 3,
+                    "bananas": 5,
+                    "tangerines": -1,
+                },
+            ),
+        ],
+        [
+            "dict_str_list_filled",
+            [lambda k, v: len(k) > len_mean(v)],
+            dict(
+                {
+                    "hello": ["hi", "sup", "goodday"],
+                    "goodbye": ["bye", "ciao"],
+                },
+            ),
+        ],
+        ["dict_empty", [lambda k, v: k == v], dict()],
+    ],
+    indirect=["prebuild_dict"],
+)
+def test_filter_ok(prebuild_dict, args, result):
+    assert prebuild_dict.filter(*args) == result
 
 
 @pytest.mark.parametrize(
