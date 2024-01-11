@@ -140,10 +140,6 @@ class dict(_collections.UserDict[_K, _V]):
         reverse: bool = False,
     ) -> _typing.Self: ...
     def shuffled(self) -> _typing.Self: ...
-    def map(
-        self,
-        function: _collections_abc.Callable[[_K, _T], _U],
-    ) -> dict[_K, _U]: ...
     def filter(
         self,
         function: _collections_abc.Callable[[_K, _V], bool],
