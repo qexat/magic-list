@@ -47,3 +47,26 @@ def fibonacci_sequence(n: int) -> list[int]:
 ### Fibonacci n-th member
 
 Wanted to define a function that returns the `n`-th member of the Fibonacci sequence for a laugh? We have that: it is called [`fibonacci_sequence(n)`](#fibonacci-sequence)`.last`!
+
+### Need fruits
+
+You are a small merchant who wants to keep tracks of her stocks with a computer. You have a dictionary with fruit names as keys and their numbers as values.
+
+You want to check which fruit you don't have anymore so you can go buy them, except for oranges and mangoes, because the season is over and you will not find them anymore anyway.
+
+```py
+from magic_collections import dict, L, list
+
+SEASON_OVER = L["oranges", "mangoes"]
+
+def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
+    return list(
+        # only keep what's needed to be bought!
+        stock.filter_values(lambda n: n == 0)
+        # remove oranges and mangoes cause season is over...
+        .filter_keys(lambda fruit: fruit not in SEASON_OVER)
+        # we only want fruit names now
+        .keys()
+    )
+
+```
