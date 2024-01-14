@@ -840,6 +840,24 @@ class dict(_collections.UserDict[_K, _V]):
 
         return self.__class__(filter(lambda item: function(item[0]), self.items()))
 
+    def filter_values(
+        self,
+        function: _collections_abc.Callable[[_V], bool],
+    ) -> _typing.Self:
+        """
+        Discard every pair (`key`, `value`) of the dict if `function(value)`
+        is False.
+
+        >>> dict({6: 3, 4: 5, 1: 2}).filter_values(lambda value: value < 4)
+        {6: 3, 1: 2}
+        >>> dict({"oranges": 3, "apples": 8, "pears": 2}).filter_values(lambda value: value < 6)
+        {"oranges": 3, "pears": 2}
+        >>> dict().filter_values(lambda value: "hello" in value)
+        {}
+        """
+
+        return self.__class__(filter(lambda item: function(item[1]), self.items()))
+
     def as_list(self) -> list[tuple[_K, _V]]:
         """
         Return a list of the pairs (key, value) of the dict.

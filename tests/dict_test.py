@@ -235,6 +235,28 @@ def test_filter_keys_ok(prebuild_dict, args, result):
 
 
 @pytest.mark.parametrize(
+    ["prebuild_dict", "args", "result"],
+    [
+        ["dict_int_int_filled", [lambda value: value > 0], dict({0: 3, 1: 5, 2: 20})],
+        [
+            "dict_str_int_filled",
+            [lambda value: value < 5],
+            dict({"apples": 3, "tangerines": -1}),
+        ],
+        [
+            "dict_str_list_filled",
+            [lambda value: "bye" in value],
+            dict({"goodbye": ["bye", "ciao"]}),
+        ],
+        ["dict_empty", [lambda _: True], dict()],
+    ],
+    indirect=["prebuild_dict"],
+)
+def test_filter_values_ok(prebuild_dict, args, result):
+    assert prebuild_dict.filter_values(*args) == result
+
+
+@pytest.mark.parametrize(
     ["prebuild_dict", "result"],
     [
         [
