@@ -68,3 +68,16 @@ def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
     )
 
 ```
+
+If you wanna be more fruity, you can even merge the filters into one:
+
+```py
+def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
+    return list(
+        # only keep what's needed to be bought!
+        stock.filter_values(lambda n: n == 0)
+        # combine the filters from earlier!
+        .filter(lambda fruit, quantity: fruit not in SEASON_OVER and quantity == 0)
+        .keys()
+    )
+```
