@@ -820,7 +820,7 @@ class dict(_collections.UserDict[_K, _V]):
         {}
         """
 
-        return self.__class__(filter(lambda i: function(*i), self.as_list()))
+        return self.__class__(filter(lambda item: function(*item), self.items()))
 
     def as_list(self) -> list[tuple[_K, _V]]:
         """
