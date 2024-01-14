@@ -50,9 +50,7 @@ Wanted to define a function that returns the `n`-th member of the Fibonacci sequ
 
 ### Need fruits
 
-You are a small merchant who wants to keep tracks of her stocks with a computer. You have a dictionary with fruit names as keys and their numbers as values.
-
-You want to check which fruit you don't have anymore so you can go buy them, except for oranges and mangoes, because the season is over and you will not find them anymore anyway.
+You're a small fruit merchant aiming to manage your inventory using a computer. Using a dictionary that pairs fruit names with their respective quantities, your goal is to identify which fruits are running low so you can restock them. However, there's no need to fret about oranges and mangoes, as their season has concluded, and you won't be able to find them anymore.
 
 ```py
 from magic_collections import dict, L, list
