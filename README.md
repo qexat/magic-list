@@ -60,7 +60,7 @@ SEASON_OVER = L["oranges", "mangoes"]
 def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
     return list(
         # only keep what's needed to be bought!
-        stock.filter_values(lambda n: n == 0)
+        stock.filter_values(lambda quantity: quantity == 0)
         # remove oranges and mangoes cause season is over...
         .filter_keys(lambda fruit: fruit not in SEASON_OVER)
         # we only want fruit names now
