@@ -312,6 +312,21 @@ def test_mask_err(prebuild_list, args, exception, message):
 
 
 @pytest.mark.parametrize(
+    ["prebuild_list", "result"],
+    [
+        [list([3, 0, 0, 1, 98, -1, 1]), list([3, 0, 1, 98, -1])],
+        [
+            list(["hello", "hello", "world", "goodbye", "bye"]),
+            list(["hello", "world", "goodbye", "bye"]),
+        ],
+        [list(), list()],
+    ],
+)
+def test_deduplicate_ok(prebuild_list, result):
+    assert prebuild_list.deduplicate() == result
+
+
+@pytest.mark.parametrize(
     ["prebuild_list", "args", "result"],
     [
         ["list_int_filled", [operator.add], 27],

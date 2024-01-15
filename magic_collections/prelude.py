@@ -270,6 +270,27 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
 
+    def deduplicate(self) -> _typing.Self:
+        """
+        Remove duplicate elements from left to right (and keep original ones).
+        Return the deduplicated list.
+
+        >>> L[3, 0, 0, 1, 18].deduplicate()
+        [3, 0, 1, 18]
+        >>> L["hello", "hello", "world", "world"].deduplicate()
+        ["hello", "world"]
+        >>> list().deduplicate()
+        []
+        """
+
+        returned_list: _typing.Self = self.__class__()
+
+        for elem in self:
+            if elem not in returned_list:
+                returned_list.append(elem)
+
+        return returned_list
+
     def reduce(self, function: _collections_abc.Callable[[_T, _T], _T]) -> _T:
         """
         "Insert" an operator (called a reducing function) between each element
