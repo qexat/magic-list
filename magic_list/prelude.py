@@ -3,7 +3,7 @@ This module contains all the classes, functions and identifiers available in
 the package base. They can be imported by doing the following:
 
 ```py
-from magic_collections import *
+from magic_list import *
 ```
 
 Note on imports:
@@ -24,15 +24,13 @@ import typing as _typing
 
 if _typing.TYPE_CHECKING:  # pragma: no cover
     import _typeshed
+    import typing_extensions as _typing_extensions
 
 __all__ = [
     "list",
-    "dict",
-    "str",
     "L",
 ]
 
-_K = _typing.TypeVar("_K")
 _T = _typing.TypeVar("_T")
 _U = _typing.TypeVar("_U")
 _V = _typing.TypeVar("_V")
@@ -64,7 +62,7 @@ class list(_collections.UserList[_T]):
         return self[0]
 
     @property
-    def tail(self) -> _typing.Self:
+    def tail(self) -> _typing_extensions.Self:
         """
         List without its first item.
 
@@ -82,7 +80,7 @@ class list(_collections.UserList[_T]):
         return self.__class__(self[1:])
 
     @property
-    def init(self) -> _typing.Self:
+    def init(self) -> _typing_extensions.Self:
         """
         List without its last item.
 
@@ -129,7 +127,7 @@ class list(_collections.UserList[_T]):
 
         self.insert(0, item)
 
-    def reversed(self) -> _typing.Self:
+    def reversed(self) -> _typing_extensions.Self:
         """
         Return a reversed version of the list.
 
@@ -146,7 +144,7 @@ class list(_collections.UserList[_T]):
         key: _collections_abc.Callable[[_T], _typeshed.SupportsRichComparison]
         | None = None,
         reverse: bool = False,
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         Return a sorted version of the list.
 
@@ -158,7 +156,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(sorted(self, key=key, reverse=reverse))  # type: ignore
 
-    def shuffled(self) -> _typing.Self:
+    def shuffled(self) -> _typing_extensions.Self:
         """
         Return a shuffled version of the list.
 
@@ -198,7 +196,7 @@ class list(_collections.UserList[_T]):
 
         return _typing.cast(list[_U], self.__class__(map(function, self)))
 
-    def rotate(self, n: int = 1) -> _typing.Self:
+    def rotate(self, n: int = 1) -> _typing_extensions.Self:
         """
         Shift the list `n` times to the right. The items that overflow get prepended.
 
@@ -237,7 +235,7 @@ class list(_collections.UserList[_T]):
     def filter(
         self,
         function: _collections_abc.Callable[[_T], bool],
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         Discard each item `i` of the list if `function(i)` is `False`.
 
@@ -251,7 +249,9 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(filter(function, self))
 
-    def mask(self, mask_seq: _collections_abc.Sequence[bool]) -> _typing.Self:
+    def mask(
+        self, mask_seq: _collections_abc.Sequence[bool],
+    ) -> _typing_extensions.Self:
         """
         Keep every element at index `i` of the list if the corresponding
         element at index `i` of the mask sequence is `True` ; else, discard
@@ -270,7 +270,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
 
-    def deduplicate(self) -> _typing.Self:
+    def deduplicate(self) -> _typing_extensions.Self:
         """
         Remove duplicate elements from left to right (and keep original ones).
         Return the deduplicated list.
@@ -283,7 +283,7 @@ class list(_collections.UserList[_T]):
         []
         """
 
-        returned_list: _typing.Self = self.__class__()
+        returned_list: _typing_extensions.Self = self.__class__()
 
         for elem in self:
             if elem not in returned_list:
@@ -382,7 +382,7 @@ class list(_collections.UserList[_T]):
         self,
         function: _collections_abc.Callable[[_T, _T], _T],
         initial_value: _T,
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         "Insert" an operator (called a reducing function) between each element
         from left to right and return the intermediate values followed by the
@@ -414,7 +414,7 @@ class list(_collections.UserList[_T]):
         self,
         function: _collections_abc.Callable[[_T, _T], _T],
         initial_value: _T,
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         "Insert" an operator (called a reducing function) between each element
         from right to left and return the intermediate values followed by the
@@ -501,7 +501,7 @@ class list(_collections.UserList[_T]):
         self,
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         Fill on the right the list with `filler` and return the result.
 
@@ -553,7 +553,7 @@ class list(_collections.UserList[_T]):
     def gap_fill(
         self,
         filler: _T | _collections_abc.Callable[[_T, _T], _T],
-    ) -> _typing.Self:
+    ) -> _typing_extensions.Self:
         """
         Fill in-between the items with `filler` and return the result.
 
@@ -581,7 +581,9 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
-    def select(self, indexes: _collections_abc.Sequence[int]) -> _typing.Self:
+    def select(
+        self, indexes: _collections_abc.Sequence[int],
+    ) -> _typing_extensions.Self:
         """
         Select items at provided indexes. If an index is present several
         times, this will be reflected in the resulting list.
@@ -604,7 +606,7 @@ class list(_collections.UserList[_T]):
 
         return returned_list
 
-    def take(self, n: int) -> _typing.Self:
+    def take(self, n: int) -> _typing_extensions.Self:
         """
         Take `n` items from the list and return them.
 
@@ -626,7 +628,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[i] for i in range(n))
 
-    def take_right(self, n: int) -> _typing.Self:
+    def take_right(self, n: int) -> _typing_extensions.Self:
         """
         Take `n` items from the right of the list and return them.
 
@@ -650,7 +652,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(item for item in self[len(self) - n :])
 
-    def drop(self, n: int) -> _typing.Self:
+    def drop(self, n: int) -> _typing_extensions.Self:
         """
         Drop `n` items from the list and return the rest.
 
@@ -672,7 +674,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[n:])
 
-    def drop_right(self, n: int) -> _typing.Self:
+    def drop_right(self, n: int) -> _typing_extensions.Self:
         """
         Drop `n` items from the right of the list and return the rest.
 
@@ -694,7 +696,7 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[: len(self) - n])
 
-    def slice(self, start: int, stop: int) -> _typing.Self:
+    def slice(self, start: int, stop: int) -> _typing_extensions.Self:
         """
         Slice the list from `start` to `stop` and return the result.
 
@@ -728,7 +730,9 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
-    def partition(self, index: int) -> tuple[_typing.Self, _T, _typing.Self]:
+    def partition(
+        self, index: int,
+    ) -> tuple[_typing_extensions.Self, _T, _typing_extensions.Self]:
         """
         Return the element at index `index`, but also the two list slices
         before and after that element, in this order: (left, element, right).
@@ -753,7 +757,9 @@ class list(_collections.UserList[_T]):
 
         return self.take(index), self[index], self.drop(index + 1)
 
-    def bisect(self, index: int) -> tuple[_typing.Self, _typing.Self]:
+    def bisect(
+        self, index: int,
+    ) -> tuple[_typing_extensions.Self, _typing_extensions.Self]:
         """
         Bisect the list after `index` elements and return a pair of the produced
         lists.
@@ -781,7 +787,9 @@ class list(_collections.UserList[_T]):
         self,
         first_index: int,
         second_index: int,
-    ) -> tuple[_typing.Self, _typing.Self, _typing.Self]:
+    ) -> tuple[
+        _typing_extensions.Self, _typing_extensions.Self, _typing_extensions.Self,
+    ]:
         """
         Trisect the list at `first_index` and `second_index` and return a
         triple of the produced lists.
@@ -800,145 +808,6 @@ class list(_collections.UserList[_T]):
         return self.take(_left), self[_left:_right], self.drop(_right)
 
 
-class dict(_collections.UserDict[_K, _V]):
-    def __invert__(self) -> dict[_V, _K]:
-        returned_dict: dict[_V, _K] = dict()
-
-        for key, value in self.items():
-            if not isinstance(value, _collections_abc.Hashable):
-                raise TypeError(f"value {value} cannot be hashed to a key")
-
-            returned_dict[value] = key
-
-        return returned_dict
-
-    def sorted(
-        self,
-        *,
-        key: _collections_abc.Callable[[_K], _typeshed.SupportsRichComparison]
-        | None = None,
-        reverse: bool = False,
-    ) -> _typing.Self:
-        """
-        Return a sorted version of the dict.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).sorted()
-        {1: 2, 4: 5, 6: 3}
-        >>> dict({"oranges": 3, "apples": 5, "pears": 2}).sorted(key=len)
-        {"pears": 2, "apples": 5, "oranges": 3}
-        >>> dict().sorted()
-        {}
-        """
-
-        if key is None:
-            _key = None
-        else:
-
-            def _key_wrapper(value: tuple[_K, _V]) -> _typeshed.SupportsRichComparison:
-                return key(value[0])
-
-            _key = _key_wrapper
-
-        return self.__class__(
-            sorted(
-                self.as_list(),
-                key=_key,
-                reverse=reverse,
-            ),
-        )
-
-    def shuffled(self) -> _typing.Self:
-        """
-        Returned a shuffled version of the dict.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).shuffled()
-        {4: 5, 1: 2, 6: 3}
-        >>> dict({6: 3, 4: 5, 1: 2}).shuffled()
-        {1: 2, 6: 3, 4: 5}
-        >>> dict().shuffled()
-        {}
-        """
-
-        result = self.__class__()
-
-        while len(result) != len(self):
-            key, value = _random.choice(self.as_list())
-
-            if key not in result:
-                result[key] = value
-
-        return result
-
-    def filter(
-        self,
-        function: _collections_abc.Callable[[_K, _V], bool],
-    ) -> _typing.Self:
-        """
-        Discard every pair (`key`, `value`) of the dict if
-        `function(key, value)` is False.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).filter(lambda k, v: v >= k)
-        {4: 5, 1: 2}
-        >>> dict({"oranges": 3, "apples": 8, "pears": 2}).filter(lambda k, v: v >= len(k))
-        {"apples": 8}
-        >>> dict().filter(lambda k, v: k == v)
-        {}
-        """
-
-        return self.__class__(filter(lambda item: function(*item), self.items()))
-
-    def filter_keys(
-        self,
-        function: _collections_abc.Callable[[_K], bool],
-    ) -> _typing.Self:
-        """
-        Discard every pair (`key`, `value`) of the dict if `function(key)` is
-        False.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).filter_keys(lambda key: key > 3)
-        {6: 3, 4: 5}
-        >>> dict({"oranges": 3, "apples": 8, "pears": 2}).filter_keys(lambda key: "p" in key)
-        {"apples": 8, "pears": 2}
-        >>> dict().filter_keys(lambda key: key > 3)
-        {}
-        """
-
-        return self.__class__(filter(lambda item: function(item[0]), self.items()))
-
-    def filter_values(
-        self,
-        function: _collections_abc.Callable[[_V], bool],
-    ) -> _typing.Self:
-        """
-        Discard every pair (`key`, `value`) of the dict if `function(value)`
-        is False.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).filter_values(lambda value: value < 4)
-        {6: 3, 1: 2}
-        >>> dict({"oranges": 3, "apples": 8, "pears": 2}).filter_values(lambda value: value < 6)
-        {"oranges": 3, "pears": 2}
-        >>> dict().filter_values(lambda value: "hello" in value)
-        {}
-        """
-
-        return self.__class__(filter(lambda item: function(item[1]), self.items()))
-
-    def as_list(self) -> list[tuple[_K, _V]]:
-        """
-        Return a list of the pairs (key, value) of the dict.
-
-        >>> dict({6: 3, 4: 5, 1: 2}).as_list()
-        [(6, 3), (4, 5), (1, 2)]
-        >>> dict({"oranges": 3, "apples": 5, "pears": 2}).as_list()
-        [("oranges", 3), ("apples", 5), ("pears": 2)]
-        """
-
-        return list(self.items())
-
-
-class str(_collections.UserString): ...
-
-
 class _ListBuilder:
     def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T] | list[int]:
         if isinstance(key, slice):
@@ -948,11 +817,11 @@ class _ListBuilder:
         return list(_typing.cast(tuple[_T], key if isinstance(key, tuple) else (key,)))
 
 
-def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
+def _is_range_slice(value: _typing.Any, /) -> bool:
     return (
         isinstance(value, slice)
         and isinstance(value.stop, int)
-        and all(isinstance(v, int | None) for v in (value.start, value.step))
+        and all(isinstance(v, (int, type(None))) for v in (value.start, value.step))
     )
 
 

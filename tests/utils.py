@@ -1,5 +1,5 @@
 # type: ignore
-from magic_collections import list
+from magic_list import list
 
 
 def double(x):
@@ -12,7 +12,3 @@ def greater_than_four(x):
 
 def contains_letter_l(x):
     return "l" in x
-
-
-def len_mean(words):
-    return list(words).map(len).mean()

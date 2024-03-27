@@ -1,8 +1,8 @@
 # type: ignore
 import pytest
 
-from magic_collections import L
-from magic_collections import list
+from magic_list import L
+from magic_list import list
 
 
 @pytest.mark.parametrize(

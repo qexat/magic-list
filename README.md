@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD028 -->
 
-# Magic Collections
+# Magic List
 
-Magic Collections is a set of the built-in collections equipped with a bunch of additional methods.
+Magic List is a module that extends the built-in list type.
 
 > [!WARNING]
 > This library is still **in active development**.
@@ -24,7 +24,7 @@ For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21
 ```py
 import operator
 
-from magic_collections import L, list
+from magic_list import L, list
 
 def fibonacci_sequence(n: int) -> list[int]:
     # let's start by creating a list with the first two members, 0 and 1.
@@ -42,40 +42,8 @@ def fibonacci_sequence(n: int) -> list[int]:
 > The `L[0, 1]` notation is a way to construct magic lists nicely.
 
 > [!IMPORTANT]\
-> `list` is from `magic_collections` as a drop-in replacement of the built-in!
+> `list` is from `magic_list` as a drop-in replacement of the built-in!
 
 ### Fibonacci n-th member
 
 Wanted to define a function that returns the `n`-th member of the Fibonacci sequence for a laugh? We have that: it is called [`fibonacci_sequence(n)`](#fibonacci-sequence)`.last`!
-
-### Need fruits
-
-You're a small fruit merchant aiming to manage your inventory using a computer. Using a dictionary that pairs fruit names with their respective quantities, your goal is to identify which fruits are running low so you can restock them. However, there's no need to fret about oranges and mangoes, as their season has concluded, and you won't be able to find them anymore.
-
-```py
-from magic_collections import dict, L, list
-
-SEASON_OVER = L["oranges", "mangoes"]
-
-def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
-    return list(
-        # only keep what's needed to be bought!
-        stock.filter_values(lambda quantity: quantity == 0)
-        # remove oranges and mangoes cause season is over...
-        .filter_keys(lambda fruit: fruit not in SEASON_OVER)
-        # we only want fruit names now
-        .keys()
-    )
-
-```
-
-If you wanna be more fruity, you can even merge the filters into one:
-
-```py
-def get_fruits_with_empty_basket(stock: dict[str, int]) -> list[str]:
-    return list(
-        # combine the filters from earlier!
-        stock.filter(lambda fruit, quantity: fruit not in SEASON_OVER and quantity == 0)
-        .keys()
-    )
-```
