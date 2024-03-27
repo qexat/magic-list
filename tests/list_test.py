@@ -4,8 +4,8 @@ import random
 
 import pytest
 
-from magic_collections import L
-from magic_collections import list
+from magic_list import L
+from magic_list import list
 
 from .utils import contains_letter_l
 from .utils import double
@@ -25,20 +25,19 @@ _RANDOM_SEED = 0
 
 @pytest.fixture
 def prebuild_list(request):
-    match request.param:
-        case "list_int_filled":
-            return list([3, 5, 20, -1])
-        case "list_str_filled":
-            return list(
-                [
-                    "hello",
-                    "bonjour",
-                    "holá",
-                    "ciao",
-                ],
-            )
-        case "list_empty":
-            return list()
+    if request.param == "list_int_filled":
+        return list([3, 5, 20, -1])
+    elif request.param == "list_str_filled":
+        return list(
+            [
+                "hello",
+                "bonjour",
+                "holá",
+                "ciao",
+            ],
+        )
+    elif request.param == "list_empty":
+        return list()
 
 
 # *- PROPERTIES -* #

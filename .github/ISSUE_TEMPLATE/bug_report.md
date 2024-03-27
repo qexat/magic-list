@@ -12,6 +12,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -24,9 +25,10 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Configuration (please complete the following information):**
- - OS: [e.g. macOS]
- - Python version [e.g. 3.9, 3.11]
- - Magic Collections version [e.g. 1.0]
+
+- OS: [e.g. macOS]
+- Python version [e.g. 3.9, 3.11]
+- Magic List version [e.g. 1.0]
 
 **Additional context**
 Add any other context about the problem here.

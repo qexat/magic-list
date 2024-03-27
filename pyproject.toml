@@ -1,8 +1,8 @@
 [project]
-name = "magic-collections"
-description = "Magic Collections is a set of the built-in collections equipped with more methods."
+name = "magic-list"
+description = "Magic List is a module that extends the built-in list type."
 version = "0.1.0-dev1"
-keywords = ["collections", "list", "dict", "set", "built-in"]
+keywords = ["collections", "list", "built-in", "extension"]
 
 authors = [{ name = "Qexat", email = "contact@qexat.com" }]
 
@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [project.urls]
-repository = "https://github.com/qexat/magic-collections"
+repository = "https://github.com/qexat/magic-list"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4", "coverage>=7.4", "pyright>=1.1"]
