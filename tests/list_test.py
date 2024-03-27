@@ -988,6 +988,7 @@ def test_slice_err(prebuild_list, args, exception, message):
         ["list_int_filled", [2], (list([3, 5]), list([20, -1]))],
         ["list_int_filled", [0], (list(), list([3, 5, 20, -1]))],
         ["list_int_filled", [4], (list([3, 5, 20, -1]), list())],
+        ["list_int_filled", [-2], (list(), list([3, 5, 20, -1]))],
         ["list_str_filled", [2], (list(["hello", "bonjour"]), list(["holá", "ciao"]))],
         ["list_str_filled", [6], (list(["hello", "bonjour", "holá", "ciao"]), list())],
     ],
@@ -1000,12 +1001,6 @@ def test_bisect_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
-        [
-            "list_str_filled",
-            [-2],
-            ValueError,
-            "cannot bisect after a negative amount of elements",
-        ],
         ["list_empty", [2], TypeError, "cannot bisect an empty list"],
     ],
     indirect=["prebuild_list"],
