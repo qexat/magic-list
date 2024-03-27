@@ -6,9 +6,10 @@ Stub file for the `prelude` module.
 # as this library is intended to be star-imported -- this style is often considered
 # bad practice, but here the user desires to override the built-ins, so it's fine.
 import collections as _collections
+import typing as _typing
+
 import _collections_abc
 import _typeshed
-import typing as _typing
 
 __all__ = [
     "list",
