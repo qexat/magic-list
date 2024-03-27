@@ -95,7 +95,9 @@ class list(_collections.UserList[_T]):
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
-    zip_with = merge
+    zip_with = _typing_extensions.deprecated(
+        "zip_with is deprecated - please use merge instead",
+    )(merge)
     def sum(self) -> _T: ...
     @_typing.overload
     def mean(self: list[int]) -> float: ...
