@@ -766,7 +766,7 @@ class list(_collections.UserList[_T]):
         _left = _minmax(min(first_index, second_index), 0, len(self))
         _right = _minmax(max(first_index, second_index), 0, len(self))
 
-        return self.take(_left), self[_left + 1 : _right], self.drop(_right)
+        return self.take(_left), self[_left:_right], self.drop(_right)
 
 
 class dict(_collections.UserDict[_K, _V]):

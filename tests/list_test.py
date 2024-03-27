@@ -1034,7 +1034,7 @@ def test_trisect_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_empty", [2], TypeError, "cannot trisect an empty list"],
+        ["list_empty", [0, 2], TypeError, "cannot trisect an empty list"],
     ],
     indirect=["prebuild_list"],
 )
