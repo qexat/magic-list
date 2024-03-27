@@ -250,7 +250,8 @@ class list(_collections.UserList[_T]):
         return self.__class__(filter(function, self))
 
     def mask(
-        self, mask_seq: _collections_abc.Sequence[bool],
+        self,
+        mask_seq: _collections_abc.Sequence[bool],
     ) -> _typing_extensions.Self:
         """
         Keep every element at index `i` of the list if the corresponding
@@ -431,7 +432,7 @@ class list(_collections.UserList[_T]):
 
         return self.reversed().scan(lambda a, b: function(b, a), initial_value)
 
-    def zip_with(
+    def merge(
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
@@ -441,11 +442,11 @@ class list(_collections.UserList[_T]):
         `s_i` and `o_i` are the items at index `i` of `self` and `other`
         respectively.
 
-        >>> L[3, 5, 2].zip_with(operator.add, [-1, 4, -9])
+        >>> L[3, 5, 2].merge(operator.add, [-1, 4, -9])
         [2, 9, -7]
-        >>> list().zip_with(operator.sub, [])
+        >>> list().merge(operator.sub, [])
         []
-        >>> L[3, 5, 2].zip_with(operator.add, [6])
+        >>> L[3, 5, 2].merge(operator.add, [6])
         *- TypeError: the length of the two sequences must be equal -*
         """
 
@@ -456,6 +457,8 @@ class list(_collections.UserList[_T]):
             list[_V],
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
+
+    zip_with = merge
 
     def sum(self) -> _T:
         """
@@ -582,7 +585,8 @@ class list(_collections.UserList[_T]):
         return returned_list
 
     def select(
-        self, indexes: _collections_abc.Sequence[int],
+        self,
+        indexes: _collections_abc.Sequence[int],
     ) -> _typing_extensions.Self:
         """
         Select items at provided indexes. If an index is present several
@@ -731,7 +735,8 @@ class list(_collections.UserList[_T]):
         return self.__class__(self[start : stop + 1])
 
     def partition(
-        self, index: int,
+        self,
+        index: int,
     ) -> tuple[_typing_extensions.Self, _T, _typing_extensions.Self]:
         """
         Return the element at index `index`, but also the two list slices
@@ -758,7 +763,8 @@ class list(_collections.UserList[_T]):
         return self.take(index), self[index], self.drop(index + 1)
 
     def bisect(
-        self, index: int,
+        self,
+        index: int,
     ) -> tuple[_typing_extensions.Self, _typing_extensions.Self]:
         """
         Bisect the list after `index` elements and return a pair of the produced
@@ -788,7 +794,9 @@ class list(_collections.UserList[_T]):
         first_index: int,
         second_index: int,
     ) -> tuple[
-        _typing_extensions.Self, _typing_extensions.Self, _typing_extensions.Self,
+        _typing_extensions.Self,
+        _typing_extensions.Self,
+        _typing_extensions.Self,
     ]:
         """
         Trisect the list at `first_index` and `second_index` and return a

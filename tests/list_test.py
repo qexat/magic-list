@@ -520,8 +520,8 @@ def test_scan_right_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_zip_with_ok(prebuild_list, args, result):
-    assert prebuild_list.zip_with(*args) == result
+def test_merge_ok(prebuild_list, args, result):
+    assert prebuild_list.merge(*args) == result
 
 
 @pytest.mark.parametrize(
@@ -536,9 +536,9 @@ def test_zip_with_ok(prebuild_list, args, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_zip_with_err(prebuild_list, args, exception, message):
+def test_merge_err(prebuild_list, args, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.zip_with(*args)
+        prebuild_list.merge(*args)
 
 
 @pytest.mark.parametrize(
