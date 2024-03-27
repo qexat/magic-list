@@ -892,8 +892,7 @@ class dict(_collections.UserDict[_K, _V]):
         return list(self.items())
 
 
-class str(_collections.UserString):
-    ...
+class str(_collections.UserString): ...
 
 
 class _ListBuilder:
@@ -913,8 +912,11 @@ def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
     )
 
 
-_MagicListLiteral = _typing.NewType("[Magic List Literal]", _ListBuilder)
-L = _MagicListLiteral(_ListBuilder())
+MagicListLiteral = _typing.NewType(
+    "MagicListLiteral",
+    _ListBuilder,
+)
+L = MagicListLiteral(_ListBuilder())
 """
 Literal-like for magic lists.
 """
