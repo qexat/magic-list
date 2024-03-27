@@ -740,7 +740,7 @@ class list(_collections.UserList[_T]):
         >>> L[2, 4, 8, 16, 32].bisect(8)
         ([2, 4, 8, 16, 32], [])
         >>> L[2, 4, 8, 16, 32].bisect(-3)
-        *- ValueError: cannot bisect after a negative amount of elements -*
+        ([], [2, 4, 8, 16, 32])
         >>> list().bisect(2)
         *- TypeError: cannot bisect an empty list -*
         """
@@ -751,7 +751,7 @@ class list(_collections.UserList[_T]):
         if index < 0:
             raise ValueError("cannot bisect after a negative amount of elements")
 
-        _n = min(index, len(self))
+        _n = min(max(0, index), len(self))
 
         return self.take(_n), self.drop(_n)
 
