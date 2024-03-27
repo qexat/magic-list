@@ -238,5 +238,8 @@ class _ListBuilder:
     @_typing.overload
     def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T]: ...
 
-_MagicListLiteral = _typing.NewType("[Magic List Literal]", _ListBuilder)
-L = _MagicListLiteral(_ListBuilder())
+MagicListLiteral: _typing.Final = _typing.NewType(
+    "MagicListLiteral",
+    _ListBuilder,
+)
+L: MagicListLiteral
