@@ -729,6 +729,22 @@ class list(_collections.UserList[_T]):
         return self.__class__(self[start : stop + 1])
 
     def partition(self, index: int) -> tuple[_typing.Self, _T, _typing.Self]:
+        """
+        Return the element at index `index`, but also the two list slices
+        before and after that element, in this order: (left, element, right).
+
+        >>> L[2, 4, 8, 16, 32].partition(2)
+        ([2, 4], 8, [16, 32])
+        >>> L[2, 4, 8, 16, 32].partition(0)
+        ([], 2, [4, 8, 16, 32])
+        >>> L[2, 4, 8, 16, 32].partition(4)
+        ([2, 4, 8, 16], 32, [])
+        >>> L[2, 4, 8, 16, 32].partition(-2)
+        *- IndexError: partition index cannot be out of bounds -*
+        >>> list().partition(2)
+        *- TypeError: cannot partition an empty list -*
+        """
+
         if not self:
             raise TypeError("cannot partition an empty list")
 
@@ -769,6 +785,15 @@ class list(_collections.UserList[_T]):
         first_index: int,
         second_index: int,
     ) -> tuple[_typing.Self, _typing.Self, _typing.Self]:
+        """
+        Trisect the list at `first_index` and `second_index` and return a
+        triple of the produced lists.
+
+        The left and right cutting indexes are determined by the smallest and
+        largest value of the two arguments respectively ; `first_index` is not
+        required to be smaller.
+        """
+
         if not self:
             raise TypeError("cannot trisect an empty list")
 
