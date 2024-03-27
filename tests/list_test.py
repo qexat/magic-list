@@ -4,12 +4,12 @@ import random
 
 import pytest
 
-from .utils import contains_letter_l
-from .utils import double
-from .utils import greater_than_four
 from magic_collections import L
 from magic_collections import list
 
+from .utils import contains_letter_l
+from .utils import double
+from .utils import greater_than_four
 
 """
 • `test_*_ok` => for function calls that return a result

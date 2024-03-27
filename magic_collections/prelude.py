@@ -12,6 +12,7 @@ Note on imports:
     often considered bad practice, but here the user desires to override the
     built-ins, so it's fine.
 """
+
 from __future__ import annotations
 
 import collections as _collections
@@ -20,7 +21,6 @@ import functools as _functools
 import operator as _operator
 import random as _random
 import typing as _typing
-
 
 if _typing.TYPE_CHECKING:  # pragma: no cover
     import _typeshed
