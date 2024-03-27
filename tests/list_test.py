@@ -1043,6 +1043,33 @@ def test_trisect_err(prebuild_list, args, exception, message):
         prebuild_list.trisect(*args)
 
 
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [2], (list([3, 5]), 20, list([-1]))],
+        ["list_int_filled", [0], (list(), 3, list([5, 20, -1]))],
+        ["list_int_filled", [3], (list([3, 5, 20]), -1, list())],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_partition_ok(prebuild_list, args, result):
+    assert prebuild_list.partition(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_int_filled", [-1], IndexError, "partition index cannot be negative"],
+        ["list_int_filled", [8], IndexError, "partition index cannot be out of bounds"],
+        ["list_empty", [2], TypeError, "cannot partition an empty list"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_partition_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.partition(*args)
+
+
 # *- "combined" tests -* #
 
 
