@@ -1059,7 +1059,12 @@ def test_partition_ok(prebuild_list, args, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "args", "exception", "message"],
     [
-        ["list_int_filled", [-1], IndexError, "partition index cannot be negative"],
+        [
+            "list_int_filled",
+            [-1],
+            IndexError,
+            "partition index cannot be out of bounds",
+        ],
         ["list_int_filled", [8], IndexError, "partition index cannot be out of bounds"],
         ["list_empty", [2], TypeError, "cannot partition an empty list"],
     ],

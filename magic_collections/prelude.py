@@ -728,6 +728,15 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
+    def partition(self, index: int) -> tuple[_typing.Self, _T, _typing.Self]:
+        if not self:
+            raise TypeError("cannot partition an empty list")
+
+        if not (0 <= index < len(self)):
+            raise IndexError("partition index cannot be out of bounds")
+
+        return self.take(index), self[index], self.drop(index + 1)
+
     def bisect(self, n: int) -> tuple[_typing.Self, _typing.Self]:
         """
         Bisect the list after `n` elements and return a pair of the produced
