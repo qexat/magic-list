@@ -1,5 +1,4 @@
 # type: ignore
-from magic_list import list
 
 
 def double(x):
