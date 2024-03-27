@@ -728,9 +728,9 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
-    def bisect(self, n: int) -> tuple[_typing.Self, _typing.Self]:
+    def bisect(self, index: int) -> tuple[_typing.Self, _typing.Self]:
         """
-        Bisect the list after `n` elements and return a pair of the produced
+        Bisect the list after `index` elements and return a pair of the produced
         lists.
 
         >>> L[2, 4, 8, 16, 32].bisect(2)
@@ -748,10 +748,10 @@ class list(_collections.UserList[_T]):
         if not self:
             raise TypeError("cannot bisect an empty list")
 
-        if n < 0:
+        if index < 0:
             raise ValueError("cannot bisect after a negative amount of elements")
 
-        _n = min(n, len(self))
+        _n = min(index, len(self))
 
         return self.take(_n), self.drop(_n)
 
