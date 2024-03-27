@@ -1015,6 +1015,34 @@ def test_bisect_err(prebuild_list, args, exception, message):
         prebuild_list.bisect(*args)
 
 
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "result"],
+    [
+        ["list_int_filled", [1, 3], (list([3]), list([5, 20]), list([-1]))],
+        ["list_int_filled", [0, 4], (list(), list([3, 5, 20, -1]), list())],
+        ["list_int_filled", [0, 0], (list(), list(), list([3, 5, 20, -1]))],
+        ["list_int_filled", [4, 4], (list([3, 5, 20, -1]), list(), list())],
+        ["list_int_filled", [-2, 2], (list(), list([3, 5]), list([20, -1]))],
+        ["list_int_filled", [2, 8], (list([3, 5]), list([20, -1]), list())],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_trisect_ok(prebuild_list, args, result):
+    assert prebuild_list.trisect(*args) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "args", "exception", "message"],
+    [
+        ["list_empty", [2], TypeError, "cannot trisect an empty list"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_trisect_err(prebuild_list, args, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.trisect(*args)
+
+
 # *- "combined" tests -* #
 
 

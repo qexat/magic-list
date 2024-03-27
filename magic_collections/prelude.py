@@ -755,6 +755,19 @@ class list(_collections.UserList[_T]):
 
         return self.take(_n), self.drop(_n)
 
+    def trisect(
+        self,
+        first_index: int,
+        second_index: int,
+    ) -> tuple[_typing.Self, _typing.Self, _typing.Self]:
+        if not self:
+            raise TypeError("cannot trisect an empty list")
+
+        _left = _minmax(min(first_index, second_index), 0, len(self))
+        _right = _minmax(max(first_index, second_index), 0, len(self))
+
+        return self.take(_left), self[_left + 1 : _right], self.drop(_right)
+
 
 class dict(_collections.UserDict[_K, _V]):
     def __invert__(self) -> dict[_V, _K]:
@@ -910,6 +923,10 @@ def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
         and isinstance(value.stop, int)
         and all(isinstance(v, int | None) for v in (value.start, value.step))
     )
+
+
+def _minmax(value: int, left: int, right: int) -> int:
+    return max(left, min(value, right))
 
 
 MagicListLiteral = _typing.NewType(
