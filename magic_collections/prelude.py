@@ -773,10 +773,7 @@ class list(_collections.UserList[_T]):
         if not self:
             raise TypeError("cannot bisect an empty list")
 
-        if index < 0:
-            raise ValueError("cannot bisect after a negative amount of elements")
-
-        _n = min(max(0, index), len(self))
+        _n = _minmax(index, 0, len(self))
 
         return self.take(_n), self.drop(_n)
 
