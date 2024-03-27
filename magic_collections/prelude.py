@@ -728,6 +728,31 @@ class list(_collections.UserList[_T]):
 
         return self.__class__(self[start : stop + 1])
 
+    def partition(self, index: int) -> tuple[_typing.Self, _T, _typing.Self]:
+        """
+        Return the element at index `index`, but also the two list slices
+        before and after that element, in this order: (left, element, right).
+
+        >>> L[2, 4, 8, 16, 32].partition(2)
+        ([2, 4], 8, [16, 32])
+        >>> L[2, 4, 8, 16, 32].partition(0)
+        ([], 2, [4, 8, 16, 32])
+        >>> L[2, 4, 8, 16, 32].partition(4)
+        ([2, 4, 8, 16], 32, [])
+        >>> L[2, 4, 8, 16, 32].partition(-2)
+        *- IndexError: partition index cannot be out of bounds -*
+        >>> list().partition(2)
+        *- TypeError: cannot partition an empty list -*
+        """
+
+        if not self:
+            raise TypeError("cannot partition an empty list")
+
+        if not (0 <= index < len(self)):
+            raise IndexError("partition index cannot be out of bounds")
+
+        return self.take(index), self[index], self.drop(index + 1)
+
     def bisect(self, index: int) -> tuple[_typing.Self, _typing.Self]:
         """
         Bisect the list after `index` elements and return a pair of the produced
@@ -754,6 +779,28 @@ class list(_collections.UserList[_T]):
         _n = min(max(0, index), len(self))
 
         return self.take(_n), self.drop(_n)
+
+    def trisect(
+        self,
+        first_index: int,
+        second_index: int,
+    ) -> tuple[_typing.Self, _typing.Self, _typing.Self]:
+        """
+        Trisect the list at `first_index` and `second_index` and return a
+        triple of the produced lists.
+
+        The left and right cutting indexes are determined by the smallest and
+        largest value of the two arguments respectively ; `first_index` is not
+        required to be smaller.
+        """
+
+        if not self:
+            raise TypeError("cannot trisect an empty list")
+
+        _left = _minmax(min(first_index, second_index), 0, len(self))
+        _right = _minmax(max(first_index, second_index), 0, len(self))
+
+        return self.take(_left), self[_left:_right], self.drop(_right)
 
 
 class dict(_collections.UserDict[_K, _V]):
@@ -910,6 +957,10 @@ def _is_range_slice(value: _typing.Any, /) -> _typing.TypeGuard[slice]:
         and isinstance(value.stop, int)
         and all(isinstance(v, int | None) for v in (value.start, value.step))
     )
+
+
+def _minmax(value: int, left: int, right: int) -> int:
+    return max(left, min(value, right))
 
 
 MagicListLiteral = _typing.NewType(
