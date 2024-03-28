@@ -598,52 +598,46 @@ def test_mean_err(prebuild_list, exception, message):
 @pytest.mark.parametrize(
     ["prebuild_list", "filler", "n", "result"],
     [
-        ["list_int_filled", 0, 3, list((3, 5, 20, -1, 0, 0, 0))],
+        ["list_int_filled", 0, 3, list((0, 0, 0, 3, 5, 20, -1))],
         [
             "list_str_filled",
             "annyeong",
             2,
             list(
-                [
+                (
+                    "annyeong",
+                    "annyeong",
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
-                    "annyeong",
-                    "annyeong",
-                ],
+                ),
             ),
         ],
         ["list_empty", 10, 5, list((10, 10, 10, 10, 10))],
         ["list_empty", "hi", 4, list(("hi", "hi", "hi", "hi"))],
-        [
-            "list_int_filled",
-            sum,
-            3,
-            list((3, 5, 20, -1, 27, 54, 108)),
-        ],
+        ["list_int_filled", sum, 3, list((108, 54, 27, 3, 5, 20, -1))],
         [
             "list_str_filled",
-            lambda lst: lst[-1][::-1],
+            lambda lst: lst[0][::-1],
             2,
             list(
-                [
+                (
+                    "hello",
+                    "olleh",
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
-                    "oaic",
-                    "ciao",
-                ],
+                ),
             ),
         ],
-        ["list_empty", lambda lst: len(lst), 4, list((0, 1, 2, 3))],
+        ["list_empty", len, 4, list((3, 2, 1, 0))],
     ],
     indirect=["prebuild_list"],
 )
-def test_fill_ok(prebuild_list, filler, n, result):
-    prebuild_list.fill(filler, n)
-    assert prebuild_list == result
+def test_fill_left_ok(prebuild_list, filler, n, result):
+    assert prebuild_list.fill_left(filler, n) == result
 
 
 @pytest.mark.parametrize(
@@ -659,9 +653,9 @@ def test_fill_ok(prebuild_list, filler, n, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_fill_err(prebuild_list, filler, n, exception, message):
+def test_fill_left_err(prebuild_list, filler, n, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.fill(filler, n)
+        prebuild_list.fill_left(filler, n)
 
 
 @pytest.mark.parametrize(
@@ -673,14 +667,14 @@ def test_fill_err(prebuild_list, filler, n, exception, message):
             "annyeong",
             2,
             list(
-                [
+                (
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
                     "annyeong",
                     "annyeong",
-                ],
+                ),
             ),
         ],
         ["list_empty", 10, 5, list((10, 10, 10, 10, 10))],
@@ -696,22 +690,22 @@ def test_fill_err(prebuild_list, filler, n, exception, message):
             lambda lst: lst[-1][::-1],
             2,
             list(
-                [
+                (
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
                     "oaic",
                     "ciao",
-                ],
+                ),
             ),
         ],
         ["list_empty", len, 4, list((0, 1, 2, 3))],
     ],
     indirect=["prebuild_list"],
 )
-def test_filled_ok(prebuild_list, filler, n, result):
-    assert prebuild_list.filled(filler, n) == result
+def test_fill_right_ok(prebuild_list, filler, n, result):
+    assert prebuild_list.fill_right(filler, n) == result
 
 
 @pytest.mark.parametrize(
@@ -727,9 +721,9 @@ def test_filled_ok(prebuild_list, filler, n, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_filled_err(prebuild_list, filler, n, exception, message):
+def test_fill_right_err(prebuild_list, filler, n, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.filled(filler, n)
+        prebuild_list.fill_right(filler, n)
 
 
 @pytest.mark.parametrize(
@@ -1090,4 +1084,4 @@ def test_fib():
     base = L[0, 1]
     result = L[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
-    assert base.filled(lambda lst: lst.take_right(2).sum(), 9) == result
+    assert base.fill_right(lambda lst: lst.take_right(2).sum(), 9) == result

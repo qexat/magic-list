@@ -495,7 +495,38 @@ class list(collections.UserList[_T]):
 
         return sum(self) / len(self)
 
-    def filled(
+    def fill_left(
+        self,
+        filler: _T | collections.abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> typing_extensions.Self:
+        """
+        Fill on the left the list with `filler` and return the result.
+
+        If `filler` is a function, it takes the current list (at the current
+        filling iteration) and produces a new value to be appended.
+
+        >>> L[3, 5, 2].fill_left(0, 5)
+        [0, 0, 0, 0, 0, 3, 5, 2]
+        >>> L[3, 5, 2].fill_left(sum, 3)
+        [40, 20, 10, 3, 5, 2]
+        >>> list().fill_left(1, 10)
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        >>> L[3, 5, 2].fill_left(0, -1)
+        *- ValueError: the number of times to fill cannot be negative -*
+        """
+
+        if n < 0:
+            raise ValueError("the number of times to fill cannot be negative")
+
+        returned_list = self.copy()
+
+        for _ in range(n):
+            returned_list.prepend(filler(returned_list) if callable(filler) else filler)
+
+        return returned_list
+
+    def fill_right(
         self,
         filler: _T | collections.abc.Callable[[list[_T]], _T],
         n: int,
@@ -506,13 +537,13 @@ class list(collections.UserList[_T]):
         If `filler` is a function, it takes the current list (at the current
         filling iteration) and produces a new value to be appended.
 
-        >>> L[3, 5, 2].filled(0, 5)
+        >>> L[3, 5, 2].fill_right(0, 5)
         [3, 5, 2, 0, 0, 0, 0, 0]
-        >>> L[3, 5, 2].filled(sum, 3)
+        >>> L[3, 5, 2].fill_right(sum, 3)
         [3, 5, 2, 10, 20, 40]
-        >>> list().filled(1, 10)
+        >>> list().fill_right(1, 10)
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        >>> L[3, 5, 2].filled(0, -1)
+        >>> L[3, 5, 2].fill_right(0, -1)
         *- ValueError: the number of times to fill cannot be negative -*
         """
 
@@ -525,28 +556,6 @@ class list(collections.UserList[_T]):
             returned_list.append(filler(returned_list) if callable(filler) else filler)
 
         return returned_list
-
-    def fill(
-        self,
-        filler: _T | collections.abc.Callable[[list[_T]], _T],
-        n: int,
-    ) -> None:
-        """
-        In-place equivalent of `filled`.
-
-        >>> lst = L[3, 5, 2]
-        >>> lst.fill(0, 5)
-        >>> print(lst)
-        [3, 5, 2, 0, 0, 0, 0, 0]
-        >>> lst.fill(0, -1)
-        *- ValueError: the number of times to fill cannot be negative -*
-        """
-
-        if n < 0:
-            raise ValueError("the number of times to fill cannot be negative")
-
-        for _ in range(n):
-            self.append(filler(self) if callable(filler) else filler)
 
     def gap_fill(
         self,
