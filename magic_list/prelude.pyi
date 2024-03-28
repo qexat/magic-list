@@ -105,7 +105,7 @@ class list(collections.UserList[_T]):
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> None: ...
-    def filled(
+    def fill_right(
         self,
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,

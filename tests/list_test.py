@@ -710,8 +710,8 @@ def test_fill_err(prebuild_list, filler, n, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_filled_ok(prebuild_list, filler, n, result):
-    assert prebuild_list.filled(filler, n) == result
+def test_fill_right_ok(prebuild_list, filler, n, result):
+    assert prebuild_list.fill_right(filler, n) == result
 
 
 @pytest.mark.parametrize(
@@ -727,9 +727,9 @@ def test_filled_ok(prebuild_list, filler, n, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_filled_err(prebuild_list, filler, n, exception, message):
+def test_fill_right_err(prebuild_list, filler, n, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.filled(filler, n)
+        prebuild_list.fill_right(filler, n)
 
 
 @pytest.mark.parametrize(
@@ -1090,4 +1090,4 @@ def test_fib():
     base = L[0, 1]
     result = L[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
-    assert base.filled(lambda lst: lst.take_right(2).sum(), 9) == result
+    assert base.fill_right(lambda lst: lst.take_right(2).sum(), 9) == result
