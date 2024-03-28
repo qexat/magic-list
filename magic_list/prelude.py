@@ -495,6 +495,37 @@ class list(collections.UserList[_T]):
 
         return sum(self) / len(self)
 
+    def fill_left(
+        self,
+        filler: _T | collections.abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> typing_extensions.Self:
+        """
+        Fill on the left the list with `filler` and return the result.
+
+        If `filler` is a function, it takes the current list (at the current
+        filling iteration) and produces a new value to be appended.
+
+        >>> L[3, 5, 2].fill_left(0, 5)
+        [0, 0, 0, 0, 0, 3, 5, 2]
+        >>> L[3, 5, 2].fill_left(sum, 3)
+        [40, 20, 10, 3, 5, 2]
+        >>> list().fill_left(1, 10)
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        >>> L[3, 5, 2].fill_left(0, -1)
+        *- ValueError: the number of times to fill cannot be negative -*
+        """
+
+        if n < 0:
+            raise ValueError("the number of times to fill cannot be negative")
+
+        returned_list = self.copy()
+
+        for _ in range(n):
+            returned_list.prepend(filler(returned_list) if callable(filler) else filler)
+
+        return returned_list
+
     def fill_right(
         self,
         filler: _T | collections.abc.Callable[[list[_T]], _T],

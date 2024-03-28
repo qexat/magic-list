@@ -598,20 +598,83 @@ def test_mean_err(prebuild_list, exception, message):
 @pytest.mark.parametrize(
     ["prebuild_list", "filler", "n", "result"],
     [
+        ["list_int_filled", 0, 3, list((0, 0, 0, 3, 5, 20, -1))],
+        [
+            "list_str_filled",
+            "annyeong",
+            2,
+            list(
+                (
+                    "annyeong",
+                    "annyeong",
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                ),
+            ),
+        ],
+        ["list_empty", 10, 5, list((10, 10, 10, 10, 10))],
+        ["list_empty", "hi", 4, list(("hi", "hi", "hi", "hi"))],
+        ["list_int_filled", sum, 3, list((108, 54, 27, 3, 5, 20, -1))],
+        [
+            "list_str_filled",
+            lambda lst: lst[0][::-1],
+            2,
+            list(
+                (
+                    "hello",
+                    "olleh",
+                    "hello",
+                    "bonjour",
+                    "holá",
+                    "ciao",
+                ),
+            ),
+        ],
+        ["list_empty", len, 4, list((3, 2, 1, 0))],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_fill_left_ok(prebuild_list, filler, n, result):
+    assert prebuild_list.fill_left(filler, n) == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "filler", "n", "exception", "message"],
+    [
+        [
+            "list_int_filled",
+            0,
+            -2,
+            ValueError,
+            "the number of times to fill cannot be negative",
+        ],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_fill_left_err(prebuild_list, filler, n, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.fill_left(filler, n)
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "filler", "n", "result"],
+    [
         ["list_int_filled", 0, 3, list((3, 5, 20, -1, 0, 0, 0))],
         [
             "list_str_filled",
             "annyeong",
             2,
             list(
-                [
+                (
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
                     "annyeong",
                     "annyeong",
-                ],
+                ),
             ),
         ],
         ["list_empty", 10, 5, list((10, 10, 10, 10, 10))],
@@ -627,14 +690,14 @@ def test_mean_err(prebuild_list, exception, message):
             lambda lst: lst[-1][::-1],
             2,
             list(
-                [
+                (
                     "hello",
                     "bonjour",
                     "holá",
                     "ciao",
                     "oaic",
                     "ciao",
-                ],
+                ),
             ),
         ],
         ["list_empty", len, 4, list((0, 1, 2, 3))],

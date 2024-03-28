@@ -100,6 +100,11 @@ class list(collections.UserList[_T]):
     @typing.overload
     def mean(self: list[complex]) -> complex: ...
     # *- expansion-based HOFs -* #
+    def fill_left(
+        self,
+        filler: _T | _collections_abc.Callable[[list[_T]], _T],
+        n: int,
+    ) -> typing_extensions.Self: ...
     def fill_right(
         self,
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
