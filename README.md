@@ -38,9 +38,6 @@ def fibonacci_sequence(n: int) -> list[int]:
 > [!NOTE]\
 > The `L[0, 1]` notation is a way to construct magic lists nicely.
 
-> [!IMPORTANT]\
-> `list` is from `magic_list` as a drop-in replacement of the built-in!
-
 ### Fibonacci n-th member
 
 Wanted to define a function that returns the `n`-th member of the Fibonacci sequence for a laugh? We have that: it is called [`fibonacci_sequence(n)`](#fibonacci-sequence)`.last`!
