@@ -4,9 +4,6 @@
 
 Magic List is a module that extends the built-in list type.
 
-> [!WARNING]
-> This library is still **in active development**.
-
 > [!NOTE]
 > Its development is entirely test-driven: it is battery-tested and requires a
 > test coverage of 100%. It also provides typing stub files.
