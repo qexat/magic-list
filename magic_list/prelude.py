@@ -458,8 +458,6 @@ class list(_collections.UserList[_T]):
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
 
-    zip_with = merge
-
     def sum(self) -> _T:
         """
         Return the sum of the list. The elements must support addition,
