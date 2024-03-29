@@ -2,6 +2,8 @@
 
 # Magic List
 
+[![Palestine support banner](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg)](https://irusa.org/middle-east/palestine/)
+
 Magic List is a module that extends the built-in list type.
 
 > [!NOTE]
