@@ -3,7 +3,7 @@ Stub file for the `prelude` module.
 """
 
 import collections
-import typing as typing
+import typing
 
 import _collections_abc
 import _typeshed
@@ -92,6 +92,14 @@ class list(collections.UserList[_T]):
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
+    @typing.overload
+    def flatten(self: list[_collections_abc.Iterable[_T]]) -> list[_T]: ...
+    @typing.overload
+    def flatten(
+        self: list[_collections_abc.Iterable[_collections_abc.Iterable[_T]]],
+    ) -> list[_T]: ...
+    @typing.overload
+    def flatten(self) -> list[typing.Any]: ...
     def sum(self) -> _T: ...
     @typing.overload
     def mean(self: list[int]) -> float: ...

@@ -40,6 +40,29 @@ def prebuild_list(request):
         return list()
 
 
+@pytest.fixture
+def recursive_list(request):
+    if request.param == "direct":
+        lst = list()
+        lst.append(lst)
+
+        return lst
+    elif request.param == "subrecursive":
+        lst = list()
+        sublst = list()
+        sublst.append(sublst)
+        lst.append(sublst)
+
+        return lst
+    elif request.param == "subrecursive_with_builtin":
+        lst = list()
+        sublst = []
+        sublst.append(sublst)
+        lst.append(sublst)
+
+        return lst
+
+
 # *- PROPERTIES -* #
 
 
@@ -545,6 +568,40 @@ def test_merge_ok(prebuild_list, function, other, result):
 def test_merge_err(prebuild_list, function, other, exception, message):
     with pytest.raises(exception, match=message):
         prebuild_list.merge(function, other)
+
+
+def test_flatten_ok():
+    l0 = list([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    l1 = list([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])
+    l2 = list([[[0, 1], [2, 3]], [[4, 5], [6, 7]], [[8, 9], [10, 11]]])
+
+    assert l0.flatten() == l1.flatten() == l2.flatten() == l0
+
+
+@pytest.mark.parametrize(
+    ["recursive_list", "exception", "message"],
+    [
+        [
+            "direct",
+            ValueError,
+            "cannot flatten list because it contains recursive elements",
+        ],
+        [
+            "subrecursive",
+            ValueError,
+            "cannot flatten list because it contains recursive elements",
+        ],
+        [
+            "subrecursive_with_builtin",
+            ValueError,
+            "cannot flatten list because it contains recursive elements",
+        ],
+    ],
+    indirect=["recursive_list"],
+)
+def test_flatten_err(recursive_list, exception, message):
+    with pytest.raises(exception, match=message):
+        recursive_list.flatten()
 
 
 @pytest.mark.parametrize(
