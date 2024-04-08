@@ -455,6 +455,48 @@ class list(collections.UserList[_T]):
             self.__class__(function(a, b) for a, b in zip(self, other)),
         )
 
+    def flatten(self, *, _base: list[typing.Any] | None = None) -> list[typing.Any]:
+        """
+        Flatten the contents to a 1-dimension list. If the list contains
+        itself, it cannot be flattened and a `ValueError` is raised.
+
+        >>> L[[3, 5, 2], [8, 4, 1], [7, 6, 9]].flatten()
+        [3, 5, 2, 8, 4, 1, 7, 6, 9]
+        >>> list().flatten()
+        []
+        >>> l = list()
+        >>> l.append(l)
+        >>> l.flatten()
+        *- ValueError: cannot flatten list because it contains recursive elements -*
+        """
+
+        err = ValueError("cannot flatten list because it contains recursive elements")
+
+        result: list[typing.Any] = list()
+
+        for element in self:
+            if element is self or element is _base:
+                raise err
+
+            base = self if _base is None else _base
+
+            if isinstance(element, list):
+                result.extend(element.flatten(_base=base))
+            elif isinstance(element, collections.abc.Iterable):
+                try:
+                    result.extend(
+                        list(
+                            typing.cast(collections.abc.Iterable[typing.Any], element),
+                        ).flatten(_base=base),
+                    )
+                except RecursionError:
+                    # a bit dirty but I can't think of any other solution 😅
+                    raise err from None
+            else:
+                result.append(element)
+
+        return result
+
     def sum(self) -> _T:
         """
         Return the sum of the list. The elements must support addition,
