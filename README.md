@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD028, MD033 -->
+<!-- markdownlint-disable MD028 -->
 
 # Magic List
 
@@ -24,41 +24,6 @@ Magic List is a module that extends the built-in list type.
 ```sh
 pip install magic-list
 ```
-
-<details>
-<summary>Package managers</summary>
-
-### Conda
-
-```sh
-conda install magic-list
-```
-
-### Pipenv
-
-```sh
-pipenv install magic-list
-```
-
-### pipx
-
-```sh
-pipx install magic-list
-```
-
-### Poetry
-
-```sh
-poetry add magic-list
-```
-
-### uv
-
-```sh
-uv pip install magic-list
-```
-
-</details>
 
 ## Examples
 
