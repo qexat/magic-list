@@ -36,18 +36,6 @@ pip install magic-list
 conda install magic-list
 ```
 
-### Flit
-
-```sh
-flit install magic-list
-```
-
-### PDM
-
-```sh
-pdm add magic-list
-```
-
 ### Pipenv
 
 ```sh
