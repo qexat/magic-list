@@ -19,8 +19,6 @@ Magic List is a module that extends the built-in list type.
 
 ## Installation
 
-### Pip
-
 ```sh
 pip install magic-list
 ```
