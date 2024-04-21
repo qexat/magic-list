@@ -1,7 +1,7 @@
 [project]
 name = "magic-list"
 description = "Magic List is a module that extends the built-in list type."
-version = "2.2.0"
+version = "2.2.1"
 keywords = ["collections", "list", "built-in", "extension"]
 
 authors = [{ name = "Qexat", email = "contact@qexat.com" }]

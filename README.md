@@ -11,13 +11,11 @@
 
 Magic List is a module that extends the built-in list type.
 
+[Documentation](https://qexat.github.io/magic-list/) · [PyPI package](https://pypi.org/project/magic-list/) · [How to install](#installation)
+
 > [!NOTE]
 > Its development is entirely test-driven: it is battery-tested and requires a
 > test coverage of 100%. It also provides typing stub files.
-
-## Documentation
-
-Documentation can be found [here](https://qexat.github.io/magic-list/).
 
 ## Installation
 
