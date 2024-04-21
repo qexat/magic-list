@@ -10,7 +10,9 @@ Magic List is a module that extends the built-in list type.
 > Its development is entirely test-driven: it is battery-tested and requires a
 > test coverage of 100%. It also provides typing stub files.
 
-User-friendly documentation is hopefully coming soon.
+## Documentation
+
+Documentation can be found [here](https://qexat.github.io/magic-list/).
 
 ## Examples
 
@@ -39,7 +41,3 @@ def fibonacci_sequence(n: int) -> list[int]:
 
 > [!NOTE]\
 > The `L[0, 1]` notation is a way to construct magic lists nicely.
-
-### Fibonacci n-th member
-
-Wanted to define a function that returns the `n`-th member of the Fibonacci sequence for a laugh? We have that: it is called [`fibonacci_sequence(n)`](#fibonacci-sequence)`.last`!
