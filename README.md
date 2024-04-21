@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD028 -->
+<!-- markdownlint-disable MD028, MD033 -->
 
 # Magic List
 
@@ -18,6 +18,61 @@ Magic List is a module that extends the built-in list type.
 ## Documentation
 
 Documentation can be found [here](https://qexat.github.io/magic-list/).
+
+## Installation
+
+### Pip
+
+```sh
+pip install magic-list
+```
+
+<details>
+<summary>Package managers</summary>
+
+### Conda
+
+```sh
+conda install magic-list
+```
+
+### Flit
+
+```sh
+flit install magic-list
+```
+
+### PDM
+
+```sh
+pdm add magic-list
+```
+
+### Pipenv
+
+```sh
+pipenv install magic-list
+```
+
+### pipx
+
+```sh
+pipx install magic-list
+```
+
+### Poetry
+
+```sh
+poetry add magic-list
+```
+
+### uv
+
+```sh
+uv pip install magic-list
+```
+
+</details>
 
 ## Examples
 
