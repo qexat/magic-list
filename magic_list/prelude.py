@@ -1,15 +1,3 @@
-"""
-This module contains two symbols:
-    - `list`, a type that extends the built-in equivalent
-    - `L`, a pseudo-literal which can be used to create magic lists similarly to built-in ones.
-
-They can be imported as following:
-
-```py
-from magic_list import list, L
-```
-"""
-
 from __future__ import annotations
 
 import collections
@@ -45,7 +33,7 @@ class list(collections.UserList[_T]):
         """
         First item of the list.
 
-        Raises an exception if the list is empty.
+        .. warning:: The list must be non-empty.
 
         >>> L[3, 5, 2].head
         3
@@ -63,7 +51,7 @@ class list(collections.UserList[_T]):
         """
         List without its first item.
 
-        Raises an exception if the list is empty.
+        .. warning:: The list must be non-empty.
 
         >>> L[3, 5, 2].tail
         [5, 2]
@@ -81,7 +69,7 @@ class list(collections.UserList[_T]):
         """
         List without its last item.
 
-        Raises an exception if the list is empty.
+        .. warning:: The list must be non-empty.
 
         >>> L[3, 5, 2].init
         [3, 5]
@@ -99,7 +87,7 @@ class list(collections.UserList[_T]):
         """
         Last item of the list.
 
-        Raises an exception if the list is empty.
+        .. warning:: The list must be non-empty.
 
         >>> L[3, 5, 2].last
         2
@@ -199,6 +187,8 @@ class list(collections.UserList[_T]):
 
         If `n` is negative, the shift goes to the left.
 
+        .. warning:: The list must be non-empty.
+
         >>> L[3, 5, 2].rotate()
         [2, 3, 5]
         >>> L[3, 5, 2].rotate(2)
@@ -255,6 +245,8 @@ class list(collections.UserList[_T]):
         element at index `i` of the mask sequence is `True` ; else, discard
         it. Return the filtered list.
 
+        .. warning:: The mask sequence must be of the same length as the list.
+
         >>> L[3, 5, 2].mask([True, False, True])
         [3, 2]
         >>> list().mask([])
@@ -297,6 +289,8 @@ class list(collections.UserList[_T]):
         The first element of the list is used as the leftmost value ;
         therefore, if the list is empty, it will raise an exception.
 
+        .. warning:: The list must be non-empty.
+
         >>> L[3, 5, 2].reduce(operator.add)  # (3 + 5) + 2
         10
         >>> list().reduce(operator.mul)
@@ -318,6 +312,8 @@ class list(collections.UserList[_T]):
 
         The last element of the list is used as the leftmost value ;
         therefore, if the list is empty, it will raise an exception.
+
+        .. warning:: The list must be non-empty.
 
         >>> L[3, 5, 2].reduce_right(operator.add)  # 3 + (5 + 2)
         10
@@ -439,6 +435,8 @@ class list(collections.UserList[_T]):
         `s_i` and `o_i` are the items at index `i` of `self` and `other`
         respectively.
 
+        .. warning:: The list and the sequence must have the same length.
+
         >>> L[3, 5, 2].merge(operator.add, [-1, 4, -9])
         [2, 9, -7]
         >>> list().merge(operator.sub, [])
@@ -459,6 +457,8 @@ class list(collections.UserList[_T]):
         """
         Flatten the contents to a 1-dimension list. If the list contains
         itself, it cannot be flattened and a `ValueError` is raised.
+
+        .. warning:: The list cannot contain recursive elements.
 
         >>> L[[3, 5, 2], [8, 4, 1], [7, 6, 9]].flatten()
         [3, 5, 2, 8, 4, 1, 7, 6, 9]
@@ -502,6 +502,8 @@ class list(collections.UserList[_T]):
         Return the sum of the list. The elements must support addition,
         otherwise an exception is raised.
 
+        .. warning:: The list must contain values that support the `+` operator, and be non-empty.
+
         >>> L[3, 5, 2].sum()
         10
         >>> L["hello", "world"].sum()
@@ -518,6 +520,8 @@ class list(collections.UserList[_T]):
     def mean(self: list[_NumberT]) -> _NumberT | float:
         """
         Return the mean of the list. The elements must be numbers.
+
+        .. warning:: The list must contain numbers and be non-empty.
 
         >>> L[3, 5, 2].mean()
         3.3333333333333335
@@ -547,6 +551,8 @@ class list(collections.UserList[_T]):
 
         If `filler` is a function, it takes the current list (at the current
         filling iteration) and produces a new value to be appended.
+
+        .. warning:: `n` must be non-negative.
 
         >>> L[3, 5, 2].fill_left(0, 5)
         [0, 0, 0, 0, 0, 3, 5, 2]
@@ -579,6 +585,8 @@ class list(collections.UserList[_T]):
         If `filler` is a function, it takes the current list (at the current
         filling iteration) and produces a new value to be appended.
 
+        .. warning:: `n` must be non-negative.
+
         >>> L[3, 5, 2].fill_right(0, 5)
         [3, 5, 2, 0, 0, 0, 0, 0]
         >>> L[3, 5, 2].fill_right(sum, 3)
@@ -609,6 +617,8 @@ class list(collections.UserList[_T]):
         If `filler` is a function, it takes the two items surrounding the gap
         that is about to be filled and produces a new value to be inserted.
 
+        .. warning:: The list must be non-empty.
+
         >>> L[3, 5, 2].gap_fill(0)
         [3, 0, 5, 0, 2]
         >>> L[3, 5, 2].gap_fill(operator.add)
@@ -638,6 +648,8 @@ class list(collections.UserList[_T]):
         Select items at provided indexes. If an index is present several
         times, this will be reflected in the resulting list.
 
+        .. warning:: All the indexes must be in bounds.
+
         >>> L[3, 5, 2].select([1, 2, 0, 0])
         [5, 2, 3, 3]
         >>> list().select([])
@@ -659,6 +671,8 @@ class list(collections.UserList[_T]):
     def take(self, n: int) -> typing_extensions.Self:
         """
         Take `n` items from the list and return them.
+
+        .. warning:: `n` must be non-negative and less than the list length.
 
         >>> L[3, 5, 2].take(2)
         [3, 5]
@@ -684,6 +698,8 @@ class list(collections.UserList[_T]):
 
         List original order is preserved.
 
+        .. warning:: `n` must be non-negative and less than the list length.
+
         >>> L[3, 5, 2].take_right(2)
         [5, 2]
         >>> L[3, 5, 2].take_right(0)
@@ -706,6 +722,8 @@ class list(collections.UserList[_T]):
         """
         Drop `n` items from the list and return the rest.
 
+        .. warning:: `n` must be non-negative and less than the list length.
+
         >>> L[3, 5, 2].drop(2)
         [2]
         >>> L[3, 5, 2].drop(0)
@@ -727,6 +745,8 @@ class list(collections.UserList[_T]):
     def drop_right(self, n: int) -> typing_extensions.Self:
         """
         Drop `n` items from the right of the list and return the rest.
+
+        .. warning:: `n` must be non-negative and less than the list length.
 
         >>> L[3, 5, 2].drop_right(2)
         [3]
@@ -753,6 +773,8 @@ class list(collections.UserList[_T]):
         This method is NOT equivalent to the `self[start:stop]` notation.
         If `start` or `stop` are out of bounds of the list or `start` is
         greater than `stop`, it will raise an exception.
+
+        .. warning:: `start` and `stop` must be in bounds.
 
         >>> L[2, 4, 8, 16, 32].slice(1, 3)
         [4, 8, 16]
@@ -788,6 +810,8 @@ class list(collections.UserList[_T]):
         Return the element at index `index`, but also the two list slices
         before and after that element, in this order: (left, element, right).
 
+        .. warning:: The list must be non-empty, and the partition index in bounds.
+
         >>> L[2, 4, 8, 16, 32].partition(2)
         ([2, 4], 8, [16, 32])
         >>> L[2, 4, 8, 16, 32].partition(0)
@@ -815,6 +839,8 @@ class list(collections.UserList[_T]):
         """
         Bisect the list after `index` elements and return a pair of the produced
         lists.
+
+        .. warning:: The list must be non-empty.
 
         >>> L[2, 4, 8, 16, 32].bisect(2)
         ([2, 4], [8, 16, 32])
@@ -851,6 +877,8 @@ class list(collections.UserList[_T]):
         The left and right cutting indexes are determined by the smallest and
         largest value of the two arguments respectively ; `first_index` is not
         required to be smaller.
+
+        .. warning:: The list must be non-empty.
         """
 
         if not self:
@@ -886,7 +914,6 @@ MagicListLiteral = typing.NewType(
     "MagicListLiteral",
     _ListBuilder,
 )
+
 L = MagicListLiteral(_ListBuilder())
-"""
-Literal-like for magic lists.
-"""
+"""Literal-like for magic lists."""
