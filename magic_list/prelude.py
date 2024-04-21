@@ -19,7 +19,6 @@ __all__ = [
 _T = typing.TypeVar("_T")
 _U = typing.TypeVar("_U")
 _V = typing.TypeVar("_V")
-_NumberT = typing.TypeVar("_NumberT", int, float, complex)
 
 
 class list(collections.UserList[_T]):
@@ -517,7 +516,7 @@ class list(collections.UserList[_T]):
 
         return self.reduce(operator.add)
 
-    def mean(self: list[_NumberT]) -> _NumberT | float:
+    def mean(self: list[int] | list[float] | list[complex]) -> float | complex:
         """
         Return the mean of the list. The elements must be numbers.
 
