@@ -4,6 +4,11 @@
 
 [![Palestine support banner](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg)](https://irusa.org/middle-east/palestine/)
 
+[![PyPI badge](https://img.shields.io/pypi/v/magic-list)](<https://pypi.org/project/magic-list/>)
+[![Downloads](https://static.pepy.tech/badge/magic-list)](https://pepy.tech/project/magic-list)
+[![Tests](https://github.com/qexat/magic-list/actions/workflows/tests.yml/badge.svg)](https://github.com/qexat/magic-list/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+
 Magic List is a module that extends the built-in list type.
 
 > [!NOTE]
