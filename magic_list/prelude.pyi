@@ -15,17 +15,14 @@ __all__ = [
     "L",
 ]
 
-_T = typing.TypeVar("_T")
-_U = typing.TypeVar("_U")
-_V = typing.TypeVar("_V")
 _T_co = typing.TypeVar("_T_co", covariant=True)
 _T_contra = typing.TypeVar("_T_contra", contravariant=True)
 _NumberT = typing.TypeVar("_NumberT", int, float, complex)
 
-class _SupportsAdd(typing.Protocol[_T]):
+class _SupportsAdd[_T](typing.Protocol):
     def __add__(self: _T, other: _T, /) -> _T: ...
 
-class list(collections.UserList[_T]):
+class list[_T](collections.UserList[_T]):
     @property
     def head(self) -> _T: ...
     @property
@@ -54,7 +51,7 @@ class list(collections.UserList[_T]):
     # subclasses' `map` return type is also marked as `list` because we cannot make
     # the container generic -- this requires Higher-Kinded Types, which Python does
     # not support (yet? hopefully!)
-    def map(self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]: ...
+    def map[_U](self, function: _collections_abc.Callable[[_T], _U]) -> list[_U]: ...
     @typing.overload
     def rotate(self) -> typing_extensions.Self: ...
     @typing.overload
@@ -91,18 +88,11 @@ class list(collections.UserList[_T]):
         function: _collections_abc.Callable[[_T, _T], _T],
         initial_value: _T,
     ) -> typing_extensions.Self: ...
-    def merge(
+    def merge[_U, _V](
         self,
         function: _collections_abc.Callable[[_T, _U], _V],
         other: _collections_abc.Sequence[_U],
     ) -> list[_V]: ...
-    @typing.overload
-    def flatten(self: list[_collections_abc.Iterable[_T]]) -> list[_T]: ...
-    @typing.overload
-    def flatten(
-        self: list[_collections_abc.Iterable[_collections_abc.Iterable[_T]]],
-    ) -> list[_T]: ...
-    @typing.overload
     def flatten(self) -> list[typing.Any]: ...
     def sum(self) -> _T: ...
     @typing.overload
@@ -111,6 +101,8 @@ class list(collections.UserList[_T]):
     def mean(self: list[float]) -> float: ...
     @typing.overload
     def mean(self: list[complex]) -> complex: ...
+    @typing.overload
+    def mean(self) -> typing.Never: ...
     # *- expansion-based HOFs -* #
     @typing.overload
     def fill_left(self, filler: _T, n: int) -> typing_extensions.Self: ...
@@ -338,7 +330,7 @@ class _ListBuilder:
     @typing.overload
     def __getitem__(self, key: slice, /) -> list[int]: ...
     @typing.overload
-    def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T]: ...
+    def __getitem__[_T](self, key: _T | slice | tuple[_T, ...], /) -> list[_T]: ...
 
 MagicListLiteral: typing.Final = typing.NewType(
     "MagicListLiteral",
