@@ -864,9 +864,8 @@ class list(collections.UserList[_T]):
 
 class _ListBuilder:
     def __getitem__(self, key: _T | slice | tuple[_T, ...], /) -> list[_T] | list[int]:
-        if isinstance(key, slice):
-            if _is_range_slice(key):
-                return list(range(key.start or 0, key.stop, key.step or 1))
+        if isinstance(key, slice) and _is_range_slice(key):
+            return list(range(key.start or 0, key.stop, key.step or 1))
 
         return list(typing.cast(tuple[_T], key if isinstance(key, tuple) else (key,)))
 
