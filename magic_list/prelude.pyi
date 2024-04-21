@@ -118,10 +118,13 @@ class list(collections.UserList[_T]):
         filler: _T | _collections_abc.Callable[[list[_T]], _T],
         n: int,
     ) -> typing_extensions.Self: ...
-    def gap_fill(
+    def interleave(
         self,
         filler: _T | _collections_abc.Callable[[_T, _T], _T],
     ) -> typing_extensions.Self: ...
+    gap_fill = typing_extensions.deprecated(
+        "`gap_fill` has been renamed to `interleave`",
+    )(interleave)
     # *- selectors -* #
     def select(
         self, indexes: _collections_abc.Sequence[int]
