@@ -1,5 +1,5 @@
 """
-Stub file for the `prelude` module.
+Stub file for the module.
 """
 
 import collections
