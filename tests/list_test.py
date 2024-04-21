@@ -801,8 +801,8 @@ def test_fill_right_err(prebuild_list, filler, n, exception, message):
     ],
     indirect=["prebuild_list"],
 )
-def test_gap_fill_ok(prebuild_list, filler, result):
-    assert prebuild_list.gap_fill(filler) == result
+def test_interleave_ok(prebuild_list, filler, result):
+    assert prebuild_list.interleave(filler) == result
 
 
 @pytest.mark.parametrize(
@@ -812,9 +812,9 @@ def test_gap_fill_ok(prebuild_list, filler, result):
     ],
     indirect=["prebuild_list"],
 )
-def test_gap_fill_err(prebuild_list, filler, exception, message):
+def test_interleave_err(prebuild_list, filler, exception, message):
     with pytest.raises(exception, match=message):
-        prebuild_list.gap_fill(filler)
+        prebuild_list.interleave(filler)
 
 
 @pytest.mark.parametrize(

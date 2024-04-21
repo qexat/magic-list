@@ -607,7 +607,7 @@ class list(collections.UserList[_T]):
 
         return returned_list
 
-    def gap_fill(
+    def interleave(
         self,
         filler: _T | collections.abc.Callable[[_T, _T], _T],
     ) -> typing_extensions.Self:
@@ -619,11 +619,11 @@ class list(collections.UserList[_T]):
 
         .. warning:: The list must be non-empty.
 
-        >>> L[3, 5, 2].gap_fill(0)
+        >>> L[3, 5, 2].interleave(0)
         [3, 0, 5, 0, 2]
-        >>> L[3, 5, 2].gap_fill(operator.add)
+        >>> L[3, 5, 2].interleave(operator.add)
         [3, 8, 5, 7, 2]
-        >>> list().gap_fill(0)
+        >>> list().interleave(0)
         *- ValueError: empty list has no gap to be filled -*
         """
 
@@ -639,6 +639,13 @@ class list(collections.UserList[_T]):
             returned_list.append(self[i])
 
         return returned_list
+
+    gap_fill = interleave
+    """
+    .. warning:: This alias is deprecated.
+
+    Alias of `interleave`.
+    """
 
     def select(
         self,
