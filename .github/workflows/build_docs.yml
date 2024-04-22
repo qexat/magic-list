@@ -35,4 +35,4 @@ jobs:
         git config user.name "Documentation Builder[bot]"
         git add docs/
         git commit -m "doc: build"
-        git push origin HEAD:${{ github.ref_name }}
+        git push origin HEAD:${{ github.ref }}
