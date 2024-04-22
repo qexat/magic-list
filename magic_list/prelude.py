@@ -240,8 +240,8 @@ class list(collections.UserList[_T]):
         mask_seq: collections.abc.Sequence[bool],
     ) -> typing_extensions.Self:
         """
-        Keep every element at index `i` of the list if the corresponding
-        element at index `i` of the mask sequence is `True` ; else, discard
+        Keep every item at index `i` of the list if the corresponding
+        item at index `i` of the mask sequence is `True` ; else, discard
         it. Return the filtered list.
 
         .. warning:: The mask sequence must be of the same length as the list.
@@ -282,10 +282,10 @@ class list(collections.UserList[_T]):
 
     def reduce(self, function: collections.abc.Callable[[_T, _T], _T]) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from left to right and return the result.
 
-        The first element of the list is used as the leftmost value ;
+        The first item of the list is used as the leftmost value ;
         therefore, if the list is empty, it will raise an exception.
 
         .. warning:: The list must be non-empty.
@@ -306,10 +306,10 @@ class list(collections.UserList[_T]):
         function: collections.abc.Callable[[_T, _T], _T],
     ) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from right to left and return the result.
 
-        The last element of the list is used as the leftmost value ;
+        The last item of the list is used as the leftmost value ;
         therefore, if the list is empty, it will raise an exception.
 
         .. warning:: The list must be non-empty.
@@ -333,7 +333,7 @@ class list(collections.UserList[_T]):
         initial_value: _T,
     ) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from left to right and return the result.
 
         The `initial_value` is used as the leftmost value, and is the returned
@@ -353,7 +353,7 @@ class list(collections.UserList[_T]):
         initial_value: _T,
     ) -> _T:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from right to left and return the result.
 
         The `initial_value` is used as the leftmost value, and is the
@@ -377,7 +377,7 @@ class list(collections.UserList[_T]):
         initial_value: _T,
     ) -> typing_extensions.Self:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from left to right and return the intermediate values followed by the
         result.
 
@@ -409,7 +409,7 @@ class list(collections.UserList[_T]):
         initial_value: _T,
     ) -> typing_extensions.Self:
         """
-        "Insert" an operator (called a reducing function) between each element
+        "Insert" an operator (called a reducing function) between each item
         from right to left and return the intermediate values followed by the
         result.
 
@@ -473,26 +473,26 @@ class list(collections.UserList[_T]):
 
         result: list[typing.Any] = list()
 
-        for element in self:
-            if element is self or element is _base:
+        for item in self:
+            if item is self or item is _base:
                 raise err
 
             base = self if _base is None else _base
 
-            if isinstance(element, list):
-                result.extend(element.flatten(_base=base))
-            elif isinstance(element, collections.abc.Iterable):
+            if isinstance(item, list):
+                result.extend(item.flatten(_base=base))
+            elif isinstance(item, collections.abc.Iterable):
                 try:
                     result.extend(
                         list(
-                            typing.cast(collections.abc.Iterable[typing.Any], element),
+                            typing.cast(collections.abc.Iterable[typing.Any], item),
                         ).flatten(_base=base),
                     )
                 except RecursionError:
                     # a bit dirty but I can't think of any other solution 😅
                     raise err from None
             else:
-                result.append(element)
+                result.append(item)
 
         return result
 
@@ -815,8 +815,8 @@ class list(collections.UserList[_T]):
         index: int,
     ) -> tuple[typing_extensions.Self, _T, typing_extensions.Self]:
         """
-        Return the element at index `index`, but also the two list slices
-        before and after that element, in this order: (left, element, right).
+        Return the item at index `index`, but also the two list slices
+        before and after that item, in this order: (left, item, right).
 
         .. warning:: The list must be non-empty, and the partition index in bounds.
 
