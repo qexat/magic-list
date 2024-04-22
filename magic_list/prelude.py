@@ -616,18 +616,20 @@ class list(collections.UserList[_T]):
         If `filler` is a function, it takes the two items surrounding the gap
         that is about to be filled and produces a new value to be inserted.
 
-        .. warning:: The list must be non-empty.
+        .. warning:: The list must contain at least two items.
 
         >>> L[3, 5, 2].interleave(0)
         [3, 0, 5, 0, 2]
         >>> L[3, 5, 2].interleave(operator.add)
         [3, 8, 5, 7, 2]
+        >>> L[0].interleave(1)
+        *- ValueError: list has no gap to be filled -*
         >>> list().interleave(0)
-        *- ValueError: empty list has no gap to be filled -*
+        *- ValueError: list has no gap to be filled -*
         """
 
-        if not self:
-            raise ValueError("empty list has no gap to be filled")
+        if len(self) <= 1:
+            raise ValueError("list has no gap to be filled")
 
         returned_list = self.__class__([self.head])
 
