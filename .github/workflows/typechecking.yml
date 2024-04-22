@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  ruff:
+  pyright:
     runs-on: ubuntu-latest
 
     steps:
