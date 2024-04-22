@@ -633,6 +633,56 @@ def test_sum_err(prebuild_list, exception, message):
 @pytest.mark.parametrize(
     ["prebuild_list", "result"],
     [
+        ["list_int_filled", -1],
+        ["list_one_int", 42],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_min_ok(prebuild_list, result):
+    assert prebuild_list.min() == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "exception", "message"],
+    [
+        ["list_str_filled", TypeError, "list of str has no minimum"],
+        ["list_empty", TypeError, "empty list has no minimum"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_min_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.min()
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "result"],
+    [
+        ["list_int_filled", 20],
+        ["list_one_int", 42],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_max_ok(prebuild_list, result):
+    assert prebuild_list.max() == result
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "exception", "message"],
+    [
+        ["list_str_filled", TypeError, "list of str has no maximum"],
+        ["list_empty", TypeError, "empty list has no maximum"],
+    ],
+    indirect=["prebuild_list"],
+)
+def test_max_err(prebuild_list, exception, message):
+    with pytest.raises(exception, match=message):
+        prebuild_list.max()
+
+
+@pytest.mark.parametrize(
+    ["prebuild_list", "result"],
+    [
         ["list_int_filled", 6.75],
     ],
     indirect=["prebuild_list"],
