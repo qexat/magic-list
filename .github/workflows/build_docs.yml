@@ -31,6 +31,7 @@ jobs:
       run: pdoc magic_list/ -n -d numpy -o docs/
     - name: Push the result
       run: |
+        git config user.name "Documentation Builder[bot]"
         git add docs/
         git commit -m "doc: build"
         git push origin HEAD
