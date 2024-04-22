@@ -19,7 +19,7 @@ Magic List is a module that extends the built-in list type.
 
 > [!NOTE]
 > Its development is entirely test-driven: it is battery-tested and requires a
-> test coverage of 100%. It also provides typing stub files.
+> test coverage of 100%. It also provides type stubs.
 
 ## Installation
 
@@ -31,7 +31,7 @@ pip install magic-list
 
 ### Fibonacci sequence
 
-In the functional programming spirit, let's write a function that given an integer `n`, returns the fibonacci sequence up to the `n`-th member.
+Let's write a function that given an integer `n`, returns the fibonacci sequence up to the `n`-th member.
 
 For example, `fibonacci_sequence(10)` would return `[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]`.
 
@@ -52,5 +52,5 @@ def fibonacci_sequence(n: int) -> list[int]:
     return base.fill_right(next_member, n - 1)
 ```
 
-> [!NOTE]\
+> [!NOTE]
 > The `L[0, 1]` notation is a way to construct magic lists nicely.
