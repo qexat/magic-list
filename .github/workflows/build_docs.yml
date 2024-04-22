@@ -30,4 +30,7 @@ jobs:
     - name: Build docs
       run: pdoc magic_list/ -n -d numpy -o docs/
     - name: Push the result
-      run: git push
+      run: |
+        git add docs/
+        git commit -m "doc: build"
+        git push origin HEAD
