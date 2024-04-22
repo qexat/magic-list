@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -34,4 +35,4 @@ jobs:
         git config user.name "Documentation Builder[bot]"
         git add docs/
         git commit -m "doc: build"
-        git push origin HEAD:refs/heads/HEAD
+        git push origin HEAD:${{ github.ref_name }}
