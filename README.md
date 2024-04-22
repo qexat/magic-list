@@ -2,6 +2,8 @@
 
 # Magic List
 
+![Logo](./docs/magic_list_banner.png)
+
 [![Palestine support banner](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg)](https://irusa.org/middle-east/palestine/)
 
 [![PyPI badge](https://img.shields.io/pypi/v/magic-list)](<https://pypi.org/project/magic-list/>)
