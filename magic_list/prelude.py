@@ -540,6 +540,50 @@ class list(collections.UserList[_T]):
 
         return sum(self) / len(self)
 
+    def min(self: list[int] | list[float]) -> int | float:
+        """
+        Return the minimum value of the list.
+
+        .. warning:: The list must be non-empty and contain numbers.
+
+        >>> L[3, 5, 2].min()
+        2
+        >>> L["hello", "world"].min()
+        *- TypeError: list of str has no minimum -*
+        >>> list().min()
+        *- TypeError: empty list has no minimum -*
+        """
+
+        if not self:
+            raise TypeError("empty list has no minimum")
+
+        if not isinstance(self.head, (int, float)):  # pyright: ignore[reportUnnecessaryIsInstance]
+            raise TypeError(f"list of {type(self.head).__name__} has no minimum")
+
+        return min(self)
+
+    def max(self: list[int] | list[float]) -> int | float:
+        """
+        Return the maximum value of the list.
+
+        .. warning:: The list must be non-empty and contain numbers.
+
+        >>> L[3, 5, 2].max()
+        2
+        >>> L["hello", "world"].max()
+        *- TypeError: list of str has no maximum -*
+        >>> list().max()
+        *- TypeError: empty list has no maximum -*
+        """
+
+        if not self:
+            raise TypeError("empty list has no maximum")
+
+        if not isinstance(self.head, (int, float)):  # pyright: ignore[reportUnnecessaryIsInstance]
+            raise TypeError(f"list of {type(self.head).__name__} has no maximum")
+
+        return max(self)
+
     def fill_left(
         self,
         filler: _T | collections.abc.Callable[[list[_T]], _T],
