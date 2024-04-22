@@ -102,7 +102,7 @@ class list[_T](collections.UserList[_T]):
     @typing.overload
     def mean(self: list[complex]) -> complex: ...
     @typing.overload
-    def mean(self) -> typing.Never: ...
+    def mean(self) -> typing_extensions.Never: ...
     # *- expansion-based HOFs -* #
     @typing.overload
     def fill_left(self, filler: _T, n: int) -> typing_extensions.Self: ...
@@ -221,7 +221,7 @@ class list[_T](collections.UserList[_T]):
         []
         """
 
-    def copy(self) -> typing.Self:
+    def copy(self) -> typing_extensions.Self:
         """
         Return a shallow copy of the list.
 
@@ -300,7 +300,7 @@ class list[_T](collections.UserList[_T]):
         reverse: bool = False,
     ) -> None: ...
     def sort[SupportsRichComparisonT: _typeshed.SupportsRichComparison](  # pyright: ignore[reportIncompatibleMethodOverride]
-        self: typing.Self | list[SupportsRichComparisonT],
+        self: typing_extensions.Self | list[SupportsRichComparisonT],
         *,
         key: _collections_abc.Callable[[_T], _typeshed.SupportsRichComparison]
         | None = None,
