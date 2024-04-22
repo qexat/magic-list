@@ -45,7 +45,7 @@ pip install -e .[dev]
 
 ## Contributing
 
-<sup>Dependencies: `pre-commit`, `pyright`</sup>
+<sup>Dependencies: `pre-commit`, `pyright`, `ruff`</sup>
 
 First of all, thank you for your contribution 💞
 
