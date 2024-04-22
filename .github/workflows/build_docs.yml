@@ -31,7 +31,6 @@ jobs:
     - name: Push the result
       run: |
         git config user.name "Documentation Builder[bot]"
-        git pull
         git add docs/
         git commit -m "doc: build"
-        git push --force origin HEAD:${{ github.event.pull_request.base.ref}}
+        git push --force-with-lease origin HEAD:${{ github.event.pull_request.base.ref}}
