@@ -36,6 +36,8 @@ def prebuild_list(request):
                 "ciao",
             ),
         )
+    elif request.param == "list_one_int":
+        return list((42,))
     elif request.param == "list_empty":
         return list()
 
@@ -808,7 +810,8 @@ def test_interleave_ok(prebuild_list, filler, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "filler", "exception", "message"],
     [
-        ["list_empty", None, ValueError, "empty list has no gap to be filled"],
+        ["list_one_int", -1, ValueError, "list has no gap to be filled"],
+        ["list_empty", None, ValueError, "list has no gap to be filled"],
     ],
     indirect=["prebuild_list"],
 )
