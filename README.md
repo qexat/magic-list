@@ -54,3 +54,13 @@ def fibonacci_sequence(n: int) -> list[int]:
 
 > [!NOTE]
 > The `L[0, 1]` notation is a way to construct magic lists nicely.
+
+## Contributing
+
+First of all, thank you for taking your time to participate in this project! 💕
+
+You might want to check those:
+
+- [Code of Conduct](./CODE_OF_CONDUCT.md) · a document to set standards for respectful and inclusive behavior within the community
+- [README-dev.md](./README-dev.md) · documentation to help you familiarize with Magic List's workflow
+- [Feature proposals](https://github.com/qexat/magic-list/issues/50) · a list of the proposed features in the past, present and future
