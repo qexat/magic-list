@@ -1,0 +1,39 @@
+name: Build docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.py'
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+      - name: Build docs
+        run: pdoc magic_list/ --logo magic_list_logo.svg -n -d numpy -o docs/
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6.0.4
+        with:
+          commit-message: |
+            chore: build docs
+          branch: docs-build-auto
+          delete-branch: true
+          title: |
+            chore: build docs
+          labels: |
+            area: doc
