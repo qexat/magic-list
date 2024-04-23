@@ -152,7 +152,7 @@ class list(collections.UserList[_T]):
         []
         """
 
-        result = self[:]
+        result = self.copy()
         random.shuffle(result)
 
         return result
