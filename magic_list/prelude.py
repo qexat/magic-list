@@ -152,13 +152,8 @@ class list(collections.UserList[_T]):
         []
         """
 
-        result = self.__class__()
-
-        while len(result) != len(self):
-            item = random.choice(self)
-
-            if item not in result:
-                result.append(item)
+        result = self[:]
+        random.shuffle(result)
 
         return result
 
