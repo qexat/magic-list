@@ -1,3 +1,4 @@
+# ruff: noqa: PYI021  # it's on purpose, to add docstrings to inherited methods
 """
 Stub file for the module.
 """
@@ -15,14 +16,7 @@ __all__ = [
     "L",
 ]
 
-_T_co = typing.TypeVar("_T_co", covariant=True)
-_T_contra = typing.TypeVar("_T_contra", contravariant=True)
-_NumberT = typing.TypeVar("_NumberT", int, float, complex)
-
-class _SupportsAdd[_T](typing.Protocol):
-    def __add__(self: _T, other: _T, /) -> _T: ...
-
-class list[_T](collections.UserList[_T]):
+class list[_T](collections.UserList[_T]):  # noqa: A001, N801
     @property
     def head(self) -> _T: ...
     @property

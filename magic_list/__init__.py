@@ -2,7 +2,8 @@
 This module contains two symbols:
 
 - `list`, a type that extends the built-in equivalent
-- `L`, a pseudo-literal which can be used to create magic lists similarly to built-in ones.
+- `L`, a pseudo-literal which can be used to create magic lists similarly to \
+    built-in ones.
 
 They can be imported as following:
 

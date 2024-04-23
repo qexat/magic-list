@@ -5,7 +5,7 @@ import collections.abc
 import functools
 import operator
 import random
-import typing as typing
+import typing
 
 if typing.TYPE_CHECKING:  # pragma: no cover
     import _typeshed
@@ -21,7 +21,7 @@ _U = typing.TypeVar("_U")
 _V = typing.TypeVar("_V")
 
 
-class list(collections.UserList[_T]):
+class list(collections.UserList[_T]):  # noqa: A001, N801
     """
     Mutable homogeneous sequence.
     Drop-in replacement for the built-in `list` type.
@@ -41,7 +41,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no head")
+            msg = "empty list has no head"
+            raise TypeError(msg)
 
         return self[0]
 
@@ -59,7 +60,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no tail")
+            msg = "empty list has no tail"
+            raise TypeError(msg)
 
         return self.__class__(self[1:])
 
@@ -77,7 +79,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no init")
+            msg = "empty list has no init"
+            raise TypeError(msg)
 
         return self.__class__(self[:-1])
 
@@ -95,7 +98,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no last")
+            msg = "empty list has no last"
+            raise TypeError(msg)
 
         return self[-1]
 
@@ -138,7 +142,7 @@ class list(collections.UserList[_T]):
         ["a", "a", "g", "l"]
         """
 
-        return self.__class__(sorted(self, key=key, reverse=reverse))  # type: ignore
+        return self.__class__(sorted(self, key=key, reverse=reverse))  # pyright: ignore[reportCallIssue, reportArgumentType]
 
     def shuffled(self) -> typing_extensions.Self:
         """
@@ -194,7 +198,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list cannot be rotated")
+            msg = "empty list cannot be rotated"
+            raise TypeError(msg)
 
         if n == 0:
             return self
@@ -250,7 +255,8 @@ class list(collections.UserList[_T]):
         """
 
         if len(self) != len(mask_seq):
-            raise TypeError("mask length must be the same as the list")
+            msg = "mask length must be the same as the list"
+            raise TypeError(msg)
 
         return self.__class__(item for item, bit in zip(self, mask_seq) if bit)
 
@@ -292,7 +298,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("the list to reduce cannot be empty")
+            msg = "the list to reduce cannot be empty"
+            raise TypeError(msg)
 
         return functools.reduce(function, self)
 
@@ -318,7 +325,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("the list to reduce cannot be empty")
+            msg = "the list to reduce cannot be empty"
+            raise TypeError(msg)
 
         return functools.reduce(lambda a, b: function(b, a), self.reversed())
 
@@ -379,7 +387,8 @@ class list(collections.UserList[_T]):
         The `initial_value` is used as the leftmost value, and is the only
         value of the returned list if the original list is empty.
 
-        >>> L[3, 5, 2].scan(operator.add, 0)  # [0, (0 + 3), (0 + 3 + 5), (0 + 3 + 5 + 2)]
+        >>> # [0, (0 + 3), (0 + 3 + 5), (0 + 3 + 5 + 2)]
+        >>> L[3, 5, 2].scan(operator.add, 0)
         [0, 3, 8, 10]
         >>> list().scan(operator.add, 0)
         [0]
@@ -411,7 +420,8 @@ class list(collections.UserList[_T]):
         The `initial_value` is used as the leftmost value, and is the only
         value of the returned list if the original list is empty.
 
-        >>> L[3, 5, 2].scan_right(operator.add, 0)  # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
+        >>> # [0, (2 + 0), (5 + 2 + 0), (3 + 5 + 2 + 0)]
+        >>> L[3, 5, 2].scan_right(operator.add, 0)
         [0, 2, 7, 10]
         >>> list().scan_right(operator.add, 0)
         [0]
@@ -440,7 +450,8 @@ class list(collections.UserList[_T]):
         """
 
         if len(self) != len(other):
-            raise TypeError("the length of the two sequences must be equal")
+            msg = "the length of the two sequences must be equal"
+            raise TypeError(msg)
 
         return typing.cast(
             list[_V],
@@ -496,7 +507,8 @@ class list(collections.UserList[_T]):
         Return the sum of the list. The elements must support addition,
         otherwise an exception is raised.
 
-        .. warning:: The list must contain values that support the `+` operator, and be non-empty.
+        .. warning:: The list must contain values that support the `+` \
+            operator, and be non-empty.
 
         >>> L[3, 5, 2].sum()
         10
@@ -507,7 +519,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("cannot perform summation on an empty list")
+            msg = "cannot perform summation on an empty list"
+            raise TypeError(msg)
 
         return self.reduce(operator.add)
 
@@ -526,11 +539,13 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("cannot calculate mean of empty list")
+            msg = "cannot calculate mean of empty list"
+            raise TypeError(msg)
 
         if not hasattr(self[0], "__truediv__"):
+            msg = f"cannot calculate mean of list of {self[0].__class__.__name__}"
             raise TypeError(
-                f"cannot calculate mean of list of {self[0].__class__.__name__}",
+                msg,
             )
 
         return sum(self) / len(self)
@@ -550,10 +565,12 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no minimum")
+            msg = "empty list has no minimum"
+            raise TypeError(msg)
 
         if not isinstance(self.head, (int, float)):  # pyright: ignore[reportUnnecessaryIsInstance]
-            raise TypeError(f"list of {type(self.head).__name__} has no minimum")
+            msg = f"list of {type(self.head).__name__} has no minimum"
+            raise TypeError(msg)
 
         return min(self)
 
@@ -572,10 +589,12 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("empty list has no maximum")
+            msg = "empty list has no maximum"
+            raise TypeError(msg)
 
         if not isinstance(self.head, (int, float)):  # pyright: ignore[reportUnnecessaryIsInstance]
-            raise TypeError(f"list of {type(self.head).__name__} has no maximum")
+            msg = f"list of {type(self.head).__name__} has no maximum"
+            raise TypeError(msg)
 
         return max(self)
 
@@ -603,7 +622,8 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("the number of times to fill cannot be negative")
+            msg = "the number of times to fill cannot be negative"
+            raise ValueError(msg)
 
         returned_list = self.copy()
 
@@ -636,7 +656,8 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("the number of times to fill cannot be negative")
+            msg = "the number of times to fill cannot be negative"
+            raise ValueError(msg)
 
         returned_list = self.copy()
 
@@ -668,7 +689,8 @@ class list(collections.UserList[_T]):
         """
 
         if len(self) <= 1:
-            raise ValueError("list has no gap to be filled")
+            msg = "list has no gap to be filled"
+            raise ValueError(msg)
 
         returned_list = self.__class__([self.head])
 
@@ -709,7 +731,8 @@ class list(collections.UserList[_T]):
 
         for index in indexes:
             if index >= len(self) or index < -len(self):
-                raise IndexError(f"index {index} is out of bounds")
+                msg = f"index {index} is out of bounds"
+                raise IndexError(msg)
 
             returned_list.append(self[index])
 
@@ -732,10 +755,12 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("cannot take a negative amount of items")
+            msg = "cannot take a negative amount of items"
+            raise ValueError(msg)
 
         if n > len(self):
-            raise ValueError("cannot take more items than the list contains")
+            msg = "cannot take more items than the list contains"
+            raise ValueError(msg)
 
         return self.__class__(self[i] for i in range(n))
 
@@ -758,10 +783,12 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("cannot take a negative amount of items")
+            msg = "cannot take a negative amount of items"
+            raise ValueError(msg)
 
         if n > len(self):
-            raise ValueError("cannot take more items than the list contains")
+            msg = "cannot take more items than the list contains"
+            raise ValueError(msg)
 
         return self.__class__(item for item in self[len(self) - n :])
 
@@ -782,10 +809,12 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("cannot drop a negative amount of items")
+            msg = "cannot drop a negative amount of items"
+            raise ValueError(msg)
 
         if n > len(self):
-            raise ValueError("cannot drop more items than the list contains")
+            msg = "cannot drop more items than the list contains"
+            raise ValueError(msg)
 
         return self.__class__(self[n:])
 
@@ -806,10 +835,12 @@ class list(collections.UserList[_T]):
         """
 
         if n < 0:
-            raise ValueError("cannot drop a negative amount of items")
+            msg = "cannot drop a negative amount of items"
+            raise ValueError(msg)
 
         if n > len(self):
-            raise ValueError("cannot drop more items than the list contains")
+            msg = "cannot drop more items than the list contains"
+            raise ValueError(msg)
 
         return self.__class__(self[: len(self) - n])
 
@@ -842,10 +873,12 @@ class list(collections.UserList[_T]):
         """
 
         if start > stop:
-            raise ValueError("start cannot be greater than stop")
+            msg = "start cannot be greater than stop"
+            raise ValueError(msg)
 
         if start < 0 or stop >= len(self):
-            raise ValueError("slice out of bounds")
+            msg = "slice out of bounds"
+            raise ValueError(msg)
 
         return self.__class__(self[start : stop + 1])
 
@@ -872,10 +905,12 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("cannot partition an empty list")
+            msg = "cannot partition an empty list"
+            raise TypeError(msg)
 
         if not (0 <= index < len(self)):
-            raise IndexError("partition index cannot be out of bounds")
+            msg = "partition index cannot be out of bounds"
+            raise IndexError(msg)
 
         return self.take(index), self[index], self.drop(index + 1)
 
@@ -902,7 +937,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("cannot bisect an empty list")
+            msg = "cannot bisect an empty list"
+            raise TypeError(msg)
 
         _n = _minmax(index, 0, len(self))
 
@@ -929,7 +965,8 @@ class list(collections.UserList[_T]):
         """
 
         if not self:
-            raise TypeError("cannot trisect an empty list")
+            msg = "cannot trisect an empty list"
+            raise TypeError(msg)
 
         _left = _minmax(min(first_index, second_index), 0, len(self))
         _right = _minmax(max(first_index, second_index), 0, len(self))
