@@ -36,4 +36,4 @@ jobs:
           title: |
             chore: build docs
           labels: |
-            area: meta
+            area: doc
