@@ -234,8 +234,8 @@ def test_sorted_ok(prebuild_list, kwargs, result):
 @pytest.mark.parametrize(
     ["prebuild_list", "result"],
     [
-        ["list_int_filled", list((-1, 3, 20, 5))],
-        ["list_str_filled", list(("ciao", "hello", "holá", "bonjour"))],
+        ["list_int_filled", list((20, 3, 5, -1))],
+        ["list_str_filled", list(('holá', 'hello', 'bonjour', 'ciao'))],
         ["list_empty", list()],
     ],
     indirect=["prebuild_list"],
