@@ -1,4 +1,5 @@
 # type: ignore
+
 import operator
 import random
 
@@ -235,7 +236,7 @@ def test_sorted_ok(prebuild_list, kwargs, result):
     ["prebuild_list", "result"],
     [
         ["list_int_filled", list((20, 3, 5, -1))],
-        ["list_str_filled", list(('holá', 'hello', 'bonjour', 'ciao'))],
+        ["list_str_filled", list(("holá", "hello", "bonjour", "ciao"))],
         ["list_empty", list()],
     ],
     indirect=["prebuild_list"],
