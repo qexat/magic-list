@@ -63,8 +63,16 @@ def test_integer_slice(input_slice, output_arg):
 @pytest.mark.parametrize(
     ("input_slice", "output_list_arg"),
     [
-        (slice("hello", "world"), [slice("hello", "world")]),
-        (slice([2, 3], [-1, 5]), [slice([2, 3], [-1, 5])]),
+        pytest.param(
+            slice("hello", "world"),
+            [slice("hello", "world")],
+            id="string_slice",
+        ),
+        pytest.param(
+            slice([2, 3], [-1, 5]),
+            [slice([2, 3], [-1, 5])],
+            id="integer_slice",
+        ),
     ],
 )
 def test_noninteger_slice(input_slice, output_list_arg):
