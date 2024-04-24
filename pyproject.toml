@@ -65,6 +65,21 @@ force-single-line = true
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["INP", "FBT", "PLC2701", "S101", "SLF001", "ANN", "PT", "B018"]
 
+[tool.pyright]
+include = ["magic_list/**"]
+ignore = ["tests/**"]
+strict = ["magic_list/**"]
+
+deprecateTypingAliases = true
+reportImplicitStringConcatenation = "warning"
+reportImportCycles = "warning"
+reportMissingSuperCall = "error"
+reportPropertyTypeMismatch = "warning"
+reportShadowedImports = "warning"
+reportUninitializedInstanceVariable = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedCallResult = "information"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
