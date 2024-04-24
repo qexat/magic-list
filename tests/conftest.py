@@ -190,7 +190,7 @@ def ml_with_equal_several_magic_list_empty():
 
 
 @pytest.fixture(scope="session")
-def recursive_with_itself():
+def ml_recursive_with_itself():
     """
     Magic List with one magic list (itself), truthy (non-empty).
     """
@@ -254,7 +254,7 @@ def ml_with_mutually_recursive_item():
         ml_with_equal_several_magic_list_nonempty,
         ml_with_equal_several_magic_list_empty,
         # *- recursives -* #
-        recursive_with_itself,
+        ml_recursive_with_itself,
         ml_with_recursive_item,
         ml_with_mutually_recursive_item,
     ],
@@ -264,7 +264,7 @@ def magic_list_instance(request):
     Instance of a magic list.
     """
 
-    return request.param
+    return request.getfixturevalue(request.param)
 
 
 @pytest.fixture(scope="session")
@@ -347,4 +347,4 @@ def mask_instance(request):
     Sequence of booleans.
     """
 
-    return request.param
+    return request.getfixturevalue(request.param)
