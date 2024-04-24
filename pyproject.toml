@@ -68,6 +68,21 @@ force-single-line = true
 [tool.coverage.run]
 omit = ["tests/**/conftest.py"]
 
+[tool.pyright]
+include = ["magic_list/**"]
+ignore = ["tests/**"]
+strict = ["magic_list/**"]
+
+deprecateTypingAliases = true
+reportImplicitStringConcatenation = "warning"
+reportImportCycles = "warning"
+reportMissingSuperCall = "error"
+reportPropertyTypeMismatch = "warning"
+reportShadowedImports = "warning"
+reportUninitializedInstanceVariable = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedCallResult = "information"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
