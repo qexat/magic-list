@@ -1,6 +1,3 @@
-# type: ignore
-
-
 def double(x):
     return x * 2
 
