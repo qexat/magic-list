@@ -38,6 +38,9 @@ dev = [
     "typing-extensions>=4.11",
 ]
 
+[tool.setuptools]
+packages = ["magic_list"]
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
