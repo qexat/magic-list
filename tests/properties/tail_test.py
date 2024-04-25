@@ -77,6 +77,7 @@ def test_ml_with_duplicate_several_magic_list_nonempty(
 ):
     assert ml_with_duplicate_several_magic_list_nonempty.tail == list(
         [
+            list(["hello", "world"]),
             list(["goodbye", "mars"]),
             list(["hello", "world"]),
         ],

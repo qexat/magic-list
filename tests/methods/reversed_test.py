@@ -77,6 +77,7 @@ def test_ml_with_duplicate_several_magic_list_nonempty(
         [
             list(["hello", "world"]),
             list(["goodbye", "mars"]),
+            list(["hello", "world"]),
             list(["hello", "mars"]),
         ],
     )
