@@ -75,7 +75,7 @@ def test_ml_empty(ml_empty, prepended_value, magic_list_instance):
             list(
                 [
                     list(["goodbye", "world"]),
-                    list(["hello", "world"]),
+                    list(["hello", "mars"]),
                     list(["goodbye", "mars"]),
                     list(["hello", "world"]),
                 ],

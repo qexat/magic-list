@@ -72,7 +72,7 @@ def test_ml_with_duplicate_several_magic_list_nonempty(
     ml_with_duplicate_several_magic_list_nonempty,
 ):
     assert ml_with_duplicate_several_magic_list_nonempty.head == list(
-        ["hello", "world"],
+        ["hello", "mars"],
     )
 
 

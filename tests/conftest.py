@@ -137,7 +137,7 @@ def ml_with_duplicate_several_magic_list_nonempty():
 
     return list(
         [
-            list(["hello", "world"]),
+            list(["hello", "mars"]),
             list(["goodbye", "mars"]),
             list(["hello", "world"]),
         ],

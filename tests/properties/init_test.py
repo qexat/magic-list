@@ -77,7 +77,7 @@ def test_ml_with_duplicate_several_magic_list_nonempty(
 ):
     assert ml_with_duplicate_several_magic_list_nonempty.init == list(
         [
-            list(["hello", "world"]),
+            list(["hello", "mars"]),
             list(["goodbye", "mars"]),
         ],
     )
