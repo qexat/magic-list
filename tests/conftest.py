@@ -2,6 +2,8 @@ import pytest
 
 from magic_list import list
 
+RANDOM_SEED = 0
+
 
 @pytest.fixture(scope="session")
 def ml_empty():
