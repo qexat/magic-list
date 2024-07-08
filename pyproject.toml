@@ -38,6 +38,9 @@ dev = [
     "typing-extensions>=4.11",
 ]
 
+[tool.setuptools]
+packages = ["magic_list"]
+
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
@@ -51,7 +54,7 @@ ignore = [
     "TD003",
     "PLR2004",
 ]
-exclude = ["tests/**"]
+exclude = ["tests/**", "testing/**"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15
@@ -62,8 +65,23 @@ max-returns = 8
 [tool.ruff.lint.isort]
 force-single-line = true
 
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["INP", "FBT", "PLC2701", "S101", "SLF001", "ANN", "PT", "B018"]
+[tool.coverage.run]
+omit = ["tests/**"]
+
+[tool.pyright]
+include = ["magic_list/**"]
+ignore = ["tests/**", "testing/**"]
+strict = ["magic_list/**"]
+
+deprecateTypingAliases = true
+reportImplicitStringConcatenation = "warning"
+reportImportCycles = "warning"
+reportMissingSuperCall = "error"
+reportPropertyTypeMismatch = "warning"
+reportShadowedImports = "warning"
+reportUninitializedInstanceVariable = "error"
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedCallResult = "information"
 
 [build-system]
 requires = ["setuptools"]

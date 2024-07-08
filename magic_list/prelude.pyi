@@ -3,11 +3,11 @@
 Stub file for the module.
 """
 
+import _collections_abc
 import collections
 import sys
 import typing
 
-import _collections_abc
 import _typeshed
 import typing_extensions
 

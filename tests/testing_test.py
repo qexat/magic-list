@@ -2,9 +2,10 @@
 
 import pytest
 
-from .utils import contains_letter_l
-from .utils import double
-from .utils import greater_than_four
+from testing import contains_letter_l
+from testing import double
+from testing import greater_than_four
+from testing import reduce_right_sub
 
 
 @pytest.mark.parametrize(
@@ -48,3 +49,13 @@ def test_greater_than_four_ok(x, result):
 )
 def test_contains_letter_l_ok(x, result):
     assert contains_letter_l(x) is result
+
+
+def test_reduce_right_sub():
+    assert reduce_right_sub([]) == 0
+    assert reduce_right_sub([1]) == -1
+    assert reduce_right_sub([1, 2]) == -3
+    assert reduce_right_sub([-2, -1]) == 3
+
+    with pytest.raises(TypeError):
+        reduce_right_sub(["hello", "world"])

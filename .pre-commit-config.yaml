@@ -12,8 +12,3 @@ repos:
     rev: v3.1.0
     hooks:
       - id: add-trailing-comma
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        args: ["--sl", "--profile black"]
