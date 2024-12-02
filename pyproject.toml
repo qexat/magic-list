@@ -34,7 +34,7 @@ dev = [
     "pytest>=7.4,<8.4",
     "pyright>=1.1,<2.0",
     "ruff>=0.4,<1.0",
-    "twine>=5.0,<6.0",
+    "twine>=5.0,<7.0",
     "typing-extensions>=4.11",
 ]
 
