@@ -1,4 +1,5 @@
-# type: ignore
+import functools
+import operator
 
 
 def double(x):
@@ -11,3 +12,7 @@ def greater_than_four(x):
 
 def contains_letter_l(x):
     return "l" in x
+
+
+def reduce_right_sub(l):
+    return functools.reduce(operator.sub, reversed(l), 0)
