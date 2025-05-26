@@ -9,7 +9,7 @@ repos:
       - id: name-tests-test
       - id: check-toml
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v3.1.0
+    rev: v3.2.0
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/pycqa/isort
