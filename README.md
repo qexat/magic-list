@@ -2,6 +2,9 @@
 
 # Magic List
 
+> [!IMPORTANT]
+> This project is archived and will not be developed further.
+
 ![Logo](./docs/magic_list_banner.png)
 
 [![Palestine support banner](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg)](https://irusa.org/middle-east/palestine/)
